@@ -7,6 +7,7 @@ import {
   Activity,
   AlertTriangle,
   Bell,
+  CandlestickChart,
   BellOff,
   Clock,
   LayoutGrid,
@@ -85,7 +86,10 @@ function useBeep(enabled: boolean, secondsToNext: number) {
   }, [enabled, secondsToNext]);
 }
 
-const RAIL_ICONS = [{ icon: LayoutGrid, label: "Overview", active: true }];
+const RAIL_ITEMS = [
+  { icon: CandlestickChart, label: "Sessions", to: "/" as const },
+  { icon: NotebookPen, label: "Journal", to: "/journal" as const },
+];
 
 function Dashboard() {
   const now = useNow();
@@ -115,33 +119,39 @@ function Dashboard() {
           <div className="mb-4 flex flex-col items-center gap-1.5">
             <img
               src={sjakAsset.url}
-              alt="Krekelstrat Terminal profielfoto"
+              alt="Krekelstrat Terminal profile photo"
               className="size-10 rounded-2xl object-cover ring-1 ring-[#5ec8f5]/40"
             />
             <span className="text-[10px] tracking-[0.06em] text-[#6b8592]">NQ/MNQ</span>
           </div>
-          {RAIL_ICONS.map(({ icon: Icon, label, active }) => (
-            <button
-              key={label}
-              title={label}
-              className="group relative flex size-11 items-center justify-center rounded-2xl transition-colors"
-              style={
-                active
-                  ? { background: "rgba(255,255,255,0.08)" }
-                  : { background: "transparent" }
-              }
-            >
-              <Icon
-                className="size-[18px]"
-                strokeWidth={1.6}
-                style={{ color: active ? "#ffffff" : "#6b8592" }}
-              />
-              {active && (
-                <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#5ec8f5]" />
-              )}
-            </button>
-          ))}
+          {RAIL_ITEMS.map(({ icon: Icon, label, to }) => {
+            const active = to === "/";
+            return (
+              <Link
+                key={label}
+                to={to}
+                title={label}
+                aria-label={label}
+                className="hover-lift group relative flex size-11 items-center justify-center rounded-2xl"
+                style={
+                  active
+                    ? { background: "rgba(255,255,255,0.08)" }
+                    : { background: "transparent" }
+                }
+              >
+                <Icon
+                  className="size-[18px]"
+                  strokeWidth={1.6}
+                  style={{ color: active ? "#ffffff" : "#6b8592" }}
+                />
+                {active && (
+                  <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#5ec8f5]" />
+                )}
+              </Link>
+            );
+          })}
         </aside>
+
 
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <header className="flex flex-wrap items-center justify-between gap-3">
@@ -152,7 +162,7 @@ function Dashboard() {
               </span>
               <Link
                 to="/journal"
-                className="inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] transition-colors hover:bg-white/12"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] hover:bg-white/12 lg:hidden"
               >
                 <NotebookPen className="size-3.5" /> Journal
               </Link>
@@ -188,7 +198,7 @@ function Dashboard() {
                     aria-label={label}
                     aria-pressed={compact === key}
                     onClick={() => setCompact(key)}
-                    className="inline-flex size-8 items-center justify-center rounded-full transition-colors"
+                    className="hover-lift inline-flex size-8 items-center justify-center rounded-full"
                     style={
                       compact === key
                         ? { background: "#5ec8f5", color: "#061017" }
@@ -210,7 +220,7 @@ function Dashboard() {
               </span>
               <button
                 onClick={() => setSound((s) => !s)}
-                className="inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] transition-colors lg:hidden"
+                className="hover-lift inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] lg:hidden"
                 style={
                   sound
                     ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }

@@ -56,7 +56,7 @@ export function AddTradeDialog({
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Opslaan mislukt");
+      setError(err instanceof Error ? err.message : "Saving failed");
     } finally {
       setBusy(false);
     }
@@ -70,7 +70,7 @@ export function AddTradeDialog({
       >
         <header className="flex items-center justify-between">
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
-            Trade toevoegen
+            Add trade
           </h2>
           <button type="button" onClick={onClose} className="text-[#93a9b6] hover:text-white">
             <X className="size-4" />
@@ -79,7 +79,7 @@ export function AddTradeDialog({
 
         <div className="grid grid-cols-2 gap-3">
           <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
-            Datum & tijd
+            Date & time
             <input
               type="datetime-local"
               value={date}
@@ -89,13 +89,13 @@ export function AddTradeDialog({
             />
           </label>
           <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
-            Strategie
+            Strategy
             <select
               value={strategyId}
               onChange={(e) => setStrategyId(e.target.value)}
               className={inputCls}
             >
-              <option value="">Geen</option>
+              <option value="">None</option>
               {strategies.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name}
@@ -104,7 +104,7 @@ export function AddTradeDialog({
             </select>
           </label>
           <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
-            Sessie
+            Session
             <select
               value={session}
               onChange={(e) => setSession(e.target.value)}
@@ -118,7 +118,7 @@ export function AddTradeDialog({
             </select>
           </label>
           <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
-            Resultaat
+            Result
             <select
               value={result}
               onChange={(e) => setResult(e.target.value as TradeResult)}
@@ -155,19 +155,19 @@ export function AddTradeDialog({
         </div>
 
         <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
-          Notities
+          Notes
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
-            placeholder="Setup, uitvoering, fouten…"
+            placeholder="Setup, execution, mistakes…"
             className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6b8592] focus:ring-1 focus:ring-[#5ec8f5]"
           />
         </label>
 
-        <label className="flex cursor-pointer items-center gap-2 rounded-xl bg-white/6 px-3 py-2.5 text-[12px] text-[#cfdde6] hover:bg-white/10">
+        <label className="hover-lift flex cursor-pointer items-center gap-2 rounded-xl bg-white/6 px-3 py-2.5 text-[12px] text-[#cfdde6] hover:bg-white/10">
           <Upload className="size-4" />
-          {file ? file.name : "Screenshot uploaden (wordt WebP)"}
+          {file ? file.name : "Upload screenshot (converted to WebP)"}
           <input
             type="file"
             accept="image/*"
@@ -181,10 +181,10 @@ export function AddTradeDialog({
         <button
           type="submit"
           disabled={busy}
-          className="inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
+          className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
           style={{ background: "#5ec8f5", color: "#061017", fontWeight: 560 }}
         >
-          {busy && <Loader2 className="size-4 animate-spin" />} Trade opslaan
+          {busy && <Loader2 className="size-4 animate-spin" />} Save trade
         </button>
       </form>
     </div>

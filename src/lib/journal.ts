@@ -75,7 +75,7 @@ export async function toWebp(file: File, quality = 0.8): Promise<Blob> {
   const blob = await new Promise<Blob | null>((res) =>
     canvas.toBlob(res, "image/webp", quality),
   );
-  if (!blob) throw new Error("WebP-conversie mislukt");
+  if (!blob) throw new Error("WebP conversion failed");
   return blob;
 }
 

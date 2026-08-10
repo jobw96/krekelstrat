@@ -28,24 +28,24 @@ export function PnlCalendar({
     <section className="card-surface flex flex-col gap-3 p-5">
       <header className="flex items-center justify-between">
         <h2 className="text-[16px] text-white" style={{ fontWeight: 560 }}>
-          {month.setLocale("nl").toFormat("LLLL yyyy")}
+          {month.setLocale("en").toFormat("LLLL yyyy")}
         </h2>
         <div className="flex gap-1.5">
           <button
             onClick={() => onMonthChange(month.minus({ months: 1 }))}
-            className="rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
+            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
           >
             ←
           </button>
           <button
             onClick={() => onMonthChange(DateTime.now().setZone(LOCAL_ZONE).startOf("month"))}
-            className="rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
+            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
           >
-            Vandaag
+            Today
           </button>
           <button
             onClick={() => onMonthChange(month.plus({ months: 1 }))}
-            className="rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
+            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
           >
             →
           </button>
@@ -53,7 +53,7 @@ export function PnlCalendar({
       </header>
 
       <div className="grid grid-cols-7 gap-1.5">
-        {["ma", "di", "wo", "do", "vr", "za", "zo"].map((d) => (
+        {["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map((d) => (
           <span
             key={d}
             className="pb-1 text-center text-[10px] uppercase tracking-[0.08em] text-[#6b8592]"
@@ -73,7 +73,7 @@ export function PnlCalendar({
             <button
               key={key}
               onClick={() => dayTrades.length && onSelectDay(key)}
-              className="flex min-h-[74px] flex-col justify-between rounded-xl p-2 text-left transition-colors"
+              className="hover-lift flex min-h-[74px] flex-col justify-between rounded-xl p-2 text-left"
               style={{
                 background: dayTrades.length
                   ? `${color}1f`
