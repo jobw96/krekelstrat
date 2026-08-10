@@ -17,6 +17,9 @@ import {
   sessionOpenPrice,
 } from "@/lib/mnq";
 import type { MnqCandle } from "@/lib/mnq.functions";
+import type { RedFolderEvent } from "@/lib/news.functions";
+import { currentCatalyst, eventsToday } from "@/lib/news";
+import { CatalystBadge, RedFolderList } from "./NewsCatalyst";
 import { Badge, Dot, toneColor } from "./primitives";
 
 export function SessionCard({
@@ -25,12 +28,14 @@ export function SessionCard({
   now,
   price,
   candles,
+  events = [],
 }: {
   def: SessionDef;
   state: ClockState;
   now: DateTime;
   price: number | null;
   candles: MnqCandle[];
+  events?: RedFolderEvent[];
 }) {
   const status = statusOf(def, state);
   const color = toneColor[def.tone];
@@ -40,6 +45,10 @@ export function SessionCard({
   const diff = open != null && price != null ? price - open : null;
   const diffColor = diff == null ? "#93a9b6" : diff >= 0 ? "#35d39a" : "#ff6b7a";
   const read = detectPhase(open, price, candles);
+  const isMacro = def.id === "macro";
+  const todaysEvents = isMacro ? eventsToday(events, now) : [];
+  const catalyst = isMacro ? currentCatalyst(events, now, candles) : null;
+
 
   return (
     <motion.article
@@ -123,6 +132,11 @@ export function SessionCard({
               : "Reading price action"}
         </motion.div>
       )}
+
+      {isMacro && <RedFolderList events={todaysEvents} />}
+      {catalyst && <CatalystBadge read={catalyst} />}
+
+
 
       <dl className="glass-inset flex flex-col gap-1 p-3 font-mono text-[12px]">
         <div className="flex justify-between">

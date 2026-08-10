@@ -13,9 +13,13 @@ import {
 } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
 import { useMnq } from "@/hooks/useMnq";
+import { useRedFolder } from "@/hooks/useRedFolder";
 import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
+import { CatalystBanner } from "@/components/dashboard/NewsCatalyst";
+import { currentCatalyst, eventsToday } from "@/lib/news";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 import { formatPoints, formatPrice, sessionOpenPrice } from "@/lib/mnq";
+
 
 import {
   computeState,
@@ -83,9 +87,20 @@ const RAIL_ICONS = [{ icon: LayoutGrid, label: "Overview", active: true }];
 function Dashboard() {
   const now = useNow();
   const mnq = useMnq();
+  const news = useRedFolder();
   const [sound, setSound] = useState(false);
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
+  const catalyst = now
+    ? currentCatalyst(news.data?.events ?? [], now, mnq.data?.candles ?? [])
+    : null;
+  const nextRedFolder = now
+    ? (eventsToday(news.data?.events ?? [], now).find(
+        (e) => e.time >= now.toMillis() - 60 * 60_000,
+      ) ?? null)
+    : null;
+
+
 
   return (
     <main className="app-shell min-h-screen">
@@ -132,6 +147,23 @@ function Dashboard() {
               </span>
             </div>
             <div className="flex items-center gap-3">
+              {nextRedFolder && (
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px]"
+                  style={{ background: "rgba(255,107,122,0.14)", color: "#ff8f9b" }}
+                >
+                  <span
+                    className="pulse-dot inline-block size-1.5 rounded-full"
+                    style={{ background: "#ff6b7a" }}
+                  />
+                  {nextRedFolder.title} ·{" "}
+                  {DateTime.fromMillis(nextRedFolder.time)
+                    .setZone(LOCAL_ZONE)
+                    .toFormat("HH:mm")}{" "}
+                  AMS
+                </span>
+              )}
+
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#93a9b6] sm:inline">
                 MNQ=F · Yahoo Finance · ~10 min delayed
                 {mnq.data?.quoteTime
@@ -163,6 +195,10 @@ function Dashboard() {
               candles={mnq.data?.candles ?? []}
             />
           )}
+
+          {catalyst && <CatalystBanner read={catalyst} />}
+
+
 
           {/* Hero bento */}
           <section className="grid gap-5 lg:grid-cols-[1.35fr_1fr]">
@@ -334,7 +370,9 @@ function Dashboard() {
                       now={now}
                       price={mnq.data?.price ?? null}
                       candles={mnq.data?.candles ?? []}
+                      events={news.data?.events ?? []}
                     />
+
                   ))}
                 </div>
               </section>
