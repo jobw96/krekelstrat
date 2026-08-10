@@ -108,6 +108,16 @@ function Dashboard() {
           </div>
         </nav>
 
+        {now && state && (
+          <ActiveSessionBar
+            state={state}
+            now={now}
+            price={mnq.data?.price ?? null}
+            candles={mnq.data?.candles ?? []}
+          />
+        )}
+
+
 
         {/* Hero */}
         <section className="grid gap-12 py-16 lg:grid-cols-[1.1fr_1fr] lg:items-end">
