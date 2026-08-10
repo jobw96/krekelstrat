@@ -5,10 +5,12 @@ import { DateTime } from "luxon";
 
 import {
   Activity,
+  AlertTriangle,
   Bell,
   BellOff,
   Clock,
   LayoutGrid,
+  List,
   Timer,
 } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
@@ -28,7 +30,7 @@ import {
   NY_ZONE,
   SESSIONS,
 } from "@/lib/sessions";
-import { SessionCard } from "@/components/dashboard/SessionCard";
+import { SessionCard, redFolderImminent } from "@/components/dashboard/SessionCard";
 import { TimelineBar } from "@/components/dashboard/TimelineBar";
 import { Dot, toneColor } from "@/components/dashboard/primitives";
 
