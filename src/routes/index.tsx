@@ -290,8 +290,12 @@ function Dashboard() {
                 Countdown to {state?.next.def.name ?? "—"}
               </div>
               <div
-                className="font-mono text-[46px] leading-none text-white tabular"
-                style={{ letterSpacing: "-0.03em" }}
+                className="font-mono text-[58px] leading-none text-white tabular lg:text-[68px]"
+                style={{
+                  letterSpacing: "-0.035em",
+                  fontWeight: 560,
+                  textShadow: "0 0 26px rgba(94,200,245,0.28)",
+                }}
               >
                 {state ? formatCountdown(state.secondsToNext) : "--:--:--"}
               </div>
