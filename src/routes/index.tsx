@@ -225,7 +225,32 @@ function Dashboard() {
             />
           )}
 
+          {redHot && nextRedFolder && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border px-4 py-2.5 text-[12px]"
+              style={{
+                borderColor: "rgba(255,77,94,0.45)",
+                background:
+                  "linear-gradient(120deg, rgba(255,77,94,0.18) 0%, rgba(255,255,255,0.03) 70%)",
+                color: "#ffc4ca",
+              }}
+            >
+              <AlertTriangle className="size-3.5" style={{ color: "#ff4d5e" }} />
+              <span style={{ fontWeight: 560 }}>Red Folder news window</span>
+              <span className="font-mono text-[11px]">
+                {nextRedFolder.title} ·{" "}
+                {DateTime.fromMillis(nextRedFolder.time)
+                  .setZone(LOCAL_ZONE)
+                  .toFormat("HH:mm")}{" "}
+                AMS
+              </span>
+            </motion.div>
+          )}
+
           {catalyst && <CatalystBanner read={catalyst} />}
+
 
 
 
@@ -390,7 +415,13 @@ function Dashboard() {
                     Sessions &amp; Volume Windows
                   </h2>
                 </div>
-                <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                <div
+                  className={
+                    compact
+                      ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                      : "grid gap-5 sm:grid-cols-2 xl:grid-cols-3"
+                  }
+                >
                   {SESSIONS.map((def) => (
                     <SessionCard
                       key={def.id}
@@ -400,7 +431,9 @@ function Dashboard() {
                       price={mnq.data?.price ?? null}
                       candles={mnq.data?.candles ?? []}
                       events={news.data?.events ?? []}
+                      compact={compact}
                     />
+
 
                   ))}
                 </div>
