@@ -123,28 +123,34 @@ function Dashboard() {
             />
             <span className="text-[10px] tracking-[0.06em] text-[#6b8592]">NQ/MNQ</span>
           </div>
-          {RAIL_ICONS.map(({ icon: Icon, label, active }) => (
-            <button
-              key={label}
-              title={label}
-              className="group relative flex size-11 items-center justify-center rounded-2xl transition-colors"
-              style={
-                active
-                  ? { background: "rgba(255,255,255,0.08)" }
-                  : { background: "transparent" }
-              }
-            >
-              <Icon
-                className="size-[18px]"
-                strokeWidth={1.6}
-                style={{ color: active ? "#ffffff" : "#6b8592" }}
-              />
-              {active && (
-                <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#5ec8f5]" />
-              )}
-            </button>
-          ))}
+          {RAIL_ITEMS.map(({ icon: Icon, label, to }) => {
+            const active = to === "/";
+            return (
+              <Link
+                key={label}
+                to={to}
+                title={label}
+                aria-label={label}
+                className="hover-lift group relative flex size-11 items-center justify-center rounded-2xl"
+                style={
+                  active
+                    ? { background: "rgba(255,255,255,0.08)" }
+                    : { background: "transparent" }
+                }
+              >
+                <Icon
+                  className="size-[18px]"
+                  strokeWidth={1.6}
+                  style={{ color: active ? "#ffffff" : "#6b8592" }}
+                />
+                {active && (
+                  <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#5ec8f5]" />
+                )}
+              </Link>
+            );
+          })}
         </aside>
+
 
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <header className="flex flex-wrap items-center justify-between gap-3">
