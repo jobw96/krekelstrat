@@ -5,10 +5,12 @@ import { DateTime } from "luxon";
 
 import {
   Activity,
+  AlertTriangle,
   Bell,
   BellOff,
   Clock,
   LayoutGrid,
+  List,
   Timer,
 } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
@@ -28,7 +30,7 @@ import {
   NY_ZONE,
   SESSIONS,
 } from "@/lib/sessions";
-import { SessionCard } from "@/components/dashboard/SessionCard";
+import { SessionCard, redFolderImminent } from "@/components/dashboard/SessionCard";
 import { TimelineBar } from "@/components/dashboard/TimelineBar";
 import { Dot, toneColor } from "@/components/dashboard/primitives";
 
@@ -89,6 +91,7 @@ function Dashboard() {
   const mnq = useMnq();
   const news = useRedFolder();
   const [sound, setSound] = useState(false);
+  const [compact, setCompact] = useState(false);
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
   const catalyst = now
@@ -99,6 +102,7 @@ function Dashboard() {
         (e) => e.time >= now.toMillis() - 60 * 60_000,
       ) ?? null)
     : null;
+  const redHot = now ? redFolderImminent(news.data?.events ?? [], now) : false;
 
 
 
@@ -164,6 +168,31 @@ function Dashboard() {
                 </span>
               )}
 
+              <div className="inline-flex items-center gap-0.5 rounded-full bg-white/6 p-0.5">
+                {(
+                  [
+                    { key: false, Icon: LayoutGrid, label: "Full view" },
+                    { key: true, Icon: List, label: "Compact view" },
+                  ] as const
+                ).map(({ key, Icon, label }) => (
+                  <button
+                    key={label}
+                    title={label}
+                    aria-label={label}
+                    aria-pressed={compact === key}
+                    onClick={() => setCompact(key)}
+                    className="inline-flex size-8 items-center justify-center rounded-full transition-colors"
+                    style={
+                      compact === key
+                        ? { background: "#5ec8f5", color: "#061017" }
+                        : { color: "#93a9b6" }
+                    }
+                  >
+                    <Icon className="size-4" strokeWidth={1.8} />
+                  </button>
+                ))}
+              </div>
+
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#93a9b6] sm:inline">
                 MNQ=F · Yahoo Finance · ~10 min delayed
                 {mnq.data?.quoteTime
@@ -196,7 +225,32 @@ function Dashboard() {
             />
           )}
 
+          {redHot && nextRedFolder && (
+            <motion.div
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border px-4 py-2.5 text-[12px]"
+              style={{
+                borderColor: "rgba(255,77,94,0.45)",
+                background:
+                  "linear-gradient(120deg, rgba(255,77,94,0.18) 0%, rgba(255,255,255,0.03) 70%)",
+                color: "#ffc4ca",
+              }}
+            >
+              <AlertTriangle className="size-3.5" style={{ color: "#ff4d5e" }} />
+              <span style={{ fontWeight: 560 }}>Red Folder news window</span>
+              <span className="font-mono text-[11px]">
+                {nextRedFolder.title} ·{" "}
+                {DateTime.fromMillis(nextRedFolder.time)
+                  .setZone(LOCAL_ZONE)
+                  .toFormat("HH:mm")}{" "}
+                AMS
+              </span>
+            </motion.div>
+          )}
+
           {catalyst && <CatalystBanner read={catalyst} />}
+
 
 
 
@@ -361,7 +415,13 @@ function Dashboard() {
                     Sessions &amp; Volume Windows
                   </h2>
                 </div>
-                <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                <div
+                  className={
+                    compact
+                      ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                      : "grid gap-5 sm:grid-cols-2 xl:grid-cols-3"
+                  }
+                >
                   {SESSIONS.map((def) => (
                     <SessionCard
                       key={def.id}
@@ -371,7 +431,9 @@ function Dashboard() {
                       price={mnq.data?.price ?? null}
                       candles={mnq.data?.candles ?? []}
                       events={news.data?.events ?? []}
+                      compact={compact}
                     />
+
 
                   ))}
                 </div>

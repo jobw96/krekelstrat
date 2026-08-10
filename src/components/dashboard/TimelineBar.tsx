@@ -54,9 +54,23 @@ export function TimelineBar({ now }: { now: DateTime }) {
           </div>
         ))}
         <div
-          className="absolute top-0 z-10 h-full w-0.5 rounded-full bg-[#5ec8f5]"
-          style={{ left: `${nowPct}%`, boxShadow: "0 0 12px 2px rgba(94,200,245,0.55)" }}
-        />
+          className="pointer-events-none absolute top-0 z-20 h-full w-[3px] -translate-x-1/2 rounded-full transition-[left] duration-1000 ease-linear"
+          style={{
+            left: `${nowPct}%`,
+            background:
+              "linear-gradient(180deg, #baf7ff 0%, #5ec8f5 45%, rgba(94,200,245,0.25) 100%)",
+            boxShadow:
+              "0 0 10px 2px rgba(94,200,245,0.85), 0 0 26px 6px rgba(94,200,245,0.45)",
+          }}
+        >
+          <span
+            className="pulse-dot absolute -top-[5px] left-1/2 size-2.5 -translate-x-1/2 rounded-full"
+            style={{
+              background: "#baf7ff",
+              boxShadow: "0 0 12px 4px rgba(94,200,245,0.8)",
+            }}
+          />
+        </div>
       </div>
 
       <div className="mt-2 flex justify-between font-mono text-[10px] text-[#6b8592]">
