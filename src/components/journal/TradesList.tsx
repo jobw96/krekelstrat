@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { ChevronDown, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { money, WIN_GREEN, LOSS_RED, type Strategy, type Trade } from "@/lib/journal";
+import {
+  money,
+  signedScreenshotUrl,
+  WIN_GREEN,
+  LOSS_RED,
+  type Strategy,
+  type Trade,
+} from "@/lib/journal";
 import { LOCAL_ZONE } from "@/lib/sessions";
 
 const PAGE = 8;
@@ -11,6 +18,66 @@ const STEP = 5;
 function resultColor(t: Trade) {
   return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
 }
+
+function Detail({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
+      <span className="font-mono text-[12px] tabular text-[#d7dbe0]">{value}</span>
+    </div>
+  );
+}
+
+/** Expanded panel: lazily resolves the signed screenshot URL for one trade. */
+function TradeDetails({ trade, strategyName }: { trade: Trade; strategyName: string }) {
+  const [shot, setShot] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!trade.screenshot_url) return;
+    void signedScreenshotUrl(trade.screenshot_url).then((url) => {
+      if (!cancelled) setShot(url);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [trade.screenshot_url]);
+
+  return (
+    <div className="flex flex-col gap-3 border-t border-white/6 px-3 pb-3 pt-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Detail label="P&L" value={money(Number(trade.pnl))} />
+        <Detail label="R:R" value={trade.rr != null ? `${Number(trade.rr).toFixed(2)}R` : "—"} />
+        <Detail label="Session" value={trade.session ?? "—"} />
+        <Detail label="Strategy" value={strategyName} />
+      </div>
+
+      {trade.notes && (
+        <p className="rounded-lg bg-white/4 p-3 text-[12px] leading-[1.55] text-[#8b9298]">
+          {trade.notes}
+        </p>
+      )}
+
+      {trade.screenshot_url ? (
+        shot ? (
+          <a href={shot} target="_blank" rel="noreferrer" className="block">
+            <img
+              src={shot}
+              alt="Trade screenshot"
+              loading="lazy"
+              className="w-full rounded-xl border border-white/8"
+            />
+          </a>
+        ) : (
+          <div className="h-40 w-full animate-pulse rounded-xl bg-white/5" />
+        )
+      ) : (
+        <p className="text-[11px] text-[#6a7076]">No screenshot attached.</p>
+      )}
+    </div>
+  );
+}
+
 
 /** Chronological trade list, showing 8 rows and expanding 5 at a time. */
 export function TradesList({
