@@ -204,6 +204,49 @@ function Dashboard() {
                 </p>
               </div>
 
+              {state?.active &&
+                (() => {
+                  const open = now
+                    ? sessionOpenPrice(state.active.def, now, mnq.data?.candles ?? [])
+                    : null;
+                  const last = mnq.data?.price ?? null;
+                  const diff = open != null && last != null ? last - open : null;
+                  return (
+                    <div className="glass-inset flex flex-wrap items-end gap-x-8 gap-y-3 p-4">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[11px] tracking-[0.04em] text-[#6b8592]">
+                          Fair Price · session open
+                        </span>
+                        <span className="font-mono text-[26px] leading-none text-white tabular">
+                          {open != null ? formatPrice(open) : "—"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[11px] tracking-[0.04em] text-[#6b8592]">
+                          Distance
+                        </span>
+                        <span
+                          className="font-mono text-[19px] leading-none tabular"
+                          style={{
+                            color:
+                              diff == null ? "#93a9b6" : diff >= 0 ? "#4fd18b" : "#f2758f",
+                          }}
+                        >
+                          {diff != null ? `${formatPoints(diff)} pts` : "—"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[11px] tracking-[0.04em] text-[#6b8592]">
+                          Last
+                        </span>
+                        <span className="font-mono text-[19px] leading-none text-[#cfdde6] tabular">
+                          {last != null ? formatPrice(last) : "—"}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })()}
+
               {state?.active && (
                 <div className="flex flex-col gap-2">
                   <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/8">
