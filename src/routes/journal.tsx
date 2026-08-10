@@ -257,12 +257,55 @@ function JournalPage() {
           <Metric label="Trades" value={String(metrics.count)} />
         </section>
 
+        <div className="flex flex-wrap items-center gap-2">
+          {([
+            ["all", "All time"],
+            ["month", month.setLocale("en").toFormat("LLLL yyyy")],
+            ["custom", "Custom range"],
+          ] as const).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setRange(key)}
+              className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
+              style={
+                range === key
+                  ? { background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }
+                  : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
+              }
+            >
+              {label}
+            </button>
+          ))}
+          {range === "custom" && (
+            <span className="flex items-center gap-2 text-[12px] text-[#8b9298]">
+              <input
+                type="date"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+                aria-label="From date"
+                className="rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] outline-none"
+              />
+              <span>→</span>
+              <input
+                type="date"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+                aria-label="To date"
+                className="rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] outline-none"
+              />
+            </span>
+          )}
+        </div>
+
+        <TradesList trades={trades} strategies={strategies} onChanged={refresh} />
+
         <PnlCalendar
           month={month}
-          trades={trades}
+          trades={byStrategy}
           onMonthChange={setMonth}
           onSelectDay={setDay}
         />
+
       </div>
 
       {adding && (
