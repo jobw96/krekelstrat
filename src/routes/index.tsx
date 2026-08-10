@@ -64,6 +64,7 @@ function useBeep(enabled: boolean, secondsToNext: number) {
 
 function Dashboard() {
   const now = useNow();
+  const mnq = useMnq();
   const [sound, setSound] = useState(false);
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
