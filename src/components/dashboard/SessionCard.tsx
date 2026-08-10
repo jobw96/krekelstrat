@@ -73,7 +73,7 @@ export function SessionCard({
 
   const accent = active ? LIVE_GREEN : redHot ? "#ff4d5e" : color;
 
-  const surfaceStyle: React.CSSProperties = active
+  const surfaceStyle: Record<string, string | number> = active
     ? {
         ["--glow" as never]: LIVE_GREEN,
         borderColor: `${LIVE_GREEN}80`,
