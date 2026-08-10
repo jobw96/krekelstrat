@@ -7,12 +7,8 @@ import {
   Activity,
   Bell,
   BellOff,
-  CalendarClock,
   Clock,
   LayoutGrid,
-  LineChart,
-  Map,
-  Settings,
   Timer,
 } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
@@ -81,13 +77,7 @@ function useBeep(enabled: boolean, secondsToNext: number) {
   }, [enabled, secondsToNext]);
 }
 
-const RAIL_ICONS = [
-  { icon: LayoutGrid, label: "Overview", active: true },
-  { icon: Map, label: "Session map" },
-  { icon: LineChart, label: "Price action" },
-  { icon: CalendarClock, label: "Schedule" },
-  { icon: Settings, label: "Settings" },
-];
+const RAIL_ICONS = [{ icon: LayoutGrid, label: "Overview", active: true }];
 
 function Dashboard() {
   const now = useNow();
@@ -130,20 +120,6 @@ function Dashboard() {
               )}
             </button>
           ))}
-          <div className="mt-auto flex flex-col items-center gap-3">
-            <button
-              onClick={() => setSound((s) => !s)}
-              title={sound ? "Alerts on" : "Alerts off"}
-              className="flex size-11 items-center justify-center rounded-2xl transition-colors"
-              style={
-                sound
-                  ? { background: "#5ec8f5", color: "#061017" }
-                  : { background: "rgba(255,255,255,0.06)", color: "#93a9b6" }
-              }
-            >
-              {sound ? <Bell className="size-4" /> : <BellOff className="size-4" />}
-            </button>
-          </div>
         </aside>
 
         <div className="flex min-w-0 flex-1 flex-col gap-5">
