@@ -59,8 +59,14 @@ function JournalPage() {
   const qc = useQueryClient();
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [strategyFilter, setStrategyFilter] = useState<string>("all");
+  const [range, setRange] = useState<"all" | "month" | "custom">("all");
+  const [from, setFrom] = useState(() =>
+    DateTime.now().setZone(LOCAL_ZONE).minus({ days: 30 }).toFormat("yyyy-LL-dd"),
+  );
+  const [to, setTo] = useState(() => DateTime.now().setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd"));
   const [adding, setAdding] = useState(false);
   const [day, setDay] = useState<string | null>(null);
+
 
 
 
