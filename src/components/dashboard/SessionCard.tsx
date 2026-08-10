@@ -24,8 +24,8 @@ import { Badge, Dot, toneColor } from "./primitives";
 
 /** Conditional colors for the pts / ticks distance metric. */
 export const LIVE_GREEN = "#10B981";
-export const LIVE_RED = "#EF4444";
-export const LIVE_NEUTRAL = "#93a9b6";
+export const LIVE_RED = "#e5525f";
+export const LIVE_NEUTRAL = "#8b9298";
 
 export function distanceColor(diff: number | null) {
   if (diff == null || diff === 0) return LIVE_NEUTRAL;
@@ -95,7 +95,7 @@ export function SessionCard({
       className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.09em]"
       style={{
         background: "rgba(255,77,94,0.16)",
-        color: "#ff8f9b",
+        color: "#f08a93",
         border: "1px solid rgba(255,77,94,0.4)",
       }}
     >
@@ -140,11 +140,11 @@ export function SessionCard({
           <div className="flex min-w-0 flex-col">
             <h3
               className="truncate text-[14px] leading-tight"
-              style={{ color: active ? "#ffffff" : "#cfdde6", fontWeight: 560 }}
+              style={{ color: active ? "#ffffff" : "#d7dbe0", fontWeight: 560 }}
             >
               {def.name}
             </h3>
-            <span className="font-mono text-[10px] tracking-[0.04em] text-[#6b8592]">
+            <span className="font-mono text-[10px] tracking-[0.04em] text-[#6a7076]">
               {formatRange(def, LOCAL_ZONE, now)} AMS
             </span>
           </div>
@@ -155,10 +155,10 @@ export function SessionCard({
 
         <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
           <div className="flex flex-col">
-            <span className="text-[9px] uppercase tracking-[0.08em] text-[#6b8592]">
+            <span className="text-[9px] uppercase tracking-[0.08em] text-[#6a7076]">
               Open
             </span>
-            <span className="font-mono text-[13px] text-[#cfdde6] tabular">
+            <span className="font-mono text-[13px] text-[#d7dbe0] tabular">
               {open != null ? formatPrice(open) : "—"}
             </span>
           </div>
@@ -191,11 +191,11 @@ export function SessionCard({
         <div className="flex flex-col gap-0.5">
           <h3
             className="text-[17px] leading-tight"
-            style={{ color: active ? "#ffffff" : "#cfdde6", fontWeight: 560 }}
+            style={{ color: active ? "#ffffff" : "#d7dbe0", fontWeight: 560 }}
           >
             {def.name}
           </h3>
-          <span className="font-mono text-[11px] tracking-[0.04em] text-[#6b8592]">
+          <span className="font-mono text-[11px] tracking-[0.04em] text-[#6a7076]">
             {def.short}
           </span>
         </div>
@@ -217,8 +217,8 @@ export function SessionCard({
                   ? LIVE_GREEN
                   : LIVE_RED
                 : read.phase === "reversion"
-                  ? "#45d3e0"
-                  : "#93a9b6",
+                  ? "#8b9298"
+                  : "#8b9298",
           }}
         >
           {read.phase === "continuation" ? (
@@ -244,21 +244,21 @@ export function SessionCard({
 
       <dl className="glass-inset flex flex-col gap-1 p-3 font-mono text-[12px]">
         <div className="flex justify-between">
-          <dt className="text-[#6b8592]">AMS</dt>
-          <dd className="text-[#cfdde6] tabular">{formatRange(def, LOCAL_ZONE, now)}</dd>
+          <dt className="text-[#6a7076]">AMS</dt>
+          <dd className="text-[#d7dbe0] tabular">{formatRange(def, LOCAL_ZONE, now)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-[#6b8592]">NY</dt>
-          <dd className="text-[#93a9b6] tabular">{formatRange(def, NY_ZONE, now)}</dd>
+          <dt className="text-[#6a7076]">NY</dt>
+          <dd className="text-[#8b9298] tabular">{formatRange(def, NY_ZONE, now)}</dd>
         </div>
       </dl>
 
       <div className="glass-inset flex items-end justify-between p-3">
         <div className="flex flex-col gap-0.5">
-          <span className="text-[10px] uppercase tracking-[0.08em] text-[#6b8592]">
+          <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
             MNQ session open
           </span>
-          <span className="font-mono text-[15px] text-[#cfdde6] tabular">
+          <span className="font-mono text-[15px] text-[#d7dbe0] tabular">
             {open != null ? formatPrice(open) : "—"}
           </span>
         </div>
@@ -271,26 +271,26 @@ export function SessionCard({
           </span>
           <span
             className="font-mono text-[10px] tabular"
-            style={{ color: diff != null ? diffColor : "#6b8592" }}
+            style={{ color: diff != null ? diffColor : "#6a7076" }}
           >
             {diff != null ? formatTicks(diff) : "awaiting feed"}
           </span>
         </div>
       </div>
 
-      <p className="text-[13px] leading-[1.5] text-[#93a9b6]">{def.focus}</p>
+      <p className="text-[13px] leading-[1.5] text-[#8b9298]">{def.focus}</p>
 
       <footer className="mt-auto flex items-center justify-between pt-2">
         <span
           className="text-[11px] uppercase tracking-[0.08em]"
           style={{
-            color: active ? LIVE_GREEN : status === "next" ? "#cfdde6" : "#6b8592",
+            color: active ? LIVE_GREEN : status === "next" ? "#d7dbe0" : "#6a7076",
           }}
         >
           {active ? "Active now" : status === "next" ? "Upcoming next" : "Closed"}
         </span>
         {active && (
-          <span className="font-mono text-[12px] text-[#93a9b6] tabular">
+          <span className="font-mono text-[12px] text-[#8b9298] tabular">
             {Math.round(state.progress * 100)}%
           </span>
         )}

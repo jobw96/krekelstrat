@@ -33,19 +33,19 @@ export function PnlCalendar({
         <div className="flex gap-1.5">
           <button
             onClick={() => onMonthChange(month.minus({ months: 1 }))}
-            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
+            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#d7dbe0] hover:bg-white/12"
           >
             ←
           </button>
           <button
             onClick={() => onMonthChange(DateTime.now().setZone(LOCAL_ZONE).startOf("month"))}
-            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
+            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#d7dbe0] hover:bg-white/12"
           >
             Today
           </button>
           <button
             onClick={() => onMonthChange(month.plus({ months: 1 }))}
-            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#cfdde6] hover:bg-white/12"
+            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#d7dbe0] hover:bg-white/12"
           >
             →
           </button>
@@ -56,7 +56,7 @@ export function PnlCalendar({
         {["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map((d) => (
           <span
             key={d}
-            className="pb-1 text-center text-[10px] uppercase tracking-[0.08em] text-[#6b8592]"
+            className="pb-1 text-center text-[10px] uppercase tracking-[0.08em] text-[#6a7076]"
           >
             {d}
           </span>
@@ -68,7 +68,7 @@ export function PnlCalendar({
           const inMonth = c.month === month.month;
           const positive = dayTrades.length > 0 && pnl > 0;
           const negative = dayTrades.length > 0 && pnl < 0;
-          const color = positive ? WIN_GREEN : negative ? LOSS_RED : "#6b8592";
+          const color = positive ? WIN_GREEN : negative ? LOSS_RED : "#6a7076";
           return (
             <button
               key={key}
@@ -83,13 +83,13 @@ export function PnlCalendar({
                 cursor: dayTrades.length ? "pointer" : "default",
               }}
             >
-              <span className="font-mono text-[11px] text-[#93a9b6]">{c.day}</span>
+              <span className="font-mono text-[11px] text-[#8b9298]">{c.day}</span>
               {dayTrades.length > 0 && (
                 <span className="flex flex-col">
                   <span className="font-mono text-[12px] tabular" style={{ color, fontWeight: 560 }}>
                     {money(pnl)}
                   </span>
-                  <span className="text-[10px] text-[#6b8592]">
+                  <span className="text-[10px] text-[#6a7076]">
                     {dayTrades.length} trade{dayTrades.length > 1 ? "s" : ""}
                   </span>
                 </span>

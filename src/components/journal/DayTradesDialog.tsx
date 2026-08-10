@@ -13,7 +13,7 @@ import {
 import { LOCAL_ZONE } from "@/lib/sessions";
 
 function resultColor(t: Trade) {
-  return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#93a9b6";
+  return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
 }
 
 export function DayTradesDialog({
@@ -63,12 +63,12 @@ export function DayTradesDialog({
             </h2>
             <span
               className="font-mono text-[13px] tabular"
-              style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#93a9b6" }}
+              style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#8b9298" }}
             >
               {money(total)} · {trades.length} trades
             </span>
           </div>
-          <button onClick={onClose} className="text-[#93a9b6] hover:text-white">
+          <button onClick={onClose} className="text-[#8b9298] hover:text-white">
             <X className="size-4" />
           </button>
         </header>
@@ -76,7 +76,7 @@ export function DayTradesDialog({
         {trades.map((t) => (
           <article key={t.id} className="glass-inset flex flex-col gap-2 p-3">
             <div className="flex items-center justify-between gap-3">
-              <span className="flex items-center gap-2 text-[12px] text-[#cfdde6]">
+              <span className="flex items-center gap-2 text-[12px] text-[#d7dbe0]">
                 <span
                   className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
                   style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
@@ -85,7 +85,7 @@ export function DayTradesDialog({
                 </span>
                 {t.session ?? "—"} ·{" "}
                 {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("HH:mm")} AMS
-                <span className="text-[#6b8592]">
+                <span className="text-[#6a7076]">
                   {strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy"}
                 </span>
               </span>
@@ -96,19 +96,19 @@ export function DayTradesDialog({
                 >
                   {money(Number(t.pnl))}
                 </span>
-                <span className="font-mono text-[11px] text-[#93a9b6]">
+                <span className="font-mono text-[11px] text-[#8b9298]">
                   {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
                 </span>
                 <button
                   onClick={() => remove(t.id)}
-                  className="text-[#6b8592] transition-colors hover:text-[#ff8f9b]"
+                  className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
                   aria-label="Delete trade"
                 >
                   <Trash2 className="size-3.5" />
                 </button>
               </span>
             </div>
-            {t.notes && <p className="text-[12px] leading-[1.5] text-[#93a9b6]">{t.notes}</p>}
+            {t.notes && <p className="text-[12px] leading-[1.5] text-[#8b9298]">{t.notes}</p>}
             {shots[t.id] && (
               <img
                 src={shots[t.id]}

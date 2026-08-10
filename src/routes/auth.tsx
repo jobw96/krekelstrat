@@ -83,7 +83,7 @@ function AuthPage() {
       <div className="w-full max-w-[420px]">
         <Link
           to="/"
-          className="mb-4 inline-flex items-center gap-1.5 text-[12px] text-[#93a9b6] transition-colors hover:text-white"
+          className="mb-4 inline-flex items-center gap-1.5 text-[12px] text-[#8b9298] transition-colors hover:text-white"
         >
           <ArrowLeft className="size-3.5" /> Back to terminal
         </Link>
@@ -92,7 +92,7 @@ function AuthPage() {
             <h1 className="text-[22px] text-white" style={{ fontWeight: 560 }}>
               {mode === "login" ? "Sign in" : "Create account"}
             </h1>
-            <p className="text-[13px] text-[#93a9b6]">
+            <p className="text-[13px] text-[#8b9298]">
               Your trading journal is private — only you can see your trades.
             </p>
           </div>
@@ -105,7 +105,7 @@ function AuthPage() {
             Continue with Google
           </button>
 
-          <div className="flex items-center gap-3 text-[11px] text-[#6b8592]">
+          <div className="flex items-center gap-3 text-[11px] text-[#6a7076]">
             <span className="h-px flex-1 bg-white/10" /> or email{" "}
             <span className="h-px flex-1 bg-white/10" />
           </div>
@@ -117,7 +117,7 @@ function AuthPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@email.com"
-              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6b8592] focus:ring-1 focus:ring-[#5ec8f5]"
+              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
             />
             <input
               type="password"
@@ -126,24 +126,24 @@ function AuthPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6b8592] focus:ring-1 focus:ring-[#5ec8f5]"
+              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
             />
             <button
               type="submit"
               disabled={busy}
               className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
-              style={{ background: "#5ec8f5", color: "#061017", fontWeight: 560 }}
+              style={{ background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
             >
               {busy && <Loader2 className="size-4 animate-spin" />}
               {mode === "login" ? "Sign in" : "Sign up"}
             </button>
           </form>
 
-          {msg && <p className="text-[12px] text-[#ff8f9b]">{msg}</p>}
+          {msg && <p className="text-[12px] text-[#f08a93]">{msg}</p>}
 
           <button
             onClick={() => setMode(mode === "login" ? "signup" : "login")}
-            className="text-[12px] text-[#93a9b6] hover:text-white"
+            className="text-[12px] text-[#8b9298] hover:text-white"
           >
             {mode === "login"
               ? "No account yet? Sign up"
