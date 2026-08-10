@@ -81,13 +81,7 @@ function useBeep(enabled: boolean, secondsToNext: number) {
   }, [enabled, secondsToNext]);
 }
 
-const RAIL_ICONS = [
-  { icon: LayoutGrid, label: "Overview", active: true },
-  { icon: Map, label: "Session map" },
-  { icon: LineChart, label: "Price action" },
-  { icon: CalendarClock, label: "Schedule" },
-  { icon: Settings, label: "Settings" },
-];
+const RAIL_ICONS = [{ icon: LayoutGrid, label: "Overview", active: true }];
 
 function Dashboard() {
   const now = useNow();
