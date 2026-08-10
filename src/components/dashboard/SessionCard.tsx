@@ -48,10 +48,7 @@ export function SessionCard({
       className={`card-surface flex flex-col gap-3 p-6 ${active ? "glow-ring" : ""}`}
       style={
         active
-          ? ({
-              backgroundColor: "#161718",
-              ["--glow" as string]: color,
-            } as React.CSSProperties)
+          ? { backgroundColor: "#161718", ["--glow" as never]: color }
           : {}
       }
     >
