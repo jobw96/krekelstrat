@@ -17,6 +17,8 @@ import { LOCAL_ZONE } from "@/lib/sessions";
 import { PnlCalendar } from "@/components/journal/PnlCalendar";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
 import { DayTradesDialog } from "@/components/journal/DayTradesDialog";
+import { TradesList } from "@/components/journal/TradesList";
+
 
 export const Route = createFileRoute("/journal")({
   head: () => ({
@@ -59,8 +61,14 @@ function JournalPage() {
   const qc = useQueryClient();
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [strategyFilter, setStrategyFilter] = useState<string>("all");
+  const [range, setRange] = useState<"all" | "month" | "custom">("all");
+  const [from, setFrom] = useState(() =>
+    DateTime.now().setZone(LOCAL_ZONE).minus({ days: 30 }).toFormat("yyyy-LL-dd"),
+  );
+  const [to, setTo] = useState(() => DateTime.now().setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd"));
   const [adding, setAdding] = useState(false);
   const [day, setDay] = useState<string | null>(null);
+
 
 
 
@@ -92,20 +100,37 @@ function JournalPage() {
 
   const strategies = strategiesQ.data ?? [];
   const allTrades = tradesQ.data ?? [];
-  const trades = useMemo(
+  const byStrategy = useMemo(
     () =>
       strategyFilter === "all"
         ? allTrades
         : allTrades.filter((t) => t.strategy_id === strategyFilter),
     [allTrades, strategyFilter],
   );
+
+  const trades = useMemo(() => {
+    if (range === "all") return byStrategy;
+    const start =
+      range === "month" ? month : DateTime.fromISO(from, { zone: LOCAL_ZONE }).startOf("day");
+    const end =
+      range === "month"
+        ? month.endOf("month")
+        : DateTime.fromISO(to, { zone: LOCAL_ZONE }).endOf("day");
+    if (!start.isValid || !end.isValid) return byStrategy;
+    return byStrategy.filter((t) => {
+      const d = DateTime.fromISO(t.date).setZone(LOCAL_ZONE);
+      return d >= start && d <= end;
+    });
+  }, [byStrategy, range, month, from, to]);
+
   const metrics = computeMetrics(trades);
 
   const dayTrades = day
-    ? trades.filter(
+    ? byStrategy.filter(
         (t) => DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd") === day,
       )
     : [];
+
 
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ["trades", user?.id] });
@@ -234,12 +259,55 @@ function JournalPage() {
           <Metric label="Trades" value={String(metrics.count)} />
         </section>
 
+        <div className="flex flex-wrap items-center gap-2">
+          {([
+            ["all", "All time"],
+            ["month", month.setLocale("en").toFormat("LLLL yyyy")],
+            ["custom", "Custom range"],
+          ] as const).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setRange(key)}
+              className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
+              style={
+                range === key
+                  ? { background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }
+                  : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
+              }
+            >
+              {label}
+            </button>
+          ))}
+          {range === "custom" && (
+            <span className="flex items-center gap-2 text-[12px] text-[#8b9298]">
+              <input
+                type="date"
+                value={from}
+                onChange={(e) => setFrom(e.target.value)}
+                aria-label="From date"
+                className="rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] outline-none"
+              />
+              <span>→</span>
+              <input
+                type="date"
+                value={to}
+                onChange={(e) => setTo(e.target.value)}
+                aria-label="To date"
+                className="rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] outline-none"
+              />
+            </span>
+          )}
+        </div>
+
+        <TradesList trades={trades} strategies={strategies} onChanged={refresh} />
+
         <PnlCalendar
           month={month}
-          trades={trades}
+          trades={byStrategy}
           onMonthChange={setMonth}
           onSelectDay={setDay}
         />
+
       </div>
 
       {adding && (
