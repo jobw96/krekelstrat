@@ -17,6 +17,8 @@ import { LOCAL_ZONE } from "@/lib/sessions";
 import { PnlCalendar } from "@/components/journal/PnlCalendar";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
 import { DayTradesDialog } from "@/components/journal/DayTradesDialog";
+import { TradesList } from "@/components/journal/TradesList";
+
 
 export const Route = createFileRoute("/journal")({
   head: () => ({
