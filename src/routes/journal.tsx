@@ -25,12 +25,12 @@ export const Route = createFileRoute("/journal")({
       {
         name: "description",
         content:
-          "Privé trading journal met P&L kalender, win rate, profit factor, gemiddelde R:R en strategie-analyse voor je MNQ sessies.",
+          "Private trading journal with P&L calendar, win rate, profit factor, average R:R and strategy analysis for your MNQ sessions.",
       },
       { property: "og:title", content: "Trading Journal — Krekelstrat Terminal" },
       {
         property: "og:description",
-        content: "P&L kalender, strategie-filters en live performance metrics voor je trades.",
+        content: "P&L calendar, strategy filters and live performance metrics for your trades.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -115,7 +115,7 @@ function JournalPage() {
   };
 
   async function addStrategy() {
-    const name = window.prompt("Naam van de strategie (bijv. 'LO Reversion')");
+    const name = window.prompt("Strategy name (e.g. 'LO Reversion')");
     if (!name || !user) return;
     await supabase.from("strategies").insert({ user_id: user.id, name });
     refresh();
@@ -124,7 +124,7 @@ function JournalPage() {
   if (loading || !user) {
     return (
       <main className="app-shell flex min-h-screen items-center justify-center">
-        <span className="text-[13px] text-[#93a9b6]">Laden…</span>
+        <span className="text-[13px] text-[#93a9b6]">Loading…</span>
       </main>
     );
   }
@@ -136,7 +136,7 @@ function JournalPage() {
           <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] hover:bg-white/12"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] hover:bg-white/12"
             >
               <ArrowLeft className="size-3.5" /> Terminal
             </Link>
@@ -150,7 +150,7 @@ function JournalPage() {
             </span>
             <button
               onClick={() => setAdding(true)}
-              className="inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px]"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px]"
               style={{ background: "#5ec8f5", color: "#061017", fontWeight: 560 }}
             >
               <Plus className="size-4" /> Trade
@@ -160,7 +160,7 @@ function JournalPage() {
                 await signOut();
                 navigate({ to: "/auth" });
               }}
-              className="inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#cfdde6] hover:bg-white/12"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#cfdde6] hover:bg-white/12"
             >
               <LogOut className="size-3.5" /> Log out
             </button>
@@ -170,20 +170,20 @@ function JournalPage() {
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setStrategyFilter("all")}
-            className="rounded-full px-3 py-1.5 text-[12px]"
+            className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
             style={
               strategyFilter === "all"
                 ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }
                 : { background: "rgba(255,255,255,0.06)", color: "#cfdde6" }
             }
           >
-            Alle strategieën
+            All strategies
           </button>
           {strategies.map((s) => (
             <button
               key={s.id}
               onClick={() => setStrategyFilter(s.id)}
-              className="rounded-full px-3 py-1.5 text-[12px]"
+              className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
               style={
                 strategyFilter === s.id
                   ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }
@@ -195,9 +195,9 @@ function JournalPage() {
           ))}
           <button
             onClick={addStrategy}
-            className="rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#93a9b6] hover:text-white"
+            className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#93a9b6] hover:text-white"
           >
-            + Nieuwe strategie
+            + New strategy
           </button>
         </div>
 
@@ -214,11 +214,11 @@ function JournalPage() {
             }
           />
           <Metric
-            label="Gem. R:R"
+            label="Avg R:R"
             value={metrics.avgRr == null ? "—" : `${metrics.avgRr.toFixed(2)}R`}
           />
           <Metric
-            label="Totale P&L"
+            label="Total P&L"
             value={money(metrics.totalPnl)}
             color={metrics.totalPnl > 0 ? WIN_GREEN : metrics.totalPnl < 0 ? LOSS_RED : undefined}
           />

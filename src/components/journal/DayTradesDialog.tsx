@@ -59,7 +59,7 @@ export function DayTradesDialog({
         <header className="flex items-center justify-between">
           <div className="flex flex-col">
             <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
-              {DateTime.fromISO(day).setLocale("nl").toFormat("cccc d LLLL yyyy")}
+              {DateTime.fromISO(day).setLocale("en").toFormat("cccc d LLLL yyyy")}
             </h2>
             <span
               className="font-mono text-[13px] tabular"
@@ -86,7 +86,7 @@ export function DayTradesDialog({
                 {t.session ?? "—"} ·{" "}
                 {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("HH:mm")} AMS
                 <span className="text-[#6b8592]">
-                  {strategies.find((s) => s.id === t.strategy_id)?.name ?? "Geen strategie"}
+                  {strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy"}
                 </span>
               </span>
               <span className="flex items-center gap-3">
@@ -101,8 +101,8 @@ export function DayTradesDialog({
                 </span>
                 <button
                   onClick={() => remove(t.id)}
-                  className="text-[#6b8592] hover:text-[#ff8f9b]"
-                  aria-label="Trade verwijderen"
+                  className="text-[#6b8592] transition-colors hover:text-[#ff8f9b]"
+                  aria-label="Delete trade"
                 >
                   <Trash2 className="size-3.5" />
                 </button>

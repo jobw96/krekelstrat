@@ -7,6 +7,7 @@ import {
   Activity,
   AlertTriangle,
   Bell,
+  CandlestickChart,
   BellOff,
   Clock,
   LayoutGrid,
@@ -118,7 +119,7 @@ function Dashboard() {
           <div className="mb-4 flex flex-col items-center gap-1.5">
             <img
               src={sjakAsset.url}
-              alt="Krekelstrat Terminal profielfoto"
+              alt="Krekelstrat Terminal profile photo"
               className="size-10 rounded-2xl object-cover ring-1 ring-[#5ec8f5]/40"
             />
             <span className="text-[10px] tracking-[0.06em] text-[#6b8592]">NQ/MNQ</span>
@@ -161,7 +162,7 @@ function Dashboard() {
               </span>
               <Link
                 to="/journal"
-                className="inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] transition-colors hover:bg-white/12"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] hover:bg-white/12 lg:hidden"
               >
                 <NotebookPen className="size-3.5" /> Journal
               </Link>
@@ -197,7 +198,7 @@ function Dashboard() {
                     aria-label={label}
                     aria-pressed={compact === key}
                     onClick={() => setCompact(key)}
-                    className="inline-flex size-8 items-center justify-center rounded-full transition-colors"
+                    className="hover-lift inline-flex size-8 items-center justify-center rounded-full"
                     style={
                       compact === key
                         ? { background: "#5ec8f5", color: "#061017" }
@@ -219,7 +220,7 @@ function Dashboard() {
               </span>
               <button
                 onClick={() => setSound((s) => !s)}
-                className="inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] transition-colors lg:hidden"
+                className="hover-lift inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] lg:hidden"
                 style={
                   sound
                     ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }
