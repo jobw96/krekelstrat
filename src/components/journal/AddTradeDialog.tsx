@@ -44,7 +44,7 @@ export function AddTradeDialog({
       const { error: err } = await supabase.from("trades").insert({
         user_id: userId,
         strategy_id: strategyId || null,
-        date: DateTime.fromISO(date).toISO(),
+        date: DateTime.fromISO(date).toISO() ?? new Date().toISOString(),
         pnl: Number(pnl || 0),
         rr: rr ? Number(rr) : null,
         result,
