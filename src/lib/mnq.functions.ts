@@ -7,11 +7,11 @@ export type MnqSeries = {
   updatedAt: number;
 };
 
-/** 1-minute MNQ futures series (last 2 days) from the public Yahoo Finance chart API. */
+/** 1-minute MNQ futures series (last 5 days) from the public Yahoo Finance chart API. */
 export const getMnqSeries = createServerFn({ method: "GET" }).handler(
   async (): Promise<MnqSeries> => {
     const url =
-      "https://query1.finance.yahoo.com/v8/finance/chart/MNQ=F?interval=1m&range=2d";
+      "https://query1.finance.yahoo.com/v8/finance/chart/MNQ=F?interval=1m&range=5d";
     const res = await fetch(url, {
       headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json" },
     });
