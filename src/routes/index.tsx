@@ -85,7 +85,10 @@ function useBeep(enabled: boolean, secondsToNext: number) {
   }, [enabled, secondsToNext]);
 }
 
-const RAIL_ICONS = [{ icon: LayoutGrid, label: "Overview", active: true }];
+const RAIL_ITEMS = [
+  { icon: CandlestickChart, label: "Sessions", to: "/" as const },
+  { icon: NotebookPen, label: "Journal", to: "/journal" as const },
+];
 
 function Dashboard() {
   const now = useNow();
