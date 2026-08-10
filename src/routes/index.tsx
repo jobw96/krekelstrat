@@ -213,12 +213,28 @@ function Dashboard() {
                   const last = mnq.data?.price ?? null;
                   const diff = open != null && last != null ? last - open : null;
                   return (
-                    <div className="glass-inset flex flex-wrap items-end gap-x-8 gap-y-3 p-4">
-                      <div className="flex flex-col gap-1">
-                        <span className="text-[11px] tracking-[0.04em] text-[#6b8592]">
+                    <div
+                      className="flex flex-wrap items-end gap-x-8 gap-y-3 rounded-2xl border p-4"
+                      style={{
+                        borderColor: "rgba(94,200,245,0.32)",
+                        background:
+                          "linear-gradient(130deg, rgba(94,200,245,0.14) 0%, rgba(255,255,255,0.04) 70%)",
+                        boxShadow: "0 0 0 1px rgba(94,200,245,0.08), 0 10px 30px -18px rgba(94,200,245,0.55)",
+                      }}
+                    >
+                      <div className="flex flex-col gap-1.5">
+                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#5ec8f5]">
+                          <Dot color="#5ec8f5" pulse />
                           Fair Price · session open
                         </span>
-                        <span className="font-mono text-[26px] leading-none text-white tabular">
+                        <span
+                          className="font-mono text-[38px] leading-none text-white tabular"
+                          style={{
+                            letterSpacing: "-0.02em",
+                            fontWeight: 560,
+                            textShadow: "0 0 22px rgba(94,200,245,0.35)",
+                          }}
+                        >
                           {open != null ? formatPrice(open) : "—"}
                         </span>
                       </div>
