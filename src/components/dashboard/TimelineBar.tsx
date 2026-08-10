@@ -52,7 +52,7 @@ export function TimelineBar({ now }: { now: DateTime }) {
           </div>
         ))}
         <div
-          className="absolute top-0 h-full w-px bg-[#e4f222]"
+          className="absolute top-0 z-10 h-full w-px bg-[#e4f222]"
           style={{ left: `${nowPct}%` }}
         />
       </div>
