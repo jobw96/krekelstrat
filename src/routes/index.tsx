@@ -16,7 +16,7 @@ import { useMnq } from "@/hooks/useMnq";
 import { useRedFolder } from "@/hooks/useRedFolder";
 import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
 import { CatalystBanner } from "@/components/dashboard/NewsCatalyst";
-import { currentCatalyst } from "@/lib/news";
+import { currentCatalyst, eventsToday } from "@/lib/news";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 import { formatPoints, formatPrice, sessionOpenPrice } from "@/lib/mnq";
 
@@ -94,6 +94,12 @@ function Dashboard() {
   const catalyst = now
     ? currentCatalyst(news.data?.events ?? [], now, mnq.data?.candles ?? [])
     : null;
+  const nextRedFolder = now
+    ? (eventsToday(news.data?.events ?? [], now).find(
+        (e) => e.time >= now.toMillis() - 60 * 60_000,
+      ) ?? null)
+    : null;
+
 
 
   return (
