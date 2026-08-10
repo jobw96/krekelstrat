@@ -141,6 +141,23 @@ function Dashboard() {
               </span>
             </div>
             <div className="flex items-center gap-3">
+              {nextRedFolder && (
+                <span
+                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px]"
+                  style={{ background: "rgba(255,107,122,0.14)", color: "#ff8f9b" }}
+                >
+                  <span
+                    className="pulse-dot inline-block size-1.5 rounded-full"
+                    style={{ background: "#ff6b7a" }}
+                  />
+                  {nextRedFolder.title} ·{" "}
+                  {DateTime.fromMillis(nextRedFolder.time)
+                    .setZone(LOCAL_ZONE)
+                    .toFormat("HH:mm")}{" "}
+                  AMS
+                </span>
+              )}
+
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#93a9b6] sm:inline">
                 MNQ=F · Yahoo Finance · ~10 min delayed
                 {mnq.data?.quoteTime
