@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { ChevronDown, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { money, WIN_GREEN, LOSS_RED, type Strategy, type Trade } from "@/lib/journal";
+import {
+  money,
+  signedScreenshotUrl,
+  WIN_GREEN,
+  LOSS_RED,
+  type Strategy,
+  type Trade,
+} from "@/lib/journal";
 import { LOCAL_ZONE } from "@/lib/sessions";
 
 const PAGE = 8;
@@ -11,6 +18,66 @@ const STEP = 5;
 function resultColor(t: Trade) {
   return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
 }
+
+function Detail({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-col gap-0.5">
+      <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
+      <span className="font-mono text-[12px] tabular text-[#d7dbe0]">{value}</span>
+    </div>
+  );
+}
+
+/** Expanded panel: lazily resolves the signed screenshot URL for one trade. */
+function TradeDetails({ trade, strategyName }: { trade: Trade; strategyName: string }) {
+  const [shot, setShot] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!trade.screenshot_url) return;
+    void signedScreenshotUrl(trade.screenshot_url).then((url) => {
+      if (!cancelled) setShot(url);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [trade.screenshot_url]);
+
+  return (
+    <div className="flex flex-col gap-3 border-t border-white/6 px-3 pb-3 pt-3">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <Detail label="P&L" value={money(Number(trade.pnl))} />
+        <Detail label="R:R" value={trade.rr != null ? `${Number(trade.rr).toFixed(2)}R` : "—"} />
+        <Detail label="Session" value={trade.session ?? "—"} />
+        <Detail label="Strategy" value={strategyName} />
+      </div>
+
+      {trade.notes && (
+        <p className="rounded-lg bg-white/4 p-3 text-[12px] leading-[1.55] text-[#8b9298]">
+          {trade.notes}
+        </p>
+      )}
+
+      {trade.screenshot_url ? (
+        shot ? (
+          <a href={shot} target="_blank" rel="noreferrer" className="block">
+            <img
+              src={shot}
+              alt="Trade screenshot"
+              loading="lazy"
+              className="w-full rounded-xl border border-white/8"
+            />
+          </a>
+        ) : (
+          <div className="h-40 w-full animate-pulse rounded-xl bg-white/5" />
+        )
+      ) : (
+        <p className="text-[11px] text-[#6a7076]">No screenshot attached.</p>
+      )}
+    </div>
+  );
+}
+
 
 /** Chronological trade list, showing 8 rows and expanding 5 at a time. */
 export function TradesList({
@@ -23,6 +90,8 @@ export function TradesList({
   onChanged: () => void;
 }) {
   const [visible, setVisible] = useState(PAGE);
+  const [open, setOpen] = useState<Record<string, boolean>>({});
+
 
   useEffect(() => {
     setVisible(PAGE);
@@ -53,46 +122,57 @@ export function TradesList({
         </p>
       )}
 
-      {shown.map((t) => (
-        <article
-          key={t.id}
-          className="glass-inset flex flex-wrap items-center justify-between gap-3 px-3 py-2.5"
-        >
-          <span className="flex flex-wrap items-center gap-2 text-[12px] text-[#d7dbe0]">
-            <span
-              className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
-              style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
-            >
-              {t.result}
-            </span>
-            <span className="font-mono tabular text-[#8b9298]">
-              {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("dd LLL yyyy · HH:mm")}
-            </span>
-            <span>{t.session ?? "—"}</span>
-            <span className="text-[#6a7076]">
-              {strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy"}
-            </span>
-          </span>
-          <span className="flex items-center gap-3">
-            <span
-              className="font-mono text-[14px] tabular"
-              style={{ color: resultColor(t), fontWeight: 560 }}
-            >
-              {money(Number(t.pnl))}
-            </span>
-            <span className="font-mono text-[11px] text-[#8b9298]">
-              {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
-            </span>
-            <button
-              onClick={() => remove(t.id)}
-              className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
-              aria-label="Delete trade"
-            >
-              <Trash2 className="size-3.5" />
-            </button>
-          </span>
-        </article>
-      ))}
+      {shown.map((t) => {
+        const strategyName =
+          strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy";
+        const isOpen = !!open[t.id];
+        return (
+          <article key={t.id} className="glass-inset overflow-hidden">
+            <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-2.5">
+              <button
+                onClick={() => setOpen((o) => ({ ...o, [t.id]: !o[t.id] }))}
+                aria-expanded={isOpen}
+                className="flex flex-1 flex-wrap items-center gap-2 text-left text-[12px] text-[#d7dbe0]"
+              >
+                <ChevronRight
+                  className={`size-3.5 shrink-0 text-[#6a7076] transition-transform ${isOpen ? "rotate-90" : ""}`}
+                />
+                <span
+                  className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
+                  style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
+                >
+                  {t.result}
+                </span>
+                <span className="font-mono tabular text-[#8b9298]">
+                  {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("dd LLL yyyy · HH:mm")}
+                </span>
+                <span>{t.session ?? "—"}</span>
+                <span className="text-[#6a7076]">{strategyName}</span>
+              </button>
+              <span className="flex items-center gap-3">
+                <span
+                  className="font-mono text-[14px] tabular"
+                  style={{ color: resultColor(t), fontWeight: 560 }}
+                >
+                  {money(Number(t.pnl))}
+                </span>
+                <span className="font-mono text-[11px] text-[#8b9298]">
+                  {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
+                </span>
+                <button
+                  onClick={() => remove(t.id)}
+                  className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
+                  aria-label="Delete trade"
+                >
+                  <Trash2 className="size-3.5" />
+                </button>
+              </span>
+            </div>
+            {isOpen && <TradeDetails trade={t} strategyName={strategyName} />}
+          </article>
+        );
+      })}
+
 
       {remaining > 0 && (
         <div className="flex items-center justify-center gap-2 pt-1">
