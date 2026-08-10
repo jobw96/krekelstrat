@@ -1,10 +1,10 @@
 import type { SessionTone } from "@/lib/sessions";
 
 export const toneColor: Record<SessionTone, string> = {
-  high: "#27a644",
-  macro: "#eb5757",
-  dead: "#62666d",
-  neutral: "#6366f1",
+  high: "#35d39a",
+  macro: "#ff6b7a",
+  dead: "#6b8592",
+  neutral: "#7c8cf8",
 };
 
 export function Badge({
@@ -18,13 +18,13 @@ export function Badge({
 }) {
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-[4px] px-1.5 py-0.5 text-[12px] font-normal"
+      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-normal"
       style={
         filled
-          ? { background: color, color: "#08090a" }
+          ? { background: color, color: "#061017" }
           : {
-              background: "rgba(255,255,255,0.05)",
-              color: color ?? "#8a8f98",
+              background: "rgba(255,255,255,0.06)",
+              color: color ?? "#93a9b6",
             }
       }
     >
