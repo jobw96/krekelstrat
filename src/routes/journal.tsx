@@ -54,7 +54,7 @@ function Metric({ label, value, color }: { label: string; value: string; color?:
 }
 
 function JournalPage() {
-  const { user, loading, signOut } = useAuth();
+  const { user, isGuest, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
@@ -62,9 +62,7 @@ function JournalPage() {
   const [adding, setAdding] = useState(false);
   const [day, setDay] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth" });
-  }, [loading, user, navigate]);
+
 
   const strategiesQ = useQuery({
     queryKey: ["strategies", user?.id],
