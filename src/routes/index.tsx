@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Activity, Bell, BellOff, Clock, Timer } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
+import { useMnq } from "@/hooks/useMnq";
 import {
   computeState,
   formatCountdown,
@@ -64,6 +65,7 @@ function useBeep(enabled: boolean, secondsToNext: number) {
 
 function Dashboard() {
   const now = useNow();
+  const mnq = useMnq();
   const [sound, setSound] = useState(false);
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
@@ -185,7 +187,14 @@ function Dashboard() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {SESSIONS.map((def) => (
-                  <SessionCard key={def.id} def={def} state={state} now={now} />
+                  <SessionCard
+                    key={def.id}
+                    def={def}
+                    state={state}
+                    now={now}
+                    price={mnq.data?.price ?? null}
+                    candles={mnq.data?.candles ?? []}
+                  />
                 ))}
               </div>
             </section>
