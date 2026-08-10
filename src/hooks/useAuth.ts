@@ -8,17 +8,31 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     const { data } = supabase.auth.onAuthStateChange((_event, s) => {
       setSession(s);
       setLoading(false);
     });
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
+    supabase.auth.getSession().then(async ({ data: { session: s } }) => {
+      if (cancelled) return;
+      if (!s) {
+        // Temporary: guest access while the site is not live yet.
+        const { data: anon } = await supabase.auth.signInAnonymously();
+        if (cancelled) return;
+        setSession(anon.session ?? null);
+      } else {
+        setSession(s);
+      }
       setLoading(false);
     });
-    return () => data.subscription.unsubscribe();
+    return () => {
+      cancelled = true;
+      data.subscription.unsubscribe();
+    };
   }, []);
 
   const user: User | null = session?.user ?? null;
-  return { session, user, loading, signOut: () => supabase.auth.signOut() };
+  const isGuest = !!user && (user.is_anonymous ?? false);
+  return { session, user, isGuest, loading, signOut: () => supabase.auth.signOut() };
+
 }

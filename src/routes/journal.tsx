@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import { ArrowLeft, LogOut, Plus } from "lucide-react";
@@ -54,7 +54,7 @@ function Metric({ label, value, color }: { label: string; value: string; color?:
 }
 
 function JournalPage() {
-  const { user, loading, signOut } = useAuth();
+  const { user, isGuest, loading, signOut } = useAuth();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
@@ -62,9 +62,7 @@ function JournalPage() {
   const [adding, setAdding] = useState(false);
   const [day, setDay] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth" });
-  }, [loading, user, navigate]);
+
 
   const strategiesQ = useQuery({
     queryKey: ["strategies", user?.id],
@@ -146,8 +144,9 @@ function JournalPage() {
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
-              {user.email}
+              {isGuest ? "Guest mode · no login" : user.email}
             </span>
+
             <button
               onClick={() => setAdding(true)}
               className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px]"
@@ -155,15 +154,25 @@ function JournalPage() {
             >
               <Plus className="size-4" /> Trade
             </button>
-            <button
-              onClick={async () => {
-                await signOut();
-                navigate({ to: "/auth" });
-              }}
-              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
-            >
-              <LogOut className="size-3.5" /> Log out
-            </button>
+            {isGuest ? (
+              <Link
+                to="/auth"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+              >
+                <LogOut className="size-3.5" /> Sign in
+              </Link>
+            ) : (
+              <button
+                onClick={async () => {
+                  await signOut();
+                  navigate({ to: "/auth" });
+                }}
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+              >
+                <LogOut className="size-3.5" /> Log out
+              </button>
+            )}
+
           </div>
         </header>
 
