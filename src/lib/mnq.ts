@@ -5,35 +5,33 @@ import type { MnqCandle } from "./mnq.functions";
 export const TICK = 0.25;
 
 /** Most recent start of a session that has already begun (NY schedule). */
-export function lastSessionStart(def: SessionDef, now: DateTime): DateTime {
+export function lastSessionStart(def: SessionDef, now: DateTime, daysBack = 0): DateTime {
   const ny = now.setZone(NY_ZONE);
-  for (const offset of [0, -1, -2]) {
-    const start = ny
-      .plus({ days: offset })
-      .startOf("day")
-      .set({ hour: def.nyStart[0], minute: def.nyStart[1] });
-    if (start <= ny) return start;
-  }
-  return ny.startOf("day");
+  const todayStart = ny
+    .startOf("day")
+    .set({ hour: def.nyStart[0], minute: def.nyStart[1] });
+  const base = todayStart <= ny ? todayStart : todayStart.minus({ days: 1 });
+  return base.minus({ days: daysBack });
 }
 
-/** Close of the 1-minute candle at (or just after) the session's opening minute. */
+/**
+ * Close of the 1-minute candle at (or just after) the session's opening minute.
+ * Falls back to earlier occurrences when the market was closed (weekends/holidays).
+ */
 export function sessionOpenPrice(
   def: SessionDef,
   now: DateTime,
   candles: MnqCandle[],
 ): number | null {
   if (!candles.length) return null;
-  const startMs = lastSessionStart(def, now).toMillis();
-  let best: MnqCandle | null = null;
-  for (const c of candles) {
-    if (c.t >= startMs && c.t <= startMs + 10 * 60_000) {
-      best = c;
-      break;
-    }
+  for (let back = 0; back < 5; back++) {
+    const startMs = lastSessionStart(def, now, back).toMillis();
+    const hit = candles.find((c) => c.t >= startMs && c.t <= startMs + 10 * 60_000);
+    if (hit) return hit.c;
   }
-  return best?.c ?? null;
+  return null;
 }
+
 
 export type Phase = "continuation" | "reversion" | "pending";
 
