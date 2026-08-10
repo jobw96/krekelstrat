@@ -91,6 +91,7 @@ function Dashboard() {
   const mnq = useMnq();
   const news = useRedFolder();
   const [sound, setSound] = useState(false);
+  const [compact, setCompact] = useState(false);
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
   const catalyst = now
@@ -101,6 +102,7 @@ function Dashboard() {
         (e) => e.time >= now.toMillis() - 60 * 60_000,
       ) ?? null)
     : null;
+  const redHot = now ? redFolderImminent(news.data?.events ?? [], now) : false;
 
 
 
