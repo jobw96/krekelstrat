@@ -144,11 +144,17 @@ function Dashboard() {
 
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <header className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Activity className="size-4 text-[#5ec8f5] lg:hidden" strokeWidth={1.8} />
               <span className="text-[18px] text-white" style={{ fontWeight: 560 }}>
                 Krekelstrat Terminal
               </span>
+              <Link
+                to="/journal"
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] transition-colors hover:bg-white/12"
+              >
+                <NotebookPen className="size-3.5" /> Journal
+              </Link>
             </div>
             <div className="flex items-center gap-3">
               {nextRedFolder && (
