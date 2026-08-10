@@ -92,20 +92,37 @@ function JournalPage() {
 
   const strategies = strategiesQ.data ?? [];
   const allTrades = tradesQ.data ?? [];
-  const trades = useMemo(
+  const byStrategy = useMemo(
     () =>
       strategyFilter === "all"
         ? allTrades
         : allTrades.filter((t) => t.strategy_id === strategyFilter),
     [allTrades, strategyFilter],
   );
+
+  const trades = useMemo(() => {
+    if (range === "all") return byStrategy;
+    const start =
+      range === "month" ? month : DateTime.fromISO(from, { zone: LOCAL_ZONE }).startOf("day");
+    const end =
+      range === "month"
+        ? month.endOf("month")
+        : DateTime.fromISO(to, { zone: LOCAL_ZONE }).endOf("day");
+    if (!start.isValid || !end.isValid) return byStrategy;
+    return byStrategy.filter((t) => {
+      const d = DateTime.fromISO(t.date).setZone(LOCAL_ZONE);
+      return d >= start && d <= end;
+    });
+  }, [byStrategy, range, month, from, to]);
+
   const metrics = computeMetrics(trades);
 
   const dayTrades = day
-    ? trades.filter(
+    ? byStrategy.filter(
         (t) => DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd") === day,
       )
     : [];
+
 
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ["trades", user?.id] });
