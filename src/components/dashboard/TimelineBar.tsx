@@ -29,35 +29,37 @@ export function TimelineBar({ now }: { now: DateTime }) {
   return (
     <section className="card-surface p-6">
       <div className="mb-4 flex items-baseline justify-between">
-        <h2 className="text-[15px] tracking-[-0.011em] text-[#d0d6e0]">24-Hour Session Map</h2>
-        <span className="font-mono text-[12px] text-[#62666d]">Europe/Amsterdam</span>
+        <h2 className="text-[15px] tracking-[-0.011em] text-[#cfdde6]">24-Hour Session Map</h2>
+        <span className="rounded-full bg-white/6 px-3 py-1 font-mono text-[11px] text-[#93a9b6]">
+          Europe/Amsterdam
+        </span>
       </div>
 
-      <div className="relative h-10 w-full overflow-hidden rounded-[6px] bg-[#161718]">
+      <div className="relative h-12 w-full overflow-hidden rounded-2xl bg-white/4">
         {blocks.map((b) => (
           <div
             key={b.key}
-            className="absolute top-0 h-full"
+            className="absolute top-0 h-full rounded-xl"
             style={{
               left: `${b.left}%`,
               width: `${b.width}%`,
-              background: `${toneColor[b.def.tone]}26`,
+              background: `linear-gradient(180deg, ${toneColor[b.def.tone]}3d, ${toneColor[b.def.tone]}17)`,
               boxShadow: `${toneColor[b.def.tone]}59 0 0 0 1px inset`,
             }}
             title={b.def.name}
           >
-            <span className="absolute inset-0 flex items-center justify-center overflow-hidden font-mono text-[10px] text-[#8a8f98]">
+            <span className="absolute inset-0 flex items-center justify-center overflow-hidden font-mono text-[10px] tracking-[0.06em] text-[#cfdde6]">
               {b.width > 4 ? b.def.short : ""}
             </span>
           </div>
         ))}
         <div
-          className="absolute top-0 z-10 h-full w-px bg-[#e4f222]"
-          style={{ left: `${nowPct}%` }}
+          className="absolute top-0 z-10 h-full w-0.5 rounded-full bg-[#5ec8f5]"
+          style={{ left: `${nowPct}%`, boxShadow: "0 0 12px 2px rgba(94,200,245,0.55)" }}
         />
       </div>
 
-      <div className="mt-2 flex justify-between font-mono text-[10px] text-[#62666d]">
+      <div className="mt-2 flex justify-between font-mono text-[10px] text-[#6b8592]">
         {["00", "04", "08", "12", "16", "20", "24"].map((h) => (
           <span key={h}>{h}:00</span>
         ))}

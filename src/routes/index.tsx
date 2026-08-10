@@ -3,7 +3,18 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { DateTime } from "luxon";
 
-import { Activity, Bell, BellOff, Clock, Timer } from "lucide-react";
+import {
+  Activity,
+  Bell,
+  BellOff,
+  CalendarClock,
+  Clock,
+  LayoutGrid,
+  LineChart,
+  Map,
+  Settings,
+  Timer,
+} from "lucide-react";
 import { useNow } from "@/hooks/useNow";
 import { useMnq } from "@/hooks/useMnq";
 import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
@@ -34,6 +45,8 @@ export const Route = createFileRoute("/")({
         content:
           "Live session detection, countdown timers and a 24-hour killzone map for index futures traders.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Dashboard,
@@ -67,6 +80,14 @@ function useBeep(enabled: boolean, secondsToNext: number) {
   }, [enabled, secondsToNext]);
 }
 
+const RAIL_ICONS = [
+  { icon: LayoutGrid, label: "Overview", active: true },
+  { icon: Map, label: "Session map" },
+  { icon: LineChart, label: "Price action" },
+  { icon: CalendarClock, label: "Schedule" },
+  { icon: Settings, label: "Settings" },
+];
+
 function Dashboard() {
   const now = useNow();
   const mnq = useMnq();
@@ -75,157 +96,208 @@ function Dashboard() {
   useBeep(sound, state?.secondsToNext ?? 9999);
 
   return (
-    <main className="min-h-screen bg-[#08090a]">
-      <div className="mx-auto w-full max-w-[1200px] px-6 py-8">
-        <nav className="flex items-center justify-between border-b border-[#23252a] pb-4">
-          <div className="flex items-center gap-2">
-            <Activity className="size-4 text-[#e4f222]" strokeWidth={1.5} />
-            <span className="text-[16px] text-[#ffffff]" style={{ fontWeight: 510 }}>
-              Session Terminal
+    <main className="app-shell min-h-screen">
+      <div className="mx-auto flex w-full max-w-[1400px] gap-5 px-4 py-5 sm:px-6">
+        {/* Icon rail */}
+        <aside className="card-surface sticky top-5 hidden h-[calc(100vh-40px)] w-[76px] shrink-0 flex-col items-center gap-2 py-6 lg:flex">
+          <div className="mb-4 flex flex-col items-center gap-1.5">
+            <span className="flex size-10 items-center justify-center rounded-2xl bg-[#5ec8f5]/15">
+              <Activity className="size-5 text-[#5ec8f5]" strokeWidth={1.8} />
             </span>
-            <span className="ml-2 font-mono text-[12px] text-[#62666d]">NQ / MNQ</span>
+            <span className="text-[10px] tracking-[0.06em] text-[#6b8592]">NQ/MNQ</span>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="hidden font-mono text-[11px] text-[#62666d] sm:inline">
-              MNQ=F · Yahoo Finance · ~10 min delayed
-              {mnq.data?.quoteTime
-                ? ` · quote ${DateTime.fromMillis(mnq.data.quoteTime)
-                    .setZone(LOCAL_ZONE)
-                    .toFormat("HH:mm")} AMS`
-                : ""}
-            </span>
-
-          <button
-            onClick={() => setSound((s) => !s)}
-            className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] transition-colors"
-            style={
-              sound
-                ? { background: "#e4f222", color: "#08090a", fontWeight: 510 }
-                : { background: "rgba(255,255,255,0.05)", color: "#d0d6e0" }
-            }
-          >
-            {sound ? <Bell className="size-3.5" /> : <BellOff className="size-3.5" />}
-            {sound ? "Alerts on" : "Alerts off"}
-          </button>
+          {RAIL_ICONS.map(({ icon: Icon, label, active }) => (
+            <button
+              key={label}
+              title={label}
+              className="group relative flex size-11 items-center justify-center rounded-2xl transition-colors"
+              style={
+                active
+                  ? { background: "rgba(255,255,255,0.08)" }
+                  : { background: "transparent" }
+              }
+            >
+              <Icon
+                className="size-[18px]"
+                strokeWidth={1.6}
+                style={{ color: active ? "#ffffff" : "#6b8592" }}
+              />
+              {active && (
+                <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#5ec8f5]" />
+              )}
+            </button>
+          ))}
+          <div className="mt-auto flex flex-col items-center gap-3">
+            <button
+              onClick={() => setSound((s) => !s)}
+              title={sound ? "Alerts on" : "Alerts off"}
+              className="flex size-11 items-center justify-center rounded-2xl transition-colors"
+              style={
+                sound
+                  ? { background: "#5ec8f5", color: "#061017" }
+                  : { background: "rgba(255,255,255,0.06)", color: "#93a9b6" }
+              }
+            >
+              {sound ? <Bell className="size-4" /> : <BellOff className="size-4" />}
+            </button>
           </div>
-        </nav>
+        </aside>
 
-        {now && state && (
-          <ActiveSessionBar
-            state={state}
-            now={now}
-            price={mnq.data?.price ?? null}
-            candles={mnq.data?.candles ?? []}
-          />
-        )}
-
-
-
-        {/* Hero */}
-        <section className="grid gap-12 py-16 lg:grid-cols-[1.1fr_1fr] lg:items-end">
-          <div className="flex flex-col gap-6">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={state?.active?.def.id ?? "none"}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.25 }}
-                className="inline-flex w-fit items-center gap-2 rounded-full px-3 py-1 text-[13px]"
-                style={{ background: "rgba(255,255,255,0.05)", color: "#d0d6e0" }}
+        <div className="flex min-w-0 flex-1 flex-col gap-5">
+          <header className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Activity className="size-4 text-[#5ec8f5] lg:hidden" strokeWidth={1.8} />
+              <span className="text-[18px] text-white" style={{ fontWeight: 560 }}>
+                Session Terminal
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#93a9b6] sm:inline">
+                MNQ=F · Yahoo Finance · ~10 min delayed
+                {mnq.data?.quoteTime
+                  ? ` · quote ${DateTime.fromMillis(mnq.data.quoteTime)
+                      .setZone(LOCAL_ZONE)
+                      .toFormat("HH:mm")} AMS`
+                  : ""}
+              </span>
+              <button
+                onClick={() => setSound((s) => !s)}
+                className="inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] transition-colors lg:hidden"
+                style={
+                  sound
+                    ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }
+                    : { background: "rgba(255,255,255,0.06)", color: "#cfdde6" }
+                }
               >
-                <Dot
-                  color={state?.active ? toneColor[state.active.def.tone] : "#62666d"}
-                  pulse={Boolean(state?.active)}
-                />
-                {state?.active ? state.active.def.name : "No session active"}
-              </motion.div>
-            </AnimatePresence>
-
-            <h1
-              className="text-[48px] leading-none text-[#ffffff] lg:text-[64px]"
-              style={{ letterSpacing: "-0.022em", fontWeight: 510 }}
-            >
-              {state?.active ? state.active.def.tag : "Between sessions"}
-            </h1>
-            <p className="max-w-[46ch] text-[16px] text-[#8a8f98]">
-              {state?.active
-                ? state.active.def.focus
-                : `Next up is ${state?.next.def.name ?? "—"} — stay flat and let the model come to you.`}
-            </p>
-
-            {state?.active && (
-              <div className="flex flex-col gap-2">
-                <div className="h-px w-full bg-[#23252a]">
-                  <motion.div
-                    className="h-px"
-                    style={{ background: toneColor[state.active.def.tone] }}
-                    animate={{ width: `${state.progress * 100}%` }}
-                    transition={{ duration: 0.5 }}
-                  />
-                </div>
-                <div className="flex justify-between font-mono text-[12px] text-[#62666d]">
-                  <span>Elapsed {Math.round(state.progress * 100)}%</span>
-                  <span>
-                    Ends {state.active.end.setZone(LOCAL_ZONE).toFormat("HH:mm")} AMS
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="card-surface flex flex-col gap-6 p-6">
-            <div className="flex items-center gap-2 text-[13px] text-[#8a8f98]">
-              <Timer className="size-3.5" strokeWidth={1.5} />
-              Countdown to {state?.next.def.name ?? "—"}
+                {sound ? <Bell className="size-3.5" /> : <BellOff className="size-3.5" />}
+                {sound ? "Alerts on" : "Alerts off"}
+              </button>
             </div>
+          </header>
+
+          {now && state && (
+            <ActiveSessionBar
+              state={state}
+              now={now}
+              price={mnq.data?.price ?? null}
+              candles={mnq.data?.candles ?? []}
+            />
+          )}
+
+          {/* Hero bento */}
+          <section className="grid gap-5 lg:grid-cols-[1.35fr_1fr]">
             <div
-              className="font-mono text-[48px] leading-none text-[#ffffff] tabular"
-              style={{ letterSpacing: "-0.03em" }}
+              className="card-surface relative flex flex-col justify-between gap-8 overflow-hidden p-7"
+              style={{
+                backgroundImage: state?.active
+                  ? `linear-gradient(150deg, ${toneColor[state.active.def.tone]}33 0%, rgba(255,255,255,0.03) 55%, rgba(255,255,255,0.012) 100%)`
+                  : undefined,
+              }}
             >
-              {state ? formatCountdown(state.secondsToNext) : "--:--:--"}
-            </div>
-            <div className="grid grid-cols-2 gap-4 border-t border-[#23252a] pt-4">
-              <ClockCell
-                label="Amsterdam"
-                value={now ? now.setZone(LOCAL_ZONE).toFormat("HH:mm:ss") : "--:--:--"}
-                zone={now ? now.setZone(LOCAL_ZONE).toFormat("ZZZZ") : ""}
-              />
-              <ClockCell
-                label="New York"
-                value={now ? now.setZone(NY_ZONE).toFormat("HH:mm:ss") : "--:--:--"}
-                zone={now ? now.setZone(NY_ZONE).toFormat("ZZZZ") : ""}
-              />
-            </div>
-          </div>
-        </section>
-
-        {now && state && (
-          <>
-            <TimelineBar now={now} />
-
-            <section className="pt-16 pb-24">
-              <div className="mb-6 flex items-center gap-2">
-                <Clock className="size-3.5 text-[#62666d]" strokeWidth={1.5} />
-                <h2 className="text-[15px] tracking-[-0.011em] text-[#d0d6e0]">
-                  Sessions & Volume Windows
-                </h2>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {SESSIONS.map((def) => (
-                  <SessionCard
-                    key={def.id}
-                    def={def}
-                    state={state}
-                    now={now}
-                    price={mnq.data?.price ?? null}
-                    candles={mnq.data?.candles ?? []}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={state?.active?.def.id ?? "none"}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.25 }}
+                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3 py-1.5 text-[13px] text-[#cfdde6]"
+                >
+                  <Dot
+                    color={state?.active ? toneColor[state.active.def.tone] : "#6b8592"}
+                    pulse={Boolean(state?.active)}
                   />
-                ))}
+                  {state?.active ? state.active.def.name : "No session active"}
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="flex flex-col gap-3">
+                <h1
+                  className="text-[44px] leading-[1.02] text-white lg:text-[56px]"
+                  style={{ letterSpacing: "-0.03em", fontWeight: 560 }}
+                >
+                  {state?.active ? state.active.def.tag : "Between sessions"}
+                </h1>
+                <p className="max-w-[46ch] text-[15px] text-[#93a9b6]">
+                  {state?.active
+                    ? state.active.def.focus
+                    : `Next up is ${state?.next.def.name ?? "—"} — stay flat and let the model come to you.`}
+                </p>
               </div>
-            </section>
-          </>
-        )}
+
+              {state?.active && (
+                <div className="flex flex-col gap-2">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/8">
+                    <motion.div
+                      className="h-1.5 rounded-full"
+                      style={{ background: toneColor[state.active.def.tone] }}
+                      animate={{ width: `${state.progress * 100}%` }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                  <div className="flex justify-between font-mono text-[11px] text-[#6b8592]">
+                    <span>Elapsed {Math.round(state.progress * 100)}%</span>
+                    <span>
+                      Ends {state.active.end.setZone(LOCAL_ZONE).toFormat("HH:mm")} AMS
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="card-surface flex flex-col gap-5 p-7">
+              <div className="flex items-center gap-2 text-[13px] text-[#93a9b6]">
+                <Timer className="size-3.5" strokeWidth={1.6} />
+                Countdown to {state?.next.def.name ?? "—"}
+              </div>
+              <div
+                className="font-mono text-[46px] leading-none text-white tabular"
+                style={{ letterSpacing: "-0.03em" }}
+              >
+                {state ? formatCountdown(state.secondsToNext) : "--:--:--"}
+              </div>
+              <div className="mt-auto grid grid-cols-2 gap-3">
+                <ClockCell
+                  label="Amsterdam"
+                  value={now ? now.setZone(LOCAL_ZONE).toFormat("HH:mm:ss") : "--:--:--"}
+                  zone={now ? now.setZone(LOCAL_ZONE).toFormat("ZZZZ") : ""}
+                />
+                <ClockCell
+                  label="New York"
+                  value={now ? now.setZone(NY_ZONE).toFormat("HH:mm:ss") : "--:--:--"}
+                  zone={now ? now.setZone(NY_ZONE).toFormat("ZZZZ") : ""}
+                />
+              </div>
+            </div>
+          </section>
+
+          {now && state && (
+            <>
+              <TimelineBar now={now} />
+
+              <section className="pb-10">
+                <div className="mb-4 flex items-center gap-2">
+                  <Clock className="size-3.5 text-[#6b8592]" strokeWidth={1.6} />
+                  <h2 className="text-[15px] tracking-[-0.011em] text-[#cfdde6]">
+                    Sessions &amp; Volume Windows
+                  </h2>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                  {SESSIONS.map((def) => (
+                    <SessionCard
+                      key={def.id}
+                      def={def}
+                      state={state}
+                      now={now}
+                      price={mnq.data?.price ?? null}
+                      candles={mnq.data?.candles ?? []}
+                    />
+                  ))}
+                </div>
+              </section>
+            </>
+          )}
+        </div>
       </div>
     </main>
   );
@@ -241,10 +313,10 @@ function ClockCell({
   zone: string;
 }) {
   return (
-    <div className="flex flex-col gap-1">
-      <span className="text-[12px] text-[#62666d]">{label}</span>
-      <span className="font-mono text-[20px] text-[#d0d6e0] tabular">{value}</span>
-      <span className="font-mono text-[10px] text-[#62666d]">{zone}</span>
+    <div className="glass-inset flex flex-col gap-1 p-3">
+      <span className="text-[11px] text-[#6b8592]">{label}</span>
+      <span className="font-mono text-[19px] text-[#cfdde6] tabular">{value}</span>
+      <span className="font-mono text-[10px] text-[#6b8592]">{zone}</span>
     </div>
   );
 }

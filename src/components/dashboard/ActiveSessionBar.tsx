@@ -31,11 +31,11 @@ export function ActiveSessionBar({
   candles: MnqCandle[];
 }) {
   const def = state.active?.def ?? null;
-  const color = def ? toneColor[def.tone] : "#62666d";
+  const color = def ? toneColor[def.tone] : "#6b8592";
 
   const open = def ? sessionOpenPrice(def, now, candles) : null;
   const diff = open != null && price != null ? price - open : null;
-  const diffColor = diff == null ? "#8a8f98" : diff >= 0 ? "#27a644" : "#eb5757";
+  const diffColor = diff == null ? "#93a9b6" : diff >= 0 ? "#35d39a" : "#ff6b7a";
   const read = detectPhase(open, price, candles);
 
   const secondsToEnd = state.active
@@ -43,21 +43,21 @@ export function ActiveSessionBar({
     : 0;
 
   return (
-    <div className="sticky top-0 z-30 -mx-6 border-b border-[#23252a] bg-[#08090a]/85 px-6 py-3 backdrop-blur-md">
-      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-        <div className="flex min-w-[180px] items-center gap-2">
+    <div className="sticky top-4 z-30">
+      <div className="card-surface flex flex-wrap items-center gap-x-5 gap-y-3 px-5 py-3">
+        <div className="flex min-w-[190px] items-center gap-2.5">
           <span
-            className={`inline-block size-2 rounded-full ${def ? "pulse-dot" : ""}`}
-            style={{ background: color }}
+            className={`inline-block size-2.5 rounded-full ${def ? "pulse-dot" : ""}`}
+            style={{ background: color, boxShadow: `0 0 12px 2px ${color}80` }}
           />
           <div className="flex flex-col">
             <span
               className="text-[15px] leading-tight"
-              style={{ color: "#ffffff", fontWeight: 510 }}
+              style={{ color: "#ffffff", fontWeight: 560 }}
             >
               {def ? def.name : "No session active"}
             </span>
-            <span className="font-mono text-[11px] text-[#62666d]">
+            <span className="font-mono text-[11px] text-[#6b8592]">
               {def
                 ? `${def.short} · ${formatRange(def, LOCAL_ZONE, now)} AMS · ${formatRange(def, NY_ZONE, now)} NY`
                 : `Next: ${state.next.def.name}`}
@@ -67,20 +67,20 @@ export function ActiveSessionBar({
 
         {def && (
           <span
-            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.08em]"
             style={{
               background:
                 read.phase === "continuation"
-                  ? `${read.direction >= 0 ? "#27a644" : "#eb5757"}1f`
-                  : "rgba(2,184,204,0.12)",
+                  ? `${read.direction >= 0 ? "#35d39a" : "#ff6b7a"}22`
+                  : "rgba(69,211,224,0.14)",
               color:
                 read.phase === "continuation"
                   ? read.direction >= 0
-                    ? "#27a644"
-                    : "#eb5757"
+                    ? "#35d39a"
+                    : "#ff6b7a"
                   : read.phase === "reversion"
-                    ? "#02b8cc"
-                    : "#8a8f98",
+                    ? "#45d3e0"
+                    : "#93a9b6",
             }}
           >
             {read.phase === "continuation" ? (
@@ -114,14 +114,14 @@ export function ActiveSessionBar({
         />
 
         {def && (
-          <div className="ml-auto hidden min-w-[140px] flex-col gap-1 sm:flex">
-            <div className="flex justify-between font-mono text-[10px] text-[#62666d]">
+          <div className="ml-auto hidden min-w-[150px] flex-col gap-1.5 sm:flex">
+            <div className="flex justify-between font-mono text-[10px] text-[#6b8592]">
               <span>Elapsed</span>
               <span className="tabular">{Math.round(state.progress * 100)}%</span>
             </div>
-            <div className="h-px w-full bg-[#23252a]">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/8">
               <motion.div
-                className="h-px"
+                className="h-1.5 rounded-full"
                 style={{ background: color }}
                 animate={{ width: `${state.progress * 100}%` }}
                 transition={{ duration: 0.5 }}
@@ -147,16 +147,16 @@ function BarCell({
 }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] uppercase tracking-[0.08em] text-[#62666d]">
+      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6b8592]">
         {label}
       </span>
       <span
         className="font-mono text-[14px] tabular"
-        style={{ color: color ?? "#d0d6e0", fontWeight: 510 }}
+        style={{ color: color ?? "#cfdde6", fontWeight: 560 }}
       >
         {value}
       </span>
-      {sub && <span className="font-mono text-[10px] text-[#62666d]">{sub}</span>}
+      {sub && <span className="font-mono text-[10px] text-[#6b8592]">{sub}</span>}
     </div>
   );
 }
