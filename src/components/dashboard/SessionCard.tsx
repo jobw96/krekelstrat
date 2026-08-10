@@ -31,7 +31,7 @@ export function SessionCard({
       style={
         active
           ? { boxShadow: `${color}55 0 0 0 1px inset, rgba(0,0,0,0.4) 0 2px 4px` }
-          : undefined
+          : {}
       }
     >
       <header className="flex items-start justify-between gap-3">
