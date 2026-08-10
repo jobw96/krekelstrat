@@ -39,7 +39,7 @@ export const Route = createFileRoute("/journal")({
   component: JournalPage,
 });
 
-function Metric({ label, value, color }: { label: string; value: string; color?: string }) {
+function Metric({ label, value, color }: { label: string; value: string; color?: string | undefined }) {
   return (
     <div className="glass-inset flex flex-col gap-1 p-3.5">
       <span className="text-[10px] uppercase tracking-[0.08em] text-[#6b8592]">{label}</span>
