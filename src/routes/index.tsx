@@ -13,9 +13,13 @@ import {
 } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
 import { useMnq } from "@/hooks/useMnq";
+import { useRedFolder } from "@/hooks/useRedFolder";
 import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
+import { CatalystBanner } from "@/components/dashboard/NewsCatalyst";
+import { currentCatalyst } from "@/lib/news";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 import { formatPoints, formatPrice, sessionOpenPrice } from "@/lib/mnq";
+
 
 import {
   computeState,
