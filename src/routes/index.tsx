@@ -185,7 +185,14 @@ function Dashboard() {
               </div>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {SESSIONS.map((def) => (
-                  <SessionCard key={def.id} def={def} state={state} now={now} />
+                  <SessionCard
+                    key={def.id}
+                    def={def}
+                    state={state}
+                    now={now}
+                    price={mnq.data?.price ?? null}
+                    candles={mnq.data?.candles ?? []}
+                  />
                 ))}
               </div>
             </section>
