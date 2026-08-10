@@ -132,7 +132,7 @@ function AuthPage() {
               type="submit"
               disabled={busy}
               className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
-              style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
+              style={{ background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
             >
               {busy && <Loader2 className="size-4 animate-spin" />}
               {mode === "login" ? "Sign in" : "Sign up"}

@@ -201,7 +201,7 @@ function Dashboard() {
                     className="hover-lift inline-flex size-8 items-center justify-center rounded-full"
                     style={
                       compact === key
-                        ? { background: "#e5525f", color: "#ffffff" }
+                        ? { background: "#20242a", color: "#ffffff", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }
                         : { color: "#8b9298" }
                     }
                   >
@@ -223,7 +223,7 @@ function Dashboard() {
                 className="hover-lift inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] lg:hidden"
                 style={
                   sound
-                    ? { background: "#e5525f", color: "#ffffff", fontWeight: 560 }
+                    ? { background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }
                     : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
                 }
               >

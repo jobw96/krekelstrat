@@ -151,7 +151,7 @@ function JournalPage() {
             <button
               onClick={() => setAdding(true)}
               className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px]"
-              style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
+              style={{ background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
             >
               <Plus className="size-4" /> Trade
             </button>
@@ -173,7 +173,7 @@ function JournalPage() {
             className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
             style={
               strategyFilter === "all"
-                ? { background: "#e5525f", color: "#ffffff", fontWeight: 560 }
+                ? { background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }
                 : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
             }
           >
@@ -186,7 +186,7 @@ function JournalPage() {
               className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
               style={
                 strategyFilter === s.id
-                  ? { background: "#e5525f", color: "#ffffff", fontWeight: 560 }
+                  ? { background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }
                   : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
               }
             >
