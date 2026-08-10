@@ -133,6 +133,11 @@ export function SessionCard({
         </motion.div>
       )}
 
+      {isMacro && <RedFolderList events={todaysEvents} />}
+      {catalyst && <CatalystBadge read={catalyst} />}
+
+
+
       <dl className="glass-inset flex flex-col gap-1 p-3 font-mono text-[12px]">
         <div className="flex justify-between">
           <dt className="text-[#6b8592]">AMS</dt>
