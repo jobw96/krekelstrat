@@ -122,46 +122,57 @@ export function TradesList({
         </p>
       )}
 
-      {shown.map((t) => (
-        <article
-          key={t.id}
-          className="glass-inset flex flex-wrap items-center justify-between gap-3 px-3 py-2.5"
-        >
-          <span className="flex flex-wrap items-center gap-2 text-[12px] text-[#d7dbe0]">
-            <span
-              className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
-              style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
-            >
-              {t.result}
-            </span>
-            <span className="font-mono tabular text-[#8b9298]">
-              {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("dd LLL yyyy · HH:mm")}
-            </span>
-            <span>{t.session ?? "—"}</span>
-            <span className="text-[#6a7076]">
-              {strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy"}
-            </span>
-          </span>
-          <span className="flex items-center gap-3">
-            <span
-              className="font-mono text-[14px] tabular"
-              style={{ color: resultColor(t), fontWeight: 560 }}
-            >
-              {money(Number(t.pnl))}
-            </span>
-            <span className="font-mono text-[11px] text-[#8b9298]">
-              {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
-            </span>
-            <button
-              onClick={() => remove(t.id)}
-              className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
-              aria-label="Delete trade"
-            >
-              <Trash2 className="size-3.5" />
-            </button>
-          </span>
-        </article>
-      ))}
+      {shown.map((t) => {
+        const strategyName =
+          strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy";
+        const isOpen = !!open[t.id];
+        return (
+          <article key={t.id} className="glass-inset overflow-hidden">
+            <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-2.5">
+              <button
+                onClick={() => setOpen((o) => ({ ...o, [t.id]: !o[t.id] }))}
+                aria-expanded={isOpen}
+                className="flex flex-1 flex-wrap items-center gap-2 text-left text-[12px] text-[#d7dbe0]"
+              >
+                <ChevronRight
+                  className={`size-3.5 shrink-0 text-[#6a7076] transition-transform ${isOpen ? "rotate-90" : ""}`}
+                />
+                <span
+                  className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
+                  style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
+                >
+                  {t.result}
+                </span>
+                <span className="font-mono tabular text-[#8b9298]">
+                  {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("dd LLL yyyy · HH:mm")}
+                </span>
+                <span>{t.session ?? "—"}</span>
+                <span className="text-[#6a7076]">{strategyName}</span>
+              </button>
+              <span className="flex items-center gap-3">
+                <span
+                  className="font-mono text-[14px] tabular"
+                  style={{ color: resultColor(t), fontWeight: 560 }}
+                >
+                  {money(Number(t.pnl))}
+                </span>
+                <span className="font-mono text-[11px] text-[#8b9298]">
+                  {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
+                </span>
+                <button
+                  onClick={() => remove(t.id)}
+                  className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
+                  aria-label="Delete trade"
+                >
+                  <Trash2 className="size-3.5" />
+                </button>
+              </span>
+            </div>
+            {isOpen && <TradeDetails trade={t} strategyName={strategyName} />}
+          </article>
+        );
+      })}
+
 
       {remaining > 0 && (
         <div className="flex items-center justify-center gap-2 pt-1">
