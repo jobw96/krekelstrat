@@ -154,3 +154,25 @@
 @utility pulse-dot {
   animation: pulse-dot 1.6s ease-in-out infinite;
 }
+
+@keyframes glow-ring {
+  0%,
+  100% {
+    box-shadow:
+      var(--glow) 0 0 0 1px inset,
+      color-mix(in srgb, var(--glow) 35%, transparent) 0 0 0 1px,
+      color-mix(in srgb, var(--glow) 30%, transparent) 0 0 24px 0;
+  }
+  50% {
+    box-shadow:
+      var(--glow) 0 0 0 1px inset,
+      color-mix(in srgb, var(--glow) 55%, transparent) 0 0 0 3px,
+      color-mix(in srgb, var(--glow) 55%, transparent) 0 0 44px 0;
+  }
+}
+
+@utility glow-ring {
+  --glow: var(--color-acid-lime);
+  animation: glow-ring 2.4s ease-in-out infinite;
+}
+
