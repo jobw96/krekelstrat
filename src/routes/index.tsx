@@ -103,7 +103,9 @@ function Dashboard() {
             {sound ? <Bell className="size-3.5" /> : <BellOff className="size-3.5" />}
             {sound ? "Alerts on" : "Alerts off"}
           </button>
+          </div>
         </nav>
+
 
         {/* Hero */}
         <section className="grid gap-12 py-16 lg:grid-cols-[1.1fr_1fr] lg:items-end">
