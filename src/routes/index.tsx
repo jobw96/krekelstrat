@@ -148,7 +148,7 @@ function Dashboard() {
             <div className="flex items-center gap-2">
               <Activity className="size-4 text-[#5ec8f5] lg:hidden" strokeWidth={1.8} />
               <span className="text-[18px] text-white" style={{ fontWeight: 560 }}>
-                Session Terminal
+                Krekelstrat Terminal
               </span>
             </div>
             <div className="flex items-center gap-3">
