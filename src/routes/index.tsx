@@ -7,12 +7,8 @@ import {
   Activity,
   Bell,
   BellOff,
-  CalendarClock,
   Clock,
   LayoutGrid,
-  LineChart,
-  Map,
-  Settings,
   Timer,
 } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
