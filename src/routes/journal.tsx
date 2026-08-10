@@ -144,8 +144,9 @@ function JournalPage() {
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
-              {user.email}
+              {isGuest ? "Guest mode · no login" : user.email}
             </span>
+
             <button
               onClick={() => setAdding(true)}
               className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px]"
