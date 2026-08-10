@@ -6,6 +6,8 @@ import { DateTime } from "luxon";
 import { Activity, Bell, BellOff, Clock, Timer } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
 import { useMnq } from "@/hooks/useMnq";
+import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
+
 import {
   computeState,
   formatCountdown,
@@ -107,6 +109,16 @@ function Dashboard() {
           </button>
           </div>
         </nav>
+
+        {now && state && (
+          <ActiveSessionBar
+            state={state}
+            now={now}
+            price={mnq.data?.price ?? null}
+            candles={mnq.data?.candles ?? []}
+          />
+        )}
+
 
 
         {/* Hero */}
