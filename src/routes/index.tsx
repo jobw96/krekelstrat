@@ -87,9 +87,14 @@ const RAIL_ICONS = [{ icon: LayoutGrid, label: "Overview", active: true }];
 function Dashboard() {
   const now = useNow();
   const mnq = useMnq();
+  const news = useRedFolder();
   const [sound, setSound] = useState(false);
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
+  const catalyst = now
+    ? currentCatalyst(news.data?.events ?? [], now, mnq.data?.candles ?? [])
+    : null;
+
 
   return (
     <main className="app-shell min-h-screen">
