@@ -42,7 +42,7 @@ export const Route = createFileRoute("/journal")({
 function Metric({ label, value, color }: { label: string; value: string; color?: string | undefined }) {
   return (
     <div className="glass-inset flex flex-col gap-1 p-3.5">
-      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6b8592]">{label}</span>
+      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">{label}</span>
       <span
         className="font-mono text-[22px] tabular"
         style={{ color: color ?? "#ffffff", fontWeight: 560 }}
@@ -124,7 +124,7 @@ function JournalPage() {
   if (loading || !user) {
     return (
       <main className="app-shell flex min-h-screen items-center justify-center">
-        <span className="text-[13px] text-[#93a9b6]">Loading…</span>
+        <span className="text-[13px] text-[#8b9298]">Loading…</span>
       </main>
     );
   }
@@ -136,7 +136,7 @@ function JournalPage() {
           <div className="flex items-center gap-3">
             <Link
               to="/"
-              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] hover:bg-white/12"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/12"
             >
               <ArrowLeft className="size-3.5" /> Terminal
             </Link>
@@ -145,13 +145,13 @@ function JournalPage() {
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#93a9b6] sm:inline">
+            <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
               {user.email}
             </span>
             <button
               onClick={() => setAdding(true)}
               className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px]"
-              style={{ background: "#5ec8f5", color: "#061017", fontWeight: 560 }}
+              style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
             >
               <Plus className="size-4" /> Trade
             </button>
@@ -160,7 +160,7 @@ function JournalPage() {
                 await signOut();
                 navigate({ to: "/auth" });
               }}
-              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#cfdde6] hover:bg-white/12"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
             >
               <LogOut className="size-3.5" /> Log out
             </button>
@@ -173,8 +173,8 @@ function JournalPage() {
             className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
             style={
               strategyFilter === "all"
-                ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }
-                : { background: "rgba(255,255,255,0.06)", color: "#cfdde6" }
+                ? { background: "#e5525f", color: "#ffffff", fontWeight: 560 }
+                : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
             }
           >
             All strategies
@@ -186,8 +186,8 @@ function JournalPage() {
               className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
               style={
                 strategyFilter === s.id
-                  ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }
-                  : { background: "rgba(255,255,255,0.06)", color: "#cfdde6" }
+                  ? { background: "#e5525f", color: "#ffffff", fontWeight: 560 }
+                  : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
               }
             >
               {s.name}
@@ -195,7 +195,7 @@ function JournalPage() {
           ))}
           <button
             onClick={addStrategy}
-            className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#93a9b6] hover:text-white"
+            className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#8b9298] hover:text-white"
           >
             + New strategy
           </button>

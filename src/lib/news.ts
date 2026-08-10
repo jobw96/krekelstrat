@@ -85,9 +85,9 @@ export function currentCatalyst(
 
 export const biasColor: Record<CatalystBias, string> = {
   bullish: "#35d39a",
-  bearish: "#ff6b7a",
-  neutral: "#cfdde6",
-  pending: "#93a9b6",
+  bearish: "#e5525f",
+  neutral: "#d7dbe0",
+  pending: "#8b9298",
 };
 
 export function biasLabel(read: CatalystRead): string {

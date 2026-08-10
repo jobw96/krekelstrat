@@ -31,11 +31,11 @@ export function ActiveSessionBar({
   candles: MnqCandle[];
 }) {
   const def = state.active?.def ?? null;
-  const color = def ? toneColor[def.tone] : "#6b8592";
+  const color = def ? toneColor[def.tone] : "#6a7076";
 
   const open = def ? sessionOpenPrice(def, now, candles) : null;
   const diff = open != null && price != null ? price - open : null;
-  const diffColor = diff == null ? "#93a9b6" : diff >= 0 ? "#35d39a" : "#ff6b7a";
+  const diffColor = diff == null ? "#8b9298" : diff >= 0 ? "#35d39a" : "#e5525f";
   const read = detectPhase(open, price, candles);
 
   const secondsToEnd = state.active
@@ -57,7 +57,7 @@ export function ActiveSessionBar({
             >
               {def ? def.name : "No session active"}
             </span>
-            <span className="font-mono text-[11px] text-[#6b8592]">
+            <span className="font-mono text-[11px] text-[#6a7076]">
               {def
                 ? `${def.short} · ${formatRange(def, LOCAL_ZONE, now)} AMS · ${formatRange(def, NY_ZONE, now)} NY`
                 : `Next: ${state.next.def.name}`}
@@ -71,16 +71,16 @@ export function ActiveSessionBar({
             style={{
               background:
                 read.phase === "continuation"
-                  ? `${read.direction >= 0 ? "#35d39a" : "#ff6b7a"}22`
+                  ? `${read.direction >= 0 ? "#35d39a" : "#e5525f"}22`
                   : "rgba(69,211,224,0.14)",
               color:
                 read.phase === "continuation"
                   ? read.direction >= 0
                     ? "#35d39a"
-                    : "#ff6b7a"
+                    : "#e5525f"
                   : read.phase === "reversion"
-                    ? "#45d3e0"
-                    : "#93a9b6",
+                    ? "#8b9298"
+                    : "#8b9298",
             }}
           >
             {read.phase === "continuation" ? (
@@ -115,7 +115,7 @@ export function ActiveSessionBar({
 
         {def && (
           <div className="ml-auto hidden min-w-[150px] flex-col gap-1.5 sm:flex">
-            <div className="flex justify-between font-mono text-[10px] text-[#6b8592]">
+            <div className="flex justify-between font-mono text-[10px] text-[#6a7076]">
               <span>Elapsed</span>
               <span className="tabular">{Math.round(state.progress * 100)}%</span>
             </div>
@@ -147,16 +147,16 @@ function BarCell({
 }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6b8592]">
+      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
         {label}
       </span>
       <span
         className="font-mono text-[14px] tabular"
-        style={{ color: color ?? "#cfdde6", fontWeight: 560 }}
+        style={{ color: color ?? "#d7dbe0", fontWeight: 560 }}
       >
         {value}
       </span>
-      {sub && <span className="font-mono text-[10px] text-[#6b8592]">{sub}</span>}
+      {sub && <span className="font-mono text-[10px] text-[#6a7076]">{sub}</span>}
     </div>
   );
 }

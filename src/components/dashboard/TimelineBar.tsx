@@ -29,8 +29,8 @@ export function TimelineBar({ now }: { now: DateTime }) {
   return (
     <section className="card-surface p-6">
       <div className="mb-4 flex items-baseline justify-between">
-        <h2 className="text-[15px] tracking-[-0.011em] text-[#cfdde6]">24-Hour Session Map</h2>
-        <span className="rounded-full bg-white/6 px-3 py-1 font-mono text-[11px] text-[#93a9b6]">
+        <h2 className="text-[15px] tracking-[-0.011em] text-[#d7dbe0]">24-Hour Session Map</h2>
+        <span className="rounded-full bg-white/6 px-3 py-1 font-mono text-[11px] text-[#8b9298]">
           Europe/Amsterdam
         </span>
       </div>
@@ -48,7 +48,7 @@ export function TimelineBar({ now }: { now: DateTime }) {
             }}
             title={b.def.name}
           >
-            <span className="absolute inset-0 flex items-center justify-center overflow-hidden font-mono text-[10px] tracking-[0.06em] text-[#cfdde6]">
+            <span className="absolute inset-0 flex items-center justify-center overflow-hidden font-mono text-[10px] tracking-[0.06em] text-[#d7dbe0]">
               {b.width > 4 ? b.def.short : ""}
             </span>
           </div>
@@ -58,22 +58,22 @@ export function TimelineBar({ now }: { now: DateTime }) {
           style={{
             left: `${nowPct}%`,
             background:
-              "linear-gradient(180deg, #baf7ff 0%, #5ec8f5 45%, rgba(94,200,245,0.25) 100%)",
+              "linear-gradient(180deg, #ffd7db 0%, #e5525f 45%, rgba(229,82,95,0.25) 100%)",
             boxShadow:
-              "0 0 10px 2px rgba(94,200,245,0.85), 0 0 26px 6px rgba(94,200,245,0.45)",
+              "0 0 10px 2px rgba(229,82,95,0.85), 0 0 26px 6px rgba(229,82,95,0.45)",
           }}
         >
           <span
             className="pulse-dot absolute -top-[5px] left-1/2 size-2.5 -translate-x-1/2 rounded-full"
             style={{
-              background: "#baf7ff",
-              boxShadow: "0 0 12px 4px rgba(94,200,245,0.8)",
+              background: "#ffd7db",
+              boxShadow: "0 0 12px 4px rgba(229,82,95,0.8)",
             }}
           />
         </div>
       </div>
 
-      <div className="mt-2 flex justify-between font-mono text-[10px] text-[#6b8592]">
+      <div className="mt-2 flex justify-between font-mono text-[10px] text-[#6a7076]">
         {["00", "04", "08", "12", "16", "20", "24"].map((h) => (
           <span key={h}>{h}:00</span>
         ))}

@@ -10,7 +10,7 @@ import {
 } from "@/lib/journal";
 
 const inputCls =
-  "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6b8592] focus:ring-1 focus:ring-[#5ec8f5]";
+  "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]";
 
 export function AddTradeDialog({
   userId,
@@ -72,13 +72,13 @@ export function AddTradeDialog({
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
             Add trade
           </h2>
-          <button type="button" onClick={onClose} className="text-[#93a9b6] hover:text-white">
+          <button type="button" onClick={onClose} className="text-[#8b9298] hover:text-white">
             <X className="size-4" />
           </button>
         </header>
 
         <div className="grid grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Date & time
             <input
               type="datetime-local"
@@ -88,7 +88,7 @@ export function AddTradeDialog({
               required
             />
           </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Strategy
             <select
               value={strategyId}
@@ -103,7 +103,7 @@ export function AddTradeDialog({
               ))}
             </select>
           </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Session
             <select
               value={session}
@@ -117,7 +117,7 @@ export function AddTradeDialog({
               ))}
             </select>
           </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Result
             <select
               value={result}
@@ -129,7 +129,7 @@ export function AddTradeDialog({
               <option value="BE">BE</option>
             </select>
           </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             P&L ($)
             <input
               type="number"
@@ -141,7 +141,7 @@ export function AddTradeDialog({
               required
             />
           </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             R:R
             <input
               type="number"
@@ -154,18 +154,18 @@ export function AddTradeDialog({
           </label>
         </div>
 
-        <label className="flex flex-col gap-1 text-[11px] text-[#93a9b6]">
+        <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
           Notes
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Setup, execution, mistakes…"
-            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6b8592] focus:ring-1 focus:ring-[#5ec8f5]"
+            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
           />
         </label>
 
-        <label className="hover-lift flex cursor-pointer items-center gap-2 rounded-xl bg-white/6 px-3 py-2.5 text-[12px] text-[#cfdde6] hover:bg-white/10">
+        <label className="hover-lift flex cursor-pointer items-center gap-2 rounded-xl bg-white/6 px-3 py-2.5 text-[12px] text-[#d7dbe0] hover:bg-white/10">
           <Upload className="size-4" />
           {file ? file.name : "Upload screenshot (converted to WebP)"}
           <input
@@ -176,13 +176,13 @@ export function AddTradeDialog({
           />
         </label>
 
-        {error && <p className="text-[12px] text-[#ff8f9b]">{error}</p>}
+        {error && <p className="text-[12px] text-[#f08a93]">{error}</p>}
 
         <button
           type="submit"
           disabled={busy}
           className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
-          style={{ background: "#5ec8f5", color: "#061017", fontWeight: 560 }}
+          style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
         >
           {busy && <Loader2 className="size-4 animate-spin" />} Save trade
         </button>

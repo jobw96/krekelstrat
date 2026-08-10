@@ -120,9 +120,9 @@ function Dashboard() {
             <img
               src={sjakAsset.url}
               alt="Krekelstrat Terminal profile photo"
-              className="size-10 rounded-2xl object-cover ring-1 ring-[#5ec8f5]/40"
+              className="size-10 rounded-2xl object-cover ring-1 ring-[#e5525f]/40"
             />
-            <span className="text-[10px] tracking-[0.06em] text-[#6b8592]">NQ/MNQ</span>
+            <span className="text-[10px] tracking-[0.06em] text-[#6a7076]">NQ/MNQ</span>
           </div>
           {RAIL_ITEMS.map(({ icon: Icon, label, to }) => {
             const active = to === "/";
@@ -142,10 +142,10 @@ function Dashboard() {
                 <Icon
                   className="size-[18px]"
                   strokeWidth={1.6}
-                  style={{ color: active ? "#ffffff" : "#6b8592" }}
+                  style={{ color: active ? "#ffffff" : "#6a7076" }}
                 />
                 {active && (
-                  <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#5ec8f5]" />
+                  <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
                 )}
               </Link>
             );
@@ -156,13 +156,13 @@ function Dashboard() {
         <div className="flex min-w-0 flex-1 flex-col gap-5">
           <header className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <Activity className="size-4 text-[#5ec8f5] lg:hidden" strokeWidth={1.8} />
+              <Activity className="size-4 text-[#e5525f] lg:hidden" strokeWidth={1.8} />
               <span className="text-[18px] text-white" style={{ fontWeight: 560 }}>
                 Krekelstrat Terminal
               </span>
               <Link
                 to="/journal"
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#cfdde6] hover:bg-white/12 lg:hidden"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/12 lg:hidden"
               >
                 <NotebookPen className="size-3.5" /> Journal
               </Link>
@@ -171,11 +171,11 @@ function Dashboard() {
               {nextRedFolder && (
                 <span
                   className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px]"
-                  style={{ background: "rgba(255,107,122,0.14)", color: "#ff8f9b" }}
+                  style={{ background: "rgba(229,82,95,0.14)", color: "#f08a93" }}
                 >
                   <span
                     className="pulse-dot inline-block size-1.5 rounded-full"
-                    style={{ background: "#ff6b7a" }}
+                    style={{ background: "#e5525f" }}
                   />
                   {nextRedFolder.title} ·{" "}
                   {DateTime.fromMillis(nextRedFolder.time)
@@ -201,8 +201,8 @@ function Dashboard() {
                     className="hover-lift inline-flex size-8 items-center justify-center rounded-full"
                     style={
                       compact === key
-                        ? { background: "#5ec8f5", color: "#061017" }
-                        : { color: "#93a9b6" }
+                        ? { background: "#e5525f", color: "#ffffff" }
+                        : { color: "#8b9298" }
                     }
                   >
                     <Icon className="size-4" strokeWidth={1.8} />
@@ -210,7 +210,7 @@ function Dashboard() {
                 ))}
               </div>
 
-              <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#93a9b6] sm:inline">
+              <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#8b9298] sm:inline">
                 MNQ=F · Yahoo Finance · ~10 min delayed
                 {mnq.data?.quoteTime
                   ? ` · quote ${DateTime.fromMillis(mnq.data.quoteTime)
@@ -223,8 +223,8 @@ function Dashboard() {
                 className="hover-lift inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] lg:hidden"
                 style={
                   sound
-                    ? { background: "#5ec8f5", color: "#061017", fontWeight: 560 }
-                    : { background: "rgba(255,255,255,0.06)", color: "#cfdde6" }
+                    ? { background: "#e5525f", color: "#ffffff", fontWeight: 560 }
+                    : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
                 }
               >
                 {sound ? <Bell className="size-3.5" /> : <BellOff className="size-3.5" />}
@@ -288,10 +288,10 @@ function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25 }}
-                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3 py-1.5 text-[13px] text-[#cfdde6]"
+                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3 py-1.5 text-[13px] text-[#d7dbe0]"
                 >
                   <Dot
-                    color={state?.active ? toneColor[state.active.def.tone] : "#6b8592"}
+                    color={state?.active ? toneColor[state.active.def.tone] : "#6a7076"}
                     pulse={Boolean(state?.active)}
                   />
                   {state?.active ? state.active.def.name : "No session active"}
@@ -305,7 +305,7 @@ function Dashboard() {
                 >
                   {state?.active ? state.active.def.tag : "Between sessions"}
                 </h1>
-                <p className="max-w-[46ch] text-[15px] text-[#93a9b6]">
+                <p className="max-w-[46ch] text-[15px] text-[#8b9298]">
                   {state?.active
                     ? state.active.def.focus
                     : `Next up is ${state?.next.def.name ?? "—"} — stay flat and let the model come to you.`}
@@ -323,15 +323,15 @@ function Dashboard() {
                     <div
                       className="flex flex-wrap items-end gap-x-8 gap-y-3 rounded-2xl border p-4"
                       style={{
-                        borderColor: "rgba(94,200,245,0.32)",
+                        borderColor: "rgba(229,82,95,0.32)",
                         background:
-                          "linear-gradient(130deg, rgba(94,200,245,0.14) 0%, rgba(255,255,255,0.04) 70%)",
-                        boxShadow: "0 0 0 1px rgba(94,200,245,0.08), 0 10px 30px -18px rgba(94,200,245,0.55)",
+                          "linear-gradient(130deg, rgba(229,82,95,0.14) 0%, rgba(255,255,255,0.04) 70%)",
+                        boxShadow: "0 0 0 1px rgba(229,82,95,0.08), 0 10px 30px -18px rgba(229,82,95,0.55)",
                       }}
                     >
                       <div className="flex flex-col gap-1.5">
-                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#5ec8f5]">
-                          <Dot color="#5ec8f5" pulse />
+                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#e5525f]">
+                          <Dot color="#e5525f" pulse />
                           Fair Price · session open
                         </span>
                         <span
@@ -339,31 +339,31 @@ function Dashboard() {
                           style={{
                             letterSpacing: "-0.02em",
                             fontWeight: 560,
-                            textShadow: "0 0 22px rgba(94,200,245,0.35)",
+                            textShadow: "0 0 22px rgba(229,82,95,0.35)",
                           }}
                         >
                           {open != null ? formatPrice(open) : "—"}
                         </span>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <span className="text-[11px] tracking-[0.04em] text-[#6b8592]">
+                        <span className="text-[11px] tracking-[0.04em] text-[#6a7076]">
                           Distance
                         </span>
                         <span
                           className="font-mono text-[19px] leading-none tabular"
                           style={{
                             color:
-                              diff == null ? "#93a9b6" : diff >= 0 ? "#4fd18b" : "#f2758f",
+                              diff == null ? "#8b9298" : diff >= 0 ? "#4fd18b" : "#e5525f",
                           }}
                         >
                           {diff != null ? `${formatPoints(diff)} pts` : "—"}
                         </span>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <span className="text-[11px] tracking-[0.04em] text-[#6b8592]">
+                        <span className="text-[11px] tracking-[0.04em] text-[#6a7076]">
                           Last
                         </span>
-                        <span className="font-mono text-[19px] leading-none text-[#cfdde6] tabular">
+                        <span className="font-mono text-[19px] leading-none text-[#d7dbe0] tabular">
                           {last != null ? formatPrice(last) : "—"}
                         </span>
                       </div>
@@ -381,7 +381,7 @@ function Dashboard() {
                       transition={{ duration: 0.5 }}
                     />
                   </div>
-                  <div className="flex justify-between font-mono text-[11px] text-[#6b8592]">
+                  <div className="flex justify-between font-mono text-[11px] text-[#6a7076]">
                     <span>Elapsed {Math.round(state.progress * 100)}%</span>
                     <span>
                       Ends {state.active.end.setZone(LOCAL_ZONE).toFormat("HH:mm")} AMS
@@ -392,7 +392,7 @@ function Dashboard() {
             </div>
 
             <div className="card-surface flex flex-col gap-5 p-7">
-              <div className="flex items-center gap-2 text-[13px] text-[#93a9b6]">
+              <div className="flex items-center gap-2 text-[13px] text-[#8b9298]">
                 <Timer className="size-3.5" strokeWidth={1.6} />
                 Countdown to {state?.next.def.name ?? "—"}
               </div>
@@ -401,7 +401,7 @@ function Dashboard() {
                 style={{
                   letterSpacing: "-0.035em",
                   fontWeight: 560,
-                  textShadow: "0 0 26px rgba(94,200,245,0.28)",
+                  textShadow: "0 0 26px rgba(229,82,95,0.28)",
                 }}
               >
                 {state ? formatCountdown(state.secondsToNext) : "--:--:--"}
@@ -427,8 +427,8 @@ function Dashboard() {
 
               <section className="pb-10">
                 <div className="mb-4 flex items-center gap-2">
-                  <Clock className="size-3.5 text-[#6b8592]" strokeWidth={1.6} />
-                  <h2 className="text-[15px] tracking-[-0.011em] text-[#cfdde6]">
+                  <Clock className="size-3.5 text-[#6a7076]" strokeWidth={1.6} />
+                  <h2 className="text-[15px] tracking-[-0.011em] text-[#d7dbe0]">
                     Sessions &amp; Volume Windows
                   </h2>
                 </div>
@@ -474,9 +474,9 @@ function ClockCell({
 }) {
   return (
     <div className="glass-inset flex flex-col gap-1 p-3">
-      <span className="text-[11px] text-[#6b8592]">{label}</span>
-      <span className="font-mono text-[19px] text-[#cfdde6] tabular">{value}</span>
-      <span className="font-mono text-[10px] text-[#6b8592]">{zone}</span>
+      <span className="text-[11px] text-[#6a7076]">{label}</span>
+      <span className="font-mono text-[19px] text-[#d7dbe0] tabular">{value}</span>
+      <span className="font-mono text-[10px] text-[#6a7076]">{zone}</span>
     </div>
   );
 }

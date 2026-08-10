@@ -27,7 +27,7 @@ export type Trade = {
 export const SESSION_OPTIONS = ["ASIA", "LO", "PRE", "MACRO", "NYMO", "LUNCH", "2PM"];
 
 export const WIN_GREEN = "#10B981";
-export const LOSS_RED = "#EF4444";
+export const LOSS_RED = "#e5525f";
 
 export function money(n: number) {
   const sign = n > 0 ? "+" : n < 0 ? "-" : "";
