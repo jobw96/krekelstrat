@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { DateTime } from "luxon";
+
 import { Activity, Bell, BellOff, Clock, Timer } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
 import { useMnq } from "@/hooks/useMnq";
@@ -81,6 +83,16 @@ function Dashboard() {
             </span>
             <span className="ml-2 font-mono text-[12px] text-[#62666d]">NQ / MNQ</span>
           </div>
+          <div className="flex items-center gap-3">
+            <span className="hidden font-mono text-[11px] text-[#62666d] sm:inline">
+              MNQ=F · Yahoo Finance · ~10 min delayed
+              {mnq.data?.quoteTime
+                ? ` · quote ${DateTime.fromMillis(mnq.data.quoteTime)
+                    .setZone(LOCAL_ZONE)
+                    .toFormat("HH:mm")} AMS`
+                : ""}
+            </span>
+
           <button
             onClick={() => setSound((s) => !s)}
             className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] transition-colors"
@@ -93,7 +105,9 @@ function Dashboard() {
             {sound ? <Bell className="size-3.5" /> : <BellOff className="size-3.5" />}
             {sound ? "Alerts on" : "Alerts off"}
           </button>
+          </div>
         </nav>
+
 
         {/* Hero */}
         <section className="grid gap-12 py-16 lg:grid-cols-[1.1fr_1fr] lg:items-end">

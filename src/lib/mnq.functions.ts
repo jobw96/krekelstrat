@@ -1,9 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 
-export type MnqCandle = { t: number; c: number };
+/** t = candle start (ms), o = minute open, c = minute close */
+export type MnqCandle = { t: number; o: number; c: number };
 export type MnqSeries = {
   price: number | null;
   candles: MnqCandle[];
+  /** Exchange timestamp of the last quote (ms) — the feed is delayed ~10 min */
+  quoteTime: number | null;
   updatedAt: number;
 };
 
@@ -19,26 +22,37 @@ export const getMnqSeries = createServerFn({ method: "GET" }).handler(
     const json = (await res.json()) as {
       chart?: {
         result?: Array<{
-          meta?: { regularMarketPrice?: number };
+          meta?: { regularMarketPrice?: number; regularMarketTime?: number };
           timestamp?: number[];
-          indicators?: { quote?: Array<{ close?: Array<number | null> }> };
+          indicators?: {
+            quote?: Array<{ close?: Array<number | null>; open?: Array<number | null> }>;
+          };
         }>;
       };
     };
     const r = json.chart?.result?.[0];
     const ts = r?.timestamp ?? [];
-    const closes = r?.indicators?.quote?.[0]?.close ?? [];
+    const quote = r?.indicators?.quote?.[0];
+    const closes = quote?.close ?? [];
+    const opens = quote?.open ?? [];
     const candles: MnqCandle[] = [];
     for (let i = 0; i < ts.length; i++) {
       const c = closes[i];
+      const o = opens[i];
       if (typeof c === "number" && Number.isFinite(c)) {
-        candles.push({ t: ts[i]! * 1000, c });
+        candles.push({
+          t: ts[i]! * 1000,
+          o: typeof o === "number" && Number.isFinite(o) ? o : c,
+          c,
+        });
       }
     }
     return {
       price: r?.meta?.regularMarketPrice ?? candles.at(-1)?.c ?? null,
       candles,
+      quoteTime: r?.meta?.regularMarketTime ? r.meta.regularMarketTime * 1000 : null,
       updatedAt: Date.now(),
     };
   },
 );
+
