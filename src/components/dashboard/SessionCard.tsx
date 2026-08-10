@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import type { DateTime } from "luxon";
-import { ArrowDownRight, ArrowUpRight, Undo2 } from "lucide-react";
+import { AlertTriangle, ArrowDownRight, ArrowUpRight, Undo2 } from "lucide-react";
 import {
   formatRange,
   statusOf,
@@ -22,6 +22,24 @@ import { currentCatalyst, eventsToday } from "@/lib/news";
 import { CatalystBadge, RedFolderList } from "./NewsCatalyst";
 import { Badge, Dot, toneColor } from "./primitives";
 
+/** Conditional colors for the pts / ticks distance metric. */
+export const LIVE_GREEN = "#10B981";
+export const LIVE_RED = "#EF4444";
+export const LIVE_NEUTRAL = "#93a9b6";
+
+export function distanceColor(diff: number | null) {
+  if (diff == null || diff === 0) return LIVE_NEUTRAL;
+  return diff > 0 ? LIVE_GREEN : LIVE_RED;
+}
+
+/** A red folder release is imminent/live from 30m before to 60m after. */
+export function redFolderImminent(events: RedFolderEvent[], now: DateTime) {
+  const ms = now.toMillis();
+  return eventsToday(events, now).some(
+    (e) => ms >= e.time - 30 * 60_000 && ms <= e.time + 60 * 60_000,
+  );
+}
+
 export function SessionCard({
   def,
   state,
@@ -29,6 +47,7 @@ export function SessionCard({
   price,
   candles,
   events = [],
+  compact = false,
 }: {
   def: SessionDef;
   state: ClockState;
@@ -36,6 +55,7 @@ export function SessionCard({
   price: number | null;
   candles: MnqCandle[];
   events?: RedFolderEvent[];
+  compact?: boolean;
 }) {
   const status = statusOf(def, state);
   const color = toneColor[def.tone];
@@ -43,12 +63,120 @@ export function SessionCard({
 
   const open = sessionOpenPrice(def, now, candles);
   const diff = open != null && price != null ? price - open : null;
-  const diffColor = diff == null ? "#93a9b6" : diff >= 0 ? "#35d39a" : "#ff6b7a";
+  const diffColor = distanceColor(diff);
   const read = detectPhase(open, price, candles);
   const isMacro = def.id === "macro";
   const todaysEvents = isMacro ? eventsToday(events, now) : [];
   const catalyst = isMacro ? currentCatalyst(events, now, candles) : null;
+  const redAlert = isMacro && todaysEvents.length > 0;
+  const redHot = redAlert && redFolderImminent(events, now);
 
+  const accent = active ? LIVE_GREEN : redHot ? "#ff4d5e" : color;
+
+  const surfaceStyle: React.CSSProperties = active
+    ? {
+        ["--glow" as never]: LIVE_GREEN,
+        borderColor: `${LIVE_GREEN}80`,
+        background: "rgba(30,44,54,0.86)",
+        backgroundImage: `linear-gradient(160deg, ${LIVE_GREEN}26 0%, rgba(255,255,255,0.05) 55%, rgba(255,255,255,0.02) 100%)`,
+        boxShadow: `0 0 0 1px ${LIVE_GREEN}59, 0 0 34px -6px ${LIVE_GREEN}80, 0 22px 50px -30px ${LIVE_GREEN}`,
+      }
+    : redHot
+      ? {
+          borderColor: "rgba(255,77,94,0.55)",
+          boxShadow:
+            "0 0 0 1px rgba(255,77,94,0.28), 0 0 28px -8px rgba(255,77,94,0.75)",
+          opacity: 0.92,
+        }
+      : { opacity: 0.62 };
+
+  const redFolderBadge = redAlert ? (
+    <span
+      className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.09em]"
+      style={{
+        background: "rgba(255,77,94,0.16)",
+        color: "#ff8f9b",
+        border: "1px solid rgba(255,77,94,0.4)",
+      }}
+    >
+      <span
+        className="pulse-dot inline-block size-1.5 rounded-full"
+        style={{ background: "#ff4d5e" }}
+      />
+      <AlertTriangle className="size-3" strokeWidth={2} />
+      Red Folder News
+    </span>
+  ) : null;
+
+  const statusChip = active ? (
+    <span
+      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+      style={{ background: LIVE_GREEN, color: "#04140e", fontWeight: 560 }}
+    >
+      <span
+        className="pulse-dot inline-block size-1.5 rounded-full"
+        style={{ background: "#04140e" }}
+      />
+      Live now
+    </span>
+  ) : (
+    <Badge color={accent}>
+      <Dot color={accent} />
+      {compact ? (status === "next" ? "Next" : "Closed") : def.tag}
+    </Badge>
+  );
+
+  if (compact) {
+    return (
+      <motion.article
+        layout
+        transition={{ duration: 0.3, ease: [0.2, 0, 0, 1] }}
+        className={`card-surface relative flex flex-col gap-2 overflow-hidden p-3.5 ${
+          active ? "glow-ring" : ""
+        }`}
+        style={surfaceStyle}
+      >
+        <header className="flex items-start justify-between gap-2">
+          <div className="flex min-w-0 flex-col">
+            <h3
+              className="truncate text-[14px] leading-tight"
+              style={{ color: active ? "#ffffff" : "#cfdde6", fontWeight: 560 }}
+            >
+              {def.name}
+            </h3>
+            <span className="font-mono text-[10px] tracking-[0.04em] text-[#6b8592]">
+              {formatRange(def, LOCAL_ZONE, now)} AMS
+            </span>
+          </div>
+          {statusChip}
+        </header>
+
+        {redFolderBadge}
+
+        <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
+          <div className="flex flex-col">
+            <span className="text-[9px] uppercase tracking-[0.08em] text-[#6b8592]">
+              Open
+            </span>
+            <span className="font-mono text-[13px] text-[#cfdde6] tabular">
+              {open != null ? formatPrice(open) : "—"}
+            </span>
+          </div>
+          <div className="flex flex-col items-end">
+            <span
+              className="font-mono text-[14px] tabular"
+              style={{ color: diffColor, fontWeight: 560 }}
+            >
+              {diff != null ? formatPoints(diff) : "—"}
+            </span>
+            <span className="font-mono text-[10px] tabular" style={{ color: diffColor }}>
+              {diff != null ? formatTicks(diff) : "—"}
+            </span>
+          </div>
+        </div>
+      </motion.article>
+    );
+  }
 
   return (
     <motion.article
@@ -57,14 +185,7 @@ export function SessionCard({
       className={`card-surface relative flex flex-col gap-3 overflow-hidden p-5 ${
         active ? "glow-ring" : ""
       }`}
-      style={
-        active
-          ? {
-              ["--glow" as never]: color,
-              backgroundImage: `linear-gradient(160deg, ${color}2e 0%, rgba(255,255,255,0.03) 55%, rgba(255,255,255,0.012) 100%)`,
-            }
-          : {}
-      }
+      style={surfaceStyle}
     >
       <header className="flex items-start justify-between gap-3">
         <div className="flex flex-col gap-0.5">
@@ -78,23 +199,7 @@ export function SessionCard({
             {def.short}
           </span>
         </div>
-        {active ? (
-          <span
-            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
-            style={{ background: color, color: "#061017", fontWeight: 560 }}
-          >
-            <span
-              className="pulse-dot inline-block size-1.5 rounded-full"
-              style={{ background: "#061017" }}
-            />
-            Live now
-          </span>
-        ) : (
-          <Badge color={color}>
-            <Dot color={color} />
-            {def.tag}
-          </Badge>
-        )}
+        {statusChip}
       </header>
 
       {active && (
@@ -104,13 +209,13 @@ export function SessionCard({
           style={{
             background:
               read.phase === "continuation"
-                ? `${read.direction >= 0 ? "#35d39a" : "#ff6b7a"}22`
+                ? `${read.direction >= 0 ? LIVE_GREEN : LIVE_RED}22`
                 : "rgba(69,211,224,0.14)",
             color:
               read.phase === "continuation"
                 ? read.direction >= 0
-                  ? "#35d39a"
-                  : "#ff6b7a"
+                  ? LIVE_GREEN
+                  : LIVE_RED
                 : read.phase === "reversion"
                   ? "#45d3e0"
                   : "#93a9b6",
@@ -133,10 +238,9 @@ export function SessionCard({
         </motion.div>
       )}
 
+      {redFolderBadge}
       {isMacro && <RedFolderList events={todaysEvents} />}
       {catalyst && <CatalystBadge read={catalyst} />}
-
-
 
       <dl className="glass-inset flex flex-col gap-1 p-3 font-mono text-[12px]">
         <div className="flex justify-between">
@@ -165,7 +269,10 @@ export function SessionCard({
           >
             {diff != null ? formatPoints(diff) : "—"}
           </span>
-          <span className="font-mono text-[10px] text-[#6b8592] tabular">
+          <span
+            className="font-mono text-[10px] tabular"
+            style={{ color: diff != null ? diffColor : "#6b8592" }}
+          >
             {diff != null ? formatTicks(diff) : "awaiting feed"}
           </span>
         </div>
@@ -177,7 +284,7 @@ export function SessionCard({
         <span
           className="text-[11px] uppercase tracking-[0.08em]"
           style={{
-            color: active ? color : status === "next" ? "#cfdde6" : "#6b8592",
+            color: active ? LIVE_GREEN : status === "next" ? "#cfdde6" : "#6b8592",
           }}
         >
           {active ? "Active now" : status === "next" ? "Upcoming next" : "Closed"}
@@ -193,7 +300,7 @@ export function SessionCard({
         <div className="h-1 w-full overflow-hidden rounded-full bg-white/8">
           <motion.div
             className="h-1 rounded-full"
-            style={{ background: color }}
+            style={{ background: LIVE_GREEN }}
             animate={{ width: `${state.progress * 100}%` }}
             transition={{ duration: 0.5 }}
           />
