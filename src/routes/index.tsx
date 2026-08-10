@@ -168,6 +168,31 @@ function Dashboard() {
                 </span>
               )}
 
+              <div className="inline-flex items-center gap-0.5 rounded-full bg-white/6 p-0.5">
+                {(
+                  [
+                    { key: false, Icon: LayoutGrid, label: "Full view" },
+                    { key: true, Icon: List, label: "Compact view" },
+                  ] as const
+                ).map(({ key, Icon, label }) => (
+                  <button
+                    key={label}
+                    title={label}
+                    aria-label={label}
+                    aria-pressed={compact === key}
+                    onClick={() => setCompact(key)}
+                    className="inline-flex size-8 items-center justify-center rounded-full transition-colors"
+                    style={
+                      compact === key
+                        ? { background: "#5ec8f5", color: "#061017" }
+                        : { color: "#93a9b6" }
+                    }
+                  >
+                    <Icon className="size-4" strokeWidth={1.8} />
+                  </button>
+                ))}
+              </div>
+
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#93a9b6] sm:inline">
                 MNQ=F · Yahoo Finance · ~10 min delayed
                 {mnq.data?.quoteTime
