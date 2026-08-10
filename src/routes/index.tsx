@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Activity, Bell, BellOff, Clock, Timer } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
+import { useMnq } from "@/hooks/useMnq";
 import {
   computeState,
   formatCountdown,
