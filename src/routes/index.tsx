@@ -81,6 +81,16 @@ function Dashboard() {
             </span>
             <span className="ml-2 font-mono text-[12px] text-[#62666d]">NQ / MNQ</span>
           </div>
+          <div className="flex items-center gap-3">
+            <span className="hidden font-mono text-[11px] text-[#62666d] sm:inline">
+              MNQ=F · Yahoo Finance · ~10 min delayed
+              {mnq.data?.quoteTime
+                ? ` · quote ${DateTime.fromMillis(mnq.data.quoteTime)
+                    .setZone(LOCAL_ZONE)
+                    .toFormat("HH:mm")} AMS`
+                : ""}
+            </span>
+
           <button
             onClick={() => setSound((s) => !s)}
             className="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] transition-colors"
