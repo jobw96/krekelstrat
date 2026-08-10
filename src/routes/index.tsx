@@ -101,9 +101,11 @@ function Dashboard() {
         {/* Icon rail */}
         <aside className="card-surface sticky top-5 hidden h-[calc(100vh-40px)] w-[76px] shrink-0 flex-col items-center gap-2 py-6 lg:flex">
           <div className="mb-4 flex flex-col items-center gap-1.5">
-            <span className="flex size-10 items-center justify-center rounded-2xl bg-[#5ec8f5]/15">
-              <Activity className="size-5 text-[#5ec8f5]" strokeWidth={1.8} />
-            </span>
+            <img
+              src={sjakAsset.url}
+              alt="Krekelstrat Terminal profielfoto"
+              className="size-10 rounded-2xl object-cover ring-1 ring-[#5ec8f5]/40"
+            />
             <span className="text-[10px] tracking-[0.06em] text-[#6b8592]">NQ/MNQ</span>
           </div>
           {RAIL_ICONS.map(({ icon: Icon, label, active }) => (
