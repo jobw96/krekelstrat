@@ -154,15 +154,25 @@ function JournalPage() {
             >
               <Plus className="size-4" /> Trade
             </button>
-            <button
-              onClick={async () => {
-                await signOut();
-                navigate({ to: "/auth" });
-              }}
-              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
-            >
-              <LogOut className="size-3.5" /> Log out
-            </button>
+            {isGuest ? (
+              <Link
+                to="/auth"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+              >
+                <LogOut className="size-3.5" /> Sign in
+              </Link>
+            ) : (
+              <button
+                onClick={async () => {
+                  await signOut();
+                  navigate({ to: "/auth" });
+                }}
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+              >
+                <LogOut className="size-3.5" /> Log out
+              </button>
+            )}
+
           </div>
         </header>
 
