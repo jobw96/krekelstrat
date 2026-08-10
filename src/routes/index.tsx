@@ -173,6 +173,10 @@ function Dashboard() {
             />
           )}
 
+          {catalyst && <CatalystBanner read={catalyst} />}
+
+
+
           {/* Hero bento */}
           <section className="grid gap-5 lg:grid-cols-[1.35fr_1fr]">
             <div
@@ -343,7 +347,9 @@ function Dashboard() {
                       now={now}
                       price={mnq.data?.price ?? null}
                       candles={mnq.data?.candles ?? []}
+                      events={news.data?.events ?? []}
                     />
+
                   ))}
                 </div>
               </section>
