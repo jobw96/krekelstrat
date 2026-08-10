@@ -50,9 +50,9 @@
 
 @theme inline {
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-  --radius-xl: 26px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -133,30 +133,29 @@
 /* Translucent frosted panel — the core surface of the design. */
 @utility card-surface {
   background-image: linear-gradient(
-    160deg,
-    rgba(255, 255, 255, 0.07) 0%,
-    rgba(255, 255, 255, 0.025) 45%,
-    rgba(255, 255, 255, 0.012) 100%
+    150deg,
+    rgba(255, 255, 255, 0.035) 0%,
+    rgba(255, 255, 255, 0.012) 45%,
+    rgba(255, 255, 255, 0) 100%
   );
-  background-color: rgba(15, 18, 22, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 22px;
-  backdrop-filter: blur(18px);
+  background-color: #0d0f12;
+  border: 1px solid rgba(255, 255, 255, 0.055);
+  border-radius: 10px;
   box-shadow: var(--shadow-xl);
 }
 
 @utility glass-inset {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: rgba(255, 255, 255, 0.022);
+  border: 1px solid rgba(255, 255, 255, 0.045);
   border-radius: 16px;
 }
 
 @utility app-shell {
   background-color: #050608;
   background-image:
-    radial-gradient(900px 600px at 12% -10%, rgba(229, 82, 95, 0.16), transparent 60%),
-    radial-gradient(700px 520px at 90% 0%, rgba(90, 98, 114, 0.13), transparent 60%),
-    radial-gradient(800px 700px at 65% 110%, rgba(142,146,152, 0.08), transparent 60%);
+    radial-gradient(1100px 700px at 8% 105%, rgba(24, 52, 84, 0.55), transparent 62%),
+    radial-gradient(900px 600px at 95% 8%, rgba(18, 34, 56, 0.42), transparent 60%),
+    radial-gradient(700px 500px at 55% 40%, rgba(12, 22, 36, 0.5), transparent 70%);
 }
 
 @utility tabular {
@@ -212,8 +211,8 @@
   &:hover {
     transform: scale(1.035);
     box-shadow:
-      0 0 0 1px rgba(229, 82, 95, 0.28),
-      0 8px 26px -14px rgba(229, 82, 95, 0.85);
+      0 0 0 1px rgba(255, 255, 255, 0.14),
+      0 8px 26px -14px rgba(229, 82, 95, 0.7);
     filter: brightness(1.06);
   }
 
