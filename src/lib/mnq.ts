@@ -15,8 +15,9 @@ export function lastSessionStart(def: SessionDef, now: DateTime, daysBack = 0): 
 }
 
 /**
- * Close of the 1-minute candle at (or just after) the session's opening minute.
- * Falls back to earlier occurrences when the market was closed (weekends/holidays).
+ * Open of the 1-minute candle that starts exactly at the session's opening minute.
+ * Falls back to the first print within 10 minutes, and to earlier occurrences when
+ * the market was closed (weekends/holidays).
  */
 export function sessionOpenPrice(
   def: SessionDef,
@@ -26,11 +27,14 @@ export function sessionOpenPrice(
   if (!candles.length) return null;
   for (let back = 0; back < 5; back++) {
     const startMs = lastSessionStart(def, now, back).toMillis();
-    const hit = candles.find((c) => c.t >= startMs && c.t <= startMs + 10 * 60_000);
-    if (hit) return hit.c;
+    const exact = candles.find((c) => c.t >= startMs && c.t < startMs + 60_000);
+    if (exact) return exact.o;
+    const near = candles.find((c) => c.t >= startMs && c.t <= startMs + 10 * 60_000);
+    if (near) return near.o;
   }
   return null;
 }
+
 
 
 export type Phase = "continuation" | "reversion" | "pending";
