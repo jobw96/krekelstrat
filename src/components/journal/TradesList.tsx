@@ -90,6 +90,8 @@ export function TradesList({
   onChanged: () => void;
 }) {
   const [visible, setVisible] = useState(PAGE);
+  const [open, setOpen] = useState<Record<string, boolean>>({});
+
 
   useEffect(() => {
     setVisible(PAGE);
