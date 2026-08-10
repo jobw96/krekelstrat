@@ -11,6 +11,7 @@ import {
   Clock,
   LayoutGrid,
   List,
+  NotebookPen,
   Timer,
 } from "lucide-react";
 import { useNow } from "@/hooks/useNow";
