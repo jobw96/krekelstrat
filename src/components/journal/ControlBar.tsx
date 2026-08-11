@@ -103,22 +103,29 @@ export function ControlBar({
 
   return (
     <div className="card-surface flex flex-wrap items-center gap-2 p-2.5">
-      <Dropdown label={account}>
+      <Dropdown
+        label={
+          filters.strategy === "all"
+            ? "All Strategies"
+            : (strategies.find((s) => s.id === filters.strategy)?.name ?? "All Strategies")
+        }
+      >
         {(close) =>
-          ACCOUNTS.map((a) => (
+          [{ id: "all", name: "All Strategies" }, ...strategies].map((s) => (
             <Item
-              key={a}
-              active={a === account}
+              key={s.id}
+              active={s.id === filters.strategy}
               onClick={() => {
-                onAccount(a);
+                onFilters({ ...filters, strategy: s.id });
                 close();
               }}
             >
-              {a}
+              {s.name}
             </Item>
           ))
         }
       </Dropdown>
+
 
       <Dropdown label={RANGE_LABELS[range]}>
         {(close) =>
