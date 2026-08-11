@@ -278,6 +278,8 @@ export function SessionChart({
           </span>
         </div>
       )}
+      </div>
     </section>
+
   );
 }
