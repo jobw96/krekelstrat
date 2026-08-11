@@ -153,7 +153,7 @@ function Dashboard() {
               className="card-surface relative flex flex-col justify-between gap-8 overflow-hidden p-7"
               style={{
                 backgroundImage: state?.active
-                  ? `linear-gradient(150deg, ${toneColor[state.active.def.tone]}33 0%, rgba(255,255,255,0.03) 55%, rgba(255,255,255,0.012) 100%)`
+                  ? `linear-gradient(180deg, ${toneColor[state.active.def.tone]}12 0%, rgba(255,255,255,0.02) 20%, rgba(255,255,255,0) 55%)`
                   : undefined,
               }}
             >
