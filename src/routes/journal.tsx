@@ -276,7 +276,7 @@ function JournalPage() {
             {view === "resources" && <AnalyticsPanel trades={trades} />}
           </div>
         </div>
-      </div>
+
 
       {adding && (
         <AddTradeDialog
