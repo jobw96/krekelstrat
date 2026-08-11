@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DateTime } from "luxon";
 import { LineChart } from "lucide-react";
 
@@ -263,7 +263,7 @@ export function SessionChart({
 
       {hover && (
         <div
-          className="pointer-events-none absolute top-14 rounded-lg border px-2.5 py-1.5 font-mono text-[11px] whitespace-nowrap"
+          className="pointer-events-none absolute top-1 rounded-lg border px-2.5 py-1.5 font-mono text-[11px] whitespace-nowrap"
           style={{
             left: Math.min(Math.max(hover.x - 52, 0), Math.max(W - 116, 0)),
             borderColor: "rgba(255,255,255,0.09)",
