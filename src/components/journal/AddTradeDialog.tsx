@@ -8,6 +8,8 @@ import {
   type Strategy,
   type TradeResult,
 } from "@/lib/journal";
+import { DateTimePicker } from "@/components/journal/DateTimePicker";
+
 
 const inputCls =
   "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]";
