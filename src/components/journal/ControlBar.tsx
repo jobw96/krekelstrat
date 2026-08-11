@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ChevronDown, Filter, RefreshCw } from "lucide-react";
 import { SESSION_OPTIONS, type Strategy, type TradeResult } from "@/lib/journal";
+import { DatePicker } from "@/components/journal/DateTimePicker";
+
 
 export type RangeKey = "month" | "30d" | "ytd" | "all" | "custom";
 
@@ -146,23 +148,12 @@ export function ControlBar({
 
       {range === "custom" && (
         <span className="flex items-center gap-1.5">
-          <input
-            type="date"
-            value={from}
-            onChange={(e) => onFrom(e.target.value)}
-            aria-label="From date"
-            className="rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] outline-none"
-          />
+          <DatePicker value={from} onChange={onFrom} label="From date" placeholder="From" />
           <span className="text-[12px] text-[#6a7076]">→</span>
-          <input
-            type="date"
-            value={to}
-            onChange={(e) => onTo(e.target.value)}
-            aria-label="To date"
-            className="rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] outline-none"
-          />
+          <DatePicker value={to} onChange={onTo} label="To date" placeholder="To" />
         </span>
       )}
+
 
       <Dropdown label={activeFilters ? `Filters · ${activeFilters}` : "Filters"}>
         {() => (
