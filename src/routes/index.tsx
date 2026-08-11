@@ -197,16 +197,24 @@ function Dashboard() {
                   const diff = open != null && last != null ? last - open : null;
                   return (
                     <div
-                      className="flex flex-wrap items-end gap-x-8 gap-y-3 rounded-2xl border p-4"
+                      className="relative flex flex-wrap items-end gap-x-8 gap-y-3 overflow-hidden rounded-xl border p-4 pl-5"
                       style={{
-                        borderColor: "rgba(229,82,95,0.32)",
-                        background:
-                          "linear-gradient(130deg, rgba(229,82,95,0.14) 0%, rgba(255,255,255,0.04) 70%)",
-                        boxShadow: "0 0 0 1px rgba(229,82,95,0.08), 0 10px 30px -18px rgba(229,82,95,0.55)",
+                        borderColor: "rgba(255,255,255,0.07)",
+                        background: "rgba(255,255,255,0.022)",
+                        boxShadow:
+                          "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 18px 40px -30px rgba(0,0,0,0.9)",
                       }}
                     >
+                      <span
+                        aria-hidden
+                        className="absolute inset-y-0 left-0 w-px"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, rgba(229,82,95,0) 0%, rgba(229,82,95,0.75) 50%, rgba(229,82,95,0) 100%)",
+                        }}
+                      />
                       <div className="flex flex-col gap-1.5">
-                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#e5525f]">
+                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#a4747a]">
                           <Dot color="#e5525f" pulse />
                           Fair Price · session open
                         </span>
@@ -215,7 +223,6 @@ function Dashboard() {
                           style={{
                             letterSpacing: "-0.02em",
                             fontWeight: 560,
-                            textShadow: "0 0 22px rgba(229,82,95,0.35)",
                           }}
                         >
                           {open != null ? formatPrice(open) : "—"}
