@@ -10,8 +10,6 @@ import {
   CandlestickChart,
   BellOff,
   Clock,
-  LayoutGrid,
-  List,
   NotebookPen,
   Timer,
 } from "lucide-react";
@@ -95,7 +93,7 @@ function Dashboard() {
   const mnq = useMnq();
   const news = useRedFolder();
   const [sound, setSound] = useState(false);
-  const [compact, setCompact] = useState(false);
+  const compact = true;
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
   const catalyst = now
@@ -368,13 +366,7 @@ function Dashboard() {
                     Sessions &amp; Volume Windows
                   </h2>
                 </div>
-                <div
-                  className={
-                    compact
-                      ? "grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                      : "grid gap-5 sm:grid-cols-2 xl:grid-cols-3"
-                  }
-                >
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {SESSIONS.map((def) => (
                     <SessionCard
                       key={def.id}
