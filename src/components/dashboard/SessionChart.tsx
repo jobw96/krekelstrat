@@ -200,7 +200,7 @@ export function SessionChart({
             />
             <text
               x={W - PAD_R + 8}
-              y={Math.abs(openY - lastY) < 13 ? openY - 8 : openY + 3.5}
+              y={Math.abs(openY - lastY) < 14 ? (lastY <= openY ? openY + 14 : openY - 9) : openY + 3.5}
               fill="#a9b0b6"
               fontSize={11}
               fontFamily="ui-monospace, monospace"
