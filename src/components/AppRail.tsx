@@ -5,20 +5,11 @@ import sjakAsset from "@/assets/sjak.png.asset.json";
 const RAIL_ITEMS = [
   { icon: CandlestickChart, label: "Sessions", to: "/" as const, search: undefined },
   { icon: NotebookPen, label: "Journal", to: "/journal" as const, search: undefined },
-  {
-    icon: Landmark,
-    label: "Prop Firms",
-    to: "/journal" as const,
-    search: { view: "propfirms" as const },
-  },
+  { icon: Landmark, label: "Prop Firms", to: "/prop-firms" as const, search: undefined },
 ];
 
 export function AppRail() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const searchView = useRouterState({
-    select: (s) => (s.location.search as { view?: string }).view,
-  });
-
   return (
     <aside className="card-surface sticky top-5 hidden h-[calc(100vh-40px)] w-[76px] shrink-0 flex-col items-center gap-2 self-start py-6 lg:flex">
       <div className="mb-4 flex flex-col items-center gap-1.5">
@@ -30,11 +21,7 @@ export function AppRail() {
         <span className="text-[10px] tracking-[0.06em] text-[#6a7076]">NQ/MNQ</span>
       </div>
       {RAIL_ITEMS.map(({ icon: Icon, label, to, search }) => {
-        const isProp = search?.view === "propfirms";
-        const active =
-          to === "/"
-            ? pathname === "/"
-            : pathname.startsWith(to) && (isProp ? searchView === "propfirms" : searchView !== "propfirms");
+        const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
         return (
           <Link
             key={label}
