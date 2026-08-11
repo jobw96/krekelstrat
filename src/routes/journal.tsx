@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import { LogOut, Menu, Plus } from "lucide-react";
@@ -58,6 +58,9 @@ function JournalPage() {
 
   const search = Route.useSearch();
   const [view, setView] = useState<JournalView>(search.view ?? "dashboard");
+  useEffect(() => {
+    if (search.view) setView(search.view);
+  }, [search.view]);
   const [addingStrategy, setAddingStrategy] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
