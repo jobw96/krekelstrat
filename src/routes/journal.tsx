@@ -19,6 +19,7 @@ import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
 import { DayTradesDialog } from "@/components/journal/DayTradesDialog";
 import { TradesList } from "@/components/journal/TradesList";
 import { JournalNav, type JournalView } from "@/components/journal/JournalNav";
+import { AppRail } from "@/components/AppRail";
 import { StatsBar } from "@/components/journal/StatsBar";
 import { ZellaCalendar, type CalendarMode } from "@/components/journal/ZellaCalendar";
 import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
@@ -166,6 +167,8 @@ function JournalPage() {
   return (
     <main className="app-shell min-h-screen">
       <div className="mx-auto flex w-full max-w-[1680px] gap-4 px-3 py-4 sm:px-5">
+        <AppRail />
+
         <JournalNav
           view={view}
           onView={setView}
