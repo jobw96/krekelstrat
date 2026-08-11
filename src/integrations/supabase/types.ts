@@ -43,6 +43,7 @@ export type Database = {
           created_at: string
           date: string
           id: string
+          improvement: string | null
           notes: string | null
           pnl: number
           result: string
@@ -51,11 +52,14 @@ export type Database = {
           session: string | null
           strategy_id: string | null
           user_id: string
+          went_right: string | null
+          went_wrong: string | null
         }
         Insert: {
           created_at?: string
           date?: string
           id?: string
+          improvement?: string | null
           notes?: string | null
           pnl?: number
           result?: string
@@ -64,11 +68,14 @@ export type Database = {
           session?: string | null
           strategy_id?: string | null
           user_id: string
+          went_right?: string | null
+          went_wrong?: string | null
         }
         Update: {
           created_at?: string
           date?: string
           id?: string
+          improvement?: string | null
           notes?: string | null
           pnl?: number
           result?: string
@@ -77,6 +84,8 @@ export type Database = {
           session?: string | null
           strategy_id?: string | null
           user_id?: string
+          went_right?: string | null
+          went_wrong?: string | null
         }
         Relationships: [
           {

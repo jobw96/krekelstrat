@@ -21,6 +21,9 @@ export type Trade = {
   session: string | null;
   screenshot_url: string | null;
   notes: string | null;
+  went_right: string | null;
+  went_wrong: string | null;
+  improvement: string | null;
   created_at: string;
 };
 
