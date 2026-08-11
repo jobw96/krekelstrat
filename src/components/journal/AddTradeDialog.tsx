@@ -92,6 +92,10 @@ export function AddTradeDialog({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const sign = result === "WIN" ? 1 : result === "LOSS" ? -1 : 0;
+  const signedPnl = Math.abs(Number(pnl || 0)) * (sign === 0 ? 0 : sign);
+
+
   async function save(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
