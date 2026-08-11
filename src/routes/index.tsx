@@ -21,7 +21,7 @@ import { useRedFolder } from "@/hooks/useRedFolder";
 import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
 import { CatalystBanner } from "@/components/dashboard/NewsCatalyst";
 import { currentCatalyst, eventsToday } from "@/lib/news";
-import sjakAsset from "@/assets/sjak.png.asset.json";
+import { AppRail } from "@/components/AppRail";
 import { formatPoints, formatPrice, sessionOpenPrice } from "@/lib/mnq";
 
 
