@@ -140,6 +140,12 @@ function RootComponent() {
 
   const busy = !hydrated || transitioning;
 
+  // Jump back to the top instantly while the view is faded out, so the
+  // sticky rail never re-positions mid-animation.
+  useEffect(() => {
+    if (typeof window !== "undefined") window.scrollTo(0, 0);
+  }, [pathname]);
+
   // Only show the overlay when a transition actually takes a while,
   // so quick route swaps are a single clean fade instead of a flash.
   useEffect(() => {
@@ -170,7 +176,7 @@ function RootComponent() {
             <AppRail />
             <div
               key={pathname}
-              className="flex min-w-0 flex-1 gap-4 transition-opacity duration-150 ease-linear"
+              className="flex min-h-[calc(100vh-32px)] min-w-0 flex-1 gap-4 transition-opacity duration-150 ease-linear"
               style={{ opacity: busy ? 0 : 1 }}
             >
               <Outlet />
