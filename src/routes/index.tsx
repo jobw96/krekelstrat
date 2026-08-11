@@ -21,7 +21,6 @@ import { useRedFolder } from "@/hooks/useRedFolder";
 import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
 import { CatalystBanner } from "@/components/dashboard/NewsCatalyst";
 import { currentCatalyst, eventsToday } from "@/lib/news";
-import { AppRail } from "@/components/AppRail";
 import { formatPoints, formatPrice, sessionOpenPrice } from "@/lib/mnq";
 
 
@@ -112,13 +111,7 @@ function Dashboard() {
 
 
   return (
-    <main className="app-shell min-h-screen">
-      <div className="mx-auto flex w-full max-w-[1680px] gap-4 px-3 py-4 sm:px-5">
-        {/* Icon rail */}
-        <AppRail />
-
-
-        <div className="flex min-w-0 flex-1 flex-col gap-5">
+    <div className="flex min-w-0 flex-1 flex-col gap-5">
           <header className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <Activity className="size-4 text-[#e5525f] lg:hidden" strokeWidth={1.8} />
@@ -422,9 +415,7 @@ function Dashboard() {
               </section>
             </>
           )}
-        </div>
-      </div>
-    </main>
+    </div>
   );
 }
 
