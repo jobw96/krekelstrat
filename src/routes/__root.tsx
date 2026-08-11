@@ -145,8 +145,8 @@ function RootComponent() {
       {bare ? (
         <div
           key={pathname}
-          className="view-enter transition-[opacity,filter] duration-300"
-          style={busy ? { opacity: 0, filter: "blur(6px)" } : undefined}
+          className="view-enter transition-opacity duration-200 ease-out"
+          style={{ opacity: busy ? 0 : 1 }}
         >
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
@@ -158,8 +158,8 @@ function RootComponent() {
             <AppRail />
             <div
               key={pathname}
-              className="view-enter flex min-w-0 flex-1 gap-4 transition-[opacity,filter] duration-300"
-              style={busy ? { opacity: 0, filter: "blur(6px)" } : undefined}
+              className="view-enter flex min-w-0 flex-1 gap-4 transition-opacity duration-200 ease-out"
+              style={{ opacity: busy ? 0 : 1 }}
             >
               <Outlet />
             </div>
