@@ -28,7 +28,7 @@ export function AppRail() {
             to={to}
             title={label}
             aria-label={label}
-            className="hover-lift group relative flex size-11 items-center justify-center rounded-2xl"
+            className="hover-lift group relative flex size-11 items-center justify-center rounded-2xl transition-colors duration-300"
             style={active ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
           >
             <Icon

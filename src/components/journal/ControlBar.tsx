@@ -41,7 +41,7 @@ function Dropdown({
             aria-label="Close menu"
             onClick={() => setOpen(false)}
           />
-          <div className="card-surface absolute left-0 top-[calc(100%+10px)] z-20 flex min-w-[210px] flex-col gap-0.5 p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
+          <div className="card-surface dialog-enter absolute left-0 top-[calc(100%+10px)] z-20 flex min-w-[210px] flex-col gap-0.5 p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
             {children(() => setOpen(false))}
           </div>
         </>
