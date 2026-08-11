@@ -275,3 +275,67 @@ button:disabled,
 [aria-disabled="true"] {
   cursor: not-allowed;
 }
+
+/* ---------- Premium view / route transitions ---------- */
+@keyframes view-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.994);
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@utility view-enter {
+  animation: view-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@utility overlay-enter {
+  animation: overlay-in 220ms ease both;
+}
+
+@utility dialog-enter {
+  animation: dialog-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Children fade in with a gentle stagger for a layered, premium feel */
+@utility stagger-children {
+  & > * {
+    animation: view-in 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  & > *:nth-child(1) { animation-delay: 20ms; }
+  & > *:nth-child(2) { animation-delay: 70ms; }
+  & > *:nth-child(3) { animation-delay: 120ms; }
+  & > *:nth-child(4) { animation-delay: 170ms; }
+  & > *:nth-child(5) { animation-delay: 210ms; }
+  & > *:nth-child(6) { animation-delay: 250ms; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .view-enter,
+  .dialog-enter,
+  .overlay-enter,
+  .stagger-children > * {
+    animation: none !important;
+  }
+}
