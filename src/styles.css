@@ -226,3 +226,20 @@
     filter: none;
   }
 }
+
+/* Native form controls: keep dropdowns/pickers dark and readable */
+select,
+input,
+textarea {
+  color-scheme: dark;
+}
+
+select option,
+select optgroup {
+  background-color: #0d0f12;
+  color: #e7eaee;
+}
+
+select:disabled option {
+  color: #6a7076;
+}
