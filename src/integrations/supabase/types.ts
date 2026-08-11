@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      prop_accounts: {
+        Row: {
+          account_size: number | null
+          activation_fee: number
+          breached_at: string | null
+          cost: number
+          created_at: string
+          firm: string
+          id: string
+          notes: string | null
+          passed_at: string | null
+          payout_total: number
+          phase: string
+          started_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          account_size?: number | null
+          activation_fee?: number
+          breached_at?: string | null
+          cost?: number
+          created_at?: string
+          firm: string
+          id?: string
+          notes?: string | null
+          passed_at?: string | null
+          payout_total?: number
+          phase?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          account_size?: number | null
+          activation_fee?: number
+          breached_at?: string | null
+          cost?: number
+          created_at?: string
+          firm?: string
+          id?: string
+          notes?: string | null
+          passed_at?: string | null
+          payout_total?: number
+          phase?: string
+          started_at?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       strategies: {
         Row: {
           created_at: string

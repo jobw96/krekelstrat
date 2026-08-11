@@ -10,6 +10,7 @@ import {
   ListOrdered,
   PieChart,
   Plus,
+  Landmark,
   Target,
 } from "lucide-react";
 
@@ -19,6 +20,7 @@ export type JournalView =
   | "trades"
   | "notebook"
   | "reports"
+  | "propfirms"
   | "strategies"
   | "resources";
 
@@ -29,6 +31,7 @@ const ITEMS: { id: JournalView; label: string; icon: typeof Home }[] = [
   { id: "notebook", label: "Notebook", icon: BookOpen },
   { id: "reports", label: "Reports", icon: PieChart },
   { id: "strategies", label: "Strategies", icon: Target },
+  { id: "propfirms", label: "Prop Firms", icon: Landmark },
   { id: "resources", label: "Resources", icon: Link2 },
 ];
 
