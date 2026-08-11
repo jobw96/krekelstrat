@@ -97,6 +97,9 @@ export function AddTradeDialog({
   const [rr, setRr] = useState("");
   const [result, setResult] = useState<TradeResult>("WIN");
   const [notes, setNotes] = useState("");
+  const [wentRight, setWentRight] = useState("");
+  const [wentWrong, setWentWrong] = useState("");
+  const [improvement, setImprovement] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -121,6 +124,9 @@ export function AddTradeDialog({
         result,
         session,
         notes: notes || null,
+        went_right: wentRight || null,
+        went_wrong: wentWrong || null,
+        improvement: improvement || null,
         screenshot_url: screenshot,
       });
       if (err) throw err;
@@ -228,6 +234,42 @@ export function AddTradeDialog({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Setup, execution, mistakes…"
+            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
+          />
+        </label>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <label className="flex flex-col gap-1 text-[11px]" style={{ color: WIN_GREEN }}>
+            What went right
+            <textarea
+              value={wentRight}
+              onChange={(e) => setWentRight(e.target.value)}
+              rows={3}
+              placeholder="Rights: what did you execute well?"
+              className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1"
+              style={{ boxShadow: `inset 0 0 0 1px ${WIN_GREEN}33` }}
+            />
+          </label>
+          <label className="flex flex-col gap-1 text-[11px]" style={{ color: LOSS_RED }}>
+            What went wrong
+            <textarea
+              value={wentWrong}
+              onChange={(e) => setWentWrong(e.target.value)}
+              rows={3}
+              placeholder="Wrongs: mistakes, rule breaks…"
+              className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1"
+              style={{ boxShadow: `inset 0 0 0 1px ${LOSS_RED}33` }}
+            />
+          </label>
+        </div>
+
+        <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          Improvement for next time
+          <textarea
+            value={improvement}
+            onChange={(e) => setImprovement(e.target.value)}
+            rows={2}
+            placeholder="One concrete adjustment…"
             className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
           />
         </label>
