@@ -3,6 +3,8 @@ import { Loader2, X } from "lucide-react";
 import { z } from "zod";
 
 import { supabase } from "@/integrations/supabase/client";
+import { SelectField } from "@/components/journal/SelectField";
+
 import {
   ACCOUNT_SIZES,
   PROP_FIRMS,
@@ -119,30 +121,31 @@ export function PropFirmDialog({
         </header>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5">
             <span className={label}>Prop firm</span>
-            <select value={firm} onChange={(e) => setFirm(e.target.value)} className={field}>
-              {PROP_FIRMS.map((f) => (
-                <option key={f.name} value={f.name} className="bg-[#0f1216]">
-                  {f.name}
-                </option>
-              ))}
-              <option value="__other" className="bg-[#0f1216]">
-                Other…
-              </option>
-            </select>
-          </label>
+            <SelectField
+              label="Prop firm"
+              value={firm}
+              onChange={setFirm}
+              options={[
+                ...PROP_FIRMS.map((f) => ({ value: f.name, label: f.name })),
+                { value: "__other", label: "Other…" },
+              ]}
+            />
+          </div>
 
-          <label className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5">
             <span className={label}>Account size</span>
-            <select value={size} onChange={(e) => setSize(e.target.value)} className={field}>
-              {ACCOUNT_SIZES.map((s) => (
-                <option key={s} value={s} className="bg-[#0f1216]">
-                  ${(s / 1000).toFixed(0)}K
-                </option>
-              ))}
-            </select>
-          </label>
+            <SelectField
+              label="Account size"
+              value={size}
+              onChange={setSize}
+              options={ACCOUNT_SIZES.map((s) => ({
+                value: String(s),
+                label: `$${(s / 1000).toFixed(0)}K`,
+              }))}
+            />
+          </div>
         </div>
 
         {isCustom && (
@@ -159,37 +162,33 @@ export function PropFirmDialog({
         )}
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5">
             <span className={label}>Phase</span>
-            <select
+            <SelectField
+              label="Phase"
               value={phase}
-              onChange={(e) => setPhase(e.target.value as PropPhase)}
-              className={field}
-            >
-              <option value="evaluation" className="bg-[#0f1216]">
-                Evaluation
-              </option>
-              <option value="funded" className="bg-[#0f1216]">
-                Funded
-              </option>
-            </select>
-          </label>
+              onChange={(v) => setPhase(v as PropPhase)}
+              options={[
+                { value: "evaluation", label: "Evaluation" },
+                { value: "funded", label: "Funded" },
+              ]}
+            />
+          </div>
 
-          <label className="flex flex-col gap-1.5">
+          <div className="flex flex-col gap-1.5">
             <span className={label}>Status</span>
-            <select
+            <SelectField
+              label="Status"
               value={status}
-              onChange={(e) => setStatus(e.target.value as PropStatus)}
-              className={field}
-            >
-              {(Object.keys(STATUS_LABEL) as PropStatus[]).map((s) => (
-                <option key={s} value={s} className="bg-[#0f1216]">
-                  {STATUS_LABEL[s]}
-                </option>
-              ))}
-            </select>
-          </label>
+              onChange={(v) => setStatus(v as PropStatus)}
+              options={(Object.keys(STATUS_LABEL) as PropStatus[]).map((s) => ({
+                value: s,
+                label: STATUS_LABEL[s],
+              }))}
+            />
+          </div>
         </div>
+
 
         <div className="grid gap-3 sm:grid-cols-3">
           <label className="flex flex-col gap-1.5">
