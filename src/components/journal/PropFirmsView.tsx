@@ -29,6 +29,18 @@ function Stat({ label, value, sub, color }: { label: string; value: string; sub?
   );
 }
 
+function HeroStat({ label, value, sub, color }: { label: string; value: string; sub?: string; color: string }) {
+  return (
+    <div className="card-surface flex flex-col gap-1.5 p-4">
+      <span className="text-[10.5px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
+      <span className="font-mono text-[26px] leading-none tabular" style={{ color, fontWeight: 560 }}>
+        {value}
+      </span>
+      {sub && <span className="text-[11px] text-[#6a7076]">{sub}</span>}
+    </div>
+  );
+}
+
 /** Prop firm tracker: evaluations, costs, pass/breach rates and funded stats. */
 export function PropFirmsView({ userId }: { userId: string }) {
   const qc = useQueryClient();
