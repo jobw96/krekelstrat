@@ -12,6 +12,62 @@ import {
 const inputCls =
   "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]";
 
+function SelectField({
+  value,
+  options,
+  onChange,
+}: {
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const current = options.find((o) => o.value === value);
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={`${inputCls} flex items-center justify-between text-left ${open ? "ring-1 ring-[#e5525f]" : ""}`}
+      >
+        <span>{current?.label ?? "None"}</span>
+        <ChevronDown
+          className={`size-3.5 text-[#6a7076] transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="fixed inset-0 z-30 cursor-default"
+            onClick={() => setOpen(false)}
+          />
+          <div className="card-surface absolute left-0 right-0 top-[calc(100%+8px)] z-40 flex max-h-[220px] flex-col gap-0.5 overflow-y-auto p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
+            {options.map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                onClick={() => {
+                  onChange(o.value);
+                  setOpen(false);
+                }}
+                className="rounded-lg px-2.5 py-1.5 text-left text-[12.5px] transition-colors hover:bg-white/8"
+                style={{
+                  color: o.value === value ? "#ffffff" : "#8b9298",
+                  fontWeight: o.value === value ? 560 : 400,
+                }}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export function AddTradeDialog({
   userId,
   strategies,
