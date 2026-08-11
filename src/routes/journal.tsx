@@ -292,6 +292,13 @@ function JournalPage() {
           onSaved={refresh}
         />
       )}
+      {addingStrategy && (
+        <StrategyDialog
+          userId={user.id}
+          onClose={() => setAddingStrategy(false)}
+          onSaved={refresh}
+        />
+      )}
       {day && (
         <DayTradesDialog
           day={day}
