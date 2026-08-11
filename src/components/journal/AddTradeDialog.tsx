@@ -43,7 +43,7 @@ function SelectField({
             className="fixed inset-0 z-30 cursor-default"
             onClick={() => setOpen(false)}
           />
-          <div className="card-surface absolute left-0 right-0 top-[calc(100%+8px)] z-40 flex max-h-[220px] flex-col gap-0.5 overflow-y-auto p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
+          <div className="card-surface dialog-enter absolute left-0 right-0 top-[calc(100%+8px)] z-40 flex max-h-[220px] flex-col gap-0.5 overflow-y-auto p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
             {options.map((o) => (
               <button
                 key={o.value}
@@ -119,10 +119,10 @@ export function AddTradeDialog({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-sm">
+    <div className="overlay-enter fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-sm">
       <form
         onSubmit={save}
-        className="card-surface flex max-h-[90vh] w-full max-w-[520px] flex-col gap-3 overflow-y-auto p-5"
+        className="card-surface dialog-enter flex max-h-[90vh] w-full max-w-[520px] flex-col gap-3 overflow-y-auto p-5"
       >
         <header className="flex items-center justify-between">
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>

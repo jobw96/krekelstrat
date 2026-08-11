@@ -244,43 +244,45 @@ function JournalPage() {
             onToggleCurrency={() => setCurrency((c) => (c === "USD" ? "R" : "USD"))}
           />
 
-          {view === "dashboard" && (
-            <>
-              <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_360px]">
-                <ZellaCalendar
-                  month={month}
-                  trades={filtered}
-                  mode={calMode}
-                  onMode={setCalMode}
-                  onMonthChange={setMonth}
-                  onSelectDay={setDay}
-                />
-                <AnalyticsPanel trades={trades} />
-              </div>
+          <div key={view} className="view-enter flex flex-col gap-3">
+            {view === "dashboard" && (
+              <>
+                <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_360px]">
+                  <ZellaCalendar
+                    month={month}
+                    trades={filtered}
+                    mode={calMode}
+                    onMode={setCalMode}
+                    onMonthChange={setMonth}
+                    onSelectDay={setDay}
+                  />
+                  <AnalyticsPanel trades={trades} />
+                </div>
+                <TradesList trades={trades} strategies={strategies} onChanged={refresh} />
+              </>
+            )}
+
+            {view === "day" && <DayView trades={filtered} onSelectDay={setDay} />}
+
+            {view === "trades" && (
               <TradesList trades={trades} strategies={strategies} onChanged={refresh} />
-            </>
-          )}
+            )}
 
-          {view === "day" && <DayView trades={filtered} onSelectDay={setDay} />}
+            {view === "notebook" && <Notebook trades={trades} />}
 
-          {view === "trades" && (
-            <TradesList trades={trades} strategies={strategies} onChanged={refresh} />
-          )}
+            {view === "reports" && <Reports trades={trades} strategies={strategies} />}
 
-          {view === "notebook" && <Notebook trades={trades} />}
+            {view === "strategies" && (
+              <StrategiesView
+                strategies={strategies}
+                trades={allTrades}
+                onAdd={addStrategy}
+                onChanged={refresh}
+              />
+            )}
 
-          {view === "reports" && <Reports trades={trades} strategies={strategies} />}
-
-          {view === "strategies" && (
-            <StrategiesView
-              strategies={strategies}
-              trades={allTrades}
-              onAdd={addStrategy}
-              onChanged={refresh}
-            />
-          )}
-
-          {view === "resources" && <AnalyticsPanel trades={trades} />}
+            {view === "resources" && <AnalyticsPanel trades={trades} />}
+          </div>
         </div>
       </div>
 
