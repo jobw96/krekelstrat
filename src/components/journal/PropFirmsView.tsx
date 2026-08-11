@@ -207,7 +207,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
       {dialog.open && (
         <PropFirmDialog
           userId={userId}
-          account={dialog.account}
+          account={dialog.account ?? null}
           onClose={() => setDialog({ open: false })}
           onSaved={refresh}
         />
