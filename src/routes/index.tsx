@@ -29,6 +29,7 @@ import {
 } from "@/lib/sessions";
 import { SessionCard, redFolderImminent } from "@/components/dashboard/SessionCard";
 import { TimelineBar } from "@/components/dashboard/TimelineBar";
+import { SessionChart } from "@/components/dashboard/SessionChart";
 import { Dot, toneColor } from "@/components/dashboard/primitives";
 
 export const Route = createFileRoute("/")({
@@ -314,6 +315,13 @@ function Dashboard() {
           {now && state && (
             <>
               <TimelineBar now={now} />
+
+              <SessionChart
+                state={state}
+                now={now}
+                price={mnq.data?.price ?? null}
+                candles={mnq.data?.candles ?? []}
+              />
 
               <section className="pb-10">
                 <div className="mb-4 flex items-center gap-2">
