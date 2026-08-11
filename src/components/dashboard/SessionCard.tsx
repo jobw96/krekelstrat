@@ -76,19 +76,19 @@ export function SessionCard({
   const surfaceStyle: Record<string, string | number> = active
     ? {
         ["--glow" as never]: LIVE_GREEN,
-        borderColor: `${LIVE_GREEN}80`,
-        background: "rgba(30,44,54,0.86)",
-        backgroundImage: `linear-gradient(160deg, ${LIVE_GREEN}26 0%, rgba(255,255,255,0.05) 55%, rgba(255,255,255,0.02) 100%)`,
-        boxShadow: `0 0 0 1px ${LIVE_GREEN}59, 0 0 34px -6px ${LIVE_GREEN}80, 0 22px 50px -30px ${LIVE_GREEN}`,
+        borderColor: `${LIVE_GREEN}59`,
+        background: "#0c1113",
+        backgroundImage: `linear-gradient(180deg, ${LIVE_GREEN}1a 0%, rgba(255,255,255,0.028) 22%, rgba(255,255,255,0) 60%)`,
+        boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.07), 0 0 0 1px ${LIVE_GREEN}33, 0 0 26px -10px ${LIVE_GREEN}80, 0 24px 56px -32px rgba(0,0,0,0.95)`,
       }
     : redHot
       ? {
-          borderColor: "rgba(255,77,94,0.55)",
+          borderColor: "rgba(255,77,94,0.34)",
           boxShadow:
-            "0 0 0 1px rgba(255,77,94,0.28), 0 0 28px -8px rgba(255,77,94,0.75)",
-          opacity: 0.92,
+            "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(255,77,94,0.16), 0 0 22px -12px rgba(255,77,94,0.7)",
+          opacity: 0.94,
         }
-      : { opacity: 0.62 };
+      : { opacity: 0.72 };
 
   const redFolderBadge = redAlert ? (
     <span

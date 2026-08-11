@@ -35,16 +35,22 @@ export function TimelineBar({ now }: { now: DateTime }) {
         </span>
       </div>
 
-      <div className="relative h-12 w-full overflow-hidden rounded-2xl bg-white/4">
+      <div
+        className="relative h-12 w-full overflow-hidden rounded-xl"
+        style={{
+          background: "rgba(255,255,255,0.025)",
+          boxShadow: "inset 0 1px 2px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.045)",
+        }}
+      >
         {blocks.map((b) => (
           <div
             key={b.key}
-            className="absolute top-0 h-full rounded-xl"
+            className="absolute top-0 h-full rounded-lg"
             style={{
               left: `${b.left}%`,
               width: `${b.width}%`,
-              background: `linear-gradient(180deg, ${toneColor[b.def.tone]}3d, ${toneColor[b.def.tone]}17)`,
-              boxShadow: `${toneColor[b.def.tone]}59 0 0 0 1px inset`,
+              background: `linear-gradient(180deg, ${toneColor[b.def.tone]}24, ${toneColor[b.def.tone]}0d)`,
+              boxShadow: `inset 0 0 0 1px ${toneColor[b.def.tone]}33, inset 0 1px 0 0 rgba(255,255,255,0.05)`,
             }}
             title={b.def.name}
           >
@@ -54,20 +60,19 @@ export function TimelineBar({ now }: { now: DateTime }) {
           </div>
         ))}
         <div
-          className="pointer-events-none absolute top-0 z-20 h-full w-[3px] -translate-x-1/2 rounded-full transition-[left] duration-1000 ease-linear"
+          className="pointer-events-none absolute top-0 z-20 h-full w-px -translate-x-1/2 transition-[left] duration-1000 ease-linear"
           style={{
             left: `${nowPct}%`,
             background:
-              "linear-gradient(180deg, #ffd7db 0%, #e5525f 45%, rgba(229,82,95,0.25) 100%)",
-            boxShadow:
-              "0 0 10px 2px rgba(229,82,95,0.85), 0 0 26px 6px rgba(229,82,95,0.45)",
+              "linear-gradient(180deg, rgba(229,82,95,0) 0%, #f08a93 45%, rgba(229,82,95,0.15) 100%)",
+            boxShadow: "0 0 8px 0 rgba(229,82,95,0.55)",
           }}
         >
           <span
-            className="pulse-dot absolute -top-[5px] left-1/2 size-2.5 -translate-x-1/2 rounded-full"
+            className="absolute -top-[3px] left-1/2 size-1.5 -translate-x-1/2 rounded-full"
             style={{
               background: "#ffd7db",
-              boxShadow: "0 0 12px 4px rgba(229,82,95,0.8)",
+              boxShadow: "0 0 8px 1px rgba(229,82,95,0.7)",
             }}
           />
         </div>

@@ -122,12 +122,12 @@ function Dashboard() {
             <motion.div
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border px-4 py-2.5 text-[12px]"
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border px-4 py-2.5 text-[12px]"
               style={{
-                borderColor: "rgba(255,77,94,0.45)",
-                background:
-                  "linear-gradient(120deg, rgba(255,77,94,0.18) 0%, rgba(255,255,255,0.03) 70%)",
-                color: "#ffc4ca",
+                borderColor: "rgba(255,77,94,0.28)",
+                background: "rgba(255,77,94,0.07)",
+                boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.05)",
+                color: "#f0b8bd",
               }}
             >
               <AlertTriangle className="size-3.5" style={{ color: "#ff4d5e" }} />
@@ -153,7 +153,7 @@ function Dashboard() {
               className="card-surface relative flex flex-col justify-between gap-8 overflow-hidden p-7"
               style={{
                 backgroundImage: state?.active
-                  ? `linear-gradient(150deg, ${toneColor[state.active.def.tone]}33 0%, rgba(255,255,255,0.03) 55%, rgba(255,255,255,0.012) 100%)`
+                  ? `linear-gradient(180deg, ${toneColor[state.active.def.tone]}12 0%, rgba(255,255,255,0.02) 20%, rgba(255,255,255,0) 55%)`
                   : undefined,
               }}
             >
@@ -197,16 +197,24 @@ function Dashboard() {
                   const diff = open != null && last != null ? last - open : null;
                   return (
                     <div
-                      className="flex flex-wrap items-end gap-x-8 gap-y-3 rounded-2xl border p-4"
+                      className="relative flex flex-wrap items-end gap-x-8 gap-y-3 overflow-hidden rounded-xl border p-4 pl-5"
                       style={{
-                        borderColor: "rgba(229,82,95,0.32)",
-                        background:
-                          "linear-gradient(130deg, rgba(229,82,95,0.14) 0%, rgba(255,255,255,0.04) 70%)",
-                        boxShadow: "0 0 0 1px rgba(229,82,95,0.08), 0 10px 30px -18px rgba(229,82,95,0.55)",
+                        borderColor: "rgba(255,255,255,0.07)",
+                        background: "rgba(255,255,255,0.022)",
+                        boxShadow:
+                          "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 18px 40px -30px rgba(0,0,0,0.9)",
                       }}
                     >
+                      <span
+                        aria-hidden
+                        className="absolute inset-y-0 left-0 w-px"
+                        style={{
+                          background:
+                            "linear-gradient(180deg, rgba(229,82,95,0) 0%, rgba(229,82,95,0.75) 50%, rgba(229,82,95,0) 100%)",
+                        }}
+                      />
                       <div className="flex flex-col gap-1.5">
-                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#e5525f]">
+                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#a4747a]">
                           <Dot color="#e5525f" pulse />
                           Fair Price · session open
                         </span>
@@ -215,7 +223,6 @@ function Dashboard() {
                           style={{
                             letterSpacing: "-0.02em",
                             fontWeight: 560,
-                            textShadow: "0 0 22px rgba(229,82,95,0.35)",
                           }}
                         >
                           {open != null ? formatPrice(open) : "—"}
@@ -232,7 +239,7 @@ function Dashboard() {
                               diff == null ? "#8b9298" : diff >= 0 ? "#4fd18b" : "#e5525f",
                           }}
                         >
-                          {diff != null ? `${formatPoints(diff)} pts` : "—"}
+                          {diff != null ? formatPoints(diff) : "—"}
                         </span>
                       </div>
                       <div className="flex flex-col gap-1">
@@ -249,10 +256,18 @@ function Dashboard() {
 
               {state?.active && (
                 <div className="flex flex-col gap-2">
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/8">
+                  <div
+                    className="h-[3px] w-full overflow-hidden rounded-full"
+                    style={{
+                      background: "rgba(255,255,255,0.06)",
+                      boxShadow: "inset 0 1px 1px rgba(0,0,0,0.6)",
+                    }}
+                  >
                     <motion.div
-                      className="h-1.5 rounded-full"
-                      style={{ background: toneColor[state.active.def.tone] }}
+                      className="h-[3px] rounded-full"
+                      style={{
+                        background: `linear-gradient(90deg, ${toneColor[state.active.def.tone]}66 0%, ${toneColor[state.active.def.tone]} 100%)`,
+                      }}
                       animate={{ width: `${state.progress * 100}%` }}
                       transition={{ duration: 0.5 }}
                     />
@@ -277,7 +292,6 @@ function Dashboard() {
                 style={{
                   letterSpacing: "-0.035em",
                   fontWeight: 560,
-                  textShadow: "0 0 26px rgba(229,82,95,0.28)",
                 }}
               >
                 {state ? formatCountdown(state.secondsToNext) : "--:--:--"}
