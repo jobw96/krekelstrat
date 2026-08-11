@@ -292,7 +292,6 @@ function Dashboard() {
                 style={{
                   letterSpacing: "-0.035em",
                   fontWeight: 560,
-                  textShadow: "0 0 26px rgba(229,82,95,0.28)",
                 }}
               >
                 {state ? formatCountdown(state.secondsToNext) : "--:--:--"}
