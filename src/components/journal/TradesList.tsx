@@ -4,6 +4,7 @@ import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   money,
+  WIN_GREEN as _WG,
   signedScreenshotUrl,
   WIN_GREEN,
   LOSS_RED,
@@ -102,7 +103,13 @@ function TradeDetails({
   }, [trade.screenshot_url]);
 
   async function patch(field: "went_right" | "went_wrong" | "improvement", v: string) {
-    await supabase.from("trades").update({ [field]: v || null }).eq("id", trade.id);
+    const patchData =
+      field === "went_right"
+        ? { went_right: v || null }
+        : field === "went_wrong"
+          ? { went_wrong: v || null }
+          : { improvement: v || null };
+    await supabase.from("trades").update(patchData).eq("id", trade.id);
     onChanged();
   }
 
@@ -260,7 +267,16 @@ export function TradesList({
                 </button>
               </span>
             </div>
-            {isOpen && <TradeDetails trade={t} strategyName={strategyName} />}
+            <div
+              className="grid transition-[grid-template-rows,opacity] duration-300 ease-out"
+              style={{ gridTemplateRows: isOpen ? "1fr" : "0fr", opacity: isOpen ? 1 : 0 }}
+            >
+              <div className="overflow-hidden">
+                {isOpen && (
+                  <TradeDetails trade={t} strategyName={strategyName} onChanged={onChanged} />
+                )}
+              </div>
+            </div>
           </article>
         );
       })}
