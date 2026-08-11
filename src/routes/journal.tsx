@@ -28,6 +28,9 @@ import { PropFirmsView } from "@/components/journal/PropFirmsView";
 import { ControlBar, type Filters, type RangeKey } from "@/components/journal/ControlBar";
 
 export const Route = createFileRoute("/journal")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    view: typeof search['view'] === "string" ? (search['view'] as JournalView) : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Trading Journal — Krekelstrat Terminal" },
@@ -53,7 +56,8 @@ function JournalPage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
 
-  const [view, setView] = useState<JournalView>("dashboard");
+  const search = Route.useSearch();
+  const [view, setView] = useState<JournalView>(search.view ?? "dashboard");
   const [addingStrategy, setAddingStrategy] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
