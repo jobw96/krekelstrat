@@ -4,7 +4,7 @@ import { LineChart } from "lucide-react";
 
 import type { MnqCandle } from "@/lib/mnq.functions";
 import { formatPoints, formatPrice, lastSessionStart, sessionOpenPrice } from "@/lib/mnq";
-import { LOCAL_ZONE, type SessionState } from "@/lib/sessions";
+import { LOCAL_ZONE, type ClockState } from "@/lib/sessions";
 
 const W = 1000;
 const H = 260;
@@ -21,7 +21,7 @@ export function SessionChart({
   price,
   candles,
 }: {
-  state: SessionState;
+  state: ClockState;
   now: DateTime;
   price: number | null;
   candles: MnqCandle[];
