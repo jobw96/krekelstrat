@@ -20,7 +20,7 @@ import { StrategyDialog } from "@/components/journal/StrategyDialog";
 import { DayTradesDialog } from "@/components/journal/DayTradesDialog";
 import { TradesList } from "@/components/journal/TradesList";
 import { JournalNav, type JournalView } from "@/components/journal/JournalNav";
-import { AppRail } from "@/components/AppRail";
+import { AppLoader } from "@/components/AppLoader";
 import { StatsBar } from "@/components/journal/StatsBar";
 import { ZellaCalendar, type CalendarMode } from "@/components/journal/ZellaCalendar";
 import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
@@ -156,19 +156,12 @@ function JournalPage() {
   }
 
   if (loading || !user) {
-    return (
-      <main className="app-shell flex min-h-screen items-center justify-center">
-        <span className="text-[13px] text-[#8b9298]">Loading…</span>
-      </main>
-    );
+    return <AppLoader />;
   }
 
   return (
-    <main className="app-shell min-h-screen">
-      <div className="mx-auto flex w-full max-w-[1680px] gap-4 px-3 py-4 sm:px-5">
-        <AppRail />
-
-        <JournalNav
+    <>
+      <JournalNav
           view={view}
           onView={setView}
           collapsed={collapsed}
@@ -309,7 +302,7 @@ function JournalPage() {
           onChanged={refresh}
         />
       )}
-    </main>
+    </>
   );
 }
 
