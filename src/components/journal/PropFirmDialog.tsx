@@ -3,6 +3,8 @@ import { Loader2, X } from "lucide-react";
 import { z } from "zod";
 
 import { supabase } from "@/integrations/supabase/client";
+import { SelectField } from "@/components/journal/SelectField";
+
 import {
   ACCOUNT_SIZES,
   PROP_FIRMS,
