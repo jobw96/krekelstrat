@@ -1,0 +1,129 @@
+import { money, WIN_GREEN, LOSS_RED, type Metrics } from "@/lib/journal";
+import type { AvgStats } from "@/lib/journal-stats";
+
+function Gauge({ value, color }: { value: number; color: string }) {
+  const r = 34;
+  const circ = Math.PI * r;
+  const pct = Math.max(0, Math.min(100, value));
+  return (
+    <svg viewBox="0 0 84 48" className="h-[48px] w-[84px]">
+      <path
+        d="M 8 42 A 34 34 0 0 1 76 42"
+        fill="none"
+        stroke="rgba(255,255,255,0.09)"
+        strokeWidth="7"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 8 42 A 34 34 0 0 1 76 42"
+        fill="none"
+        stroke={color}
+        strokeWidth="7"
+        strokeLinecap="round"
+        strokeDasharray={`${(pct / 100) * circ} ${circ}`}
+        style={{ transition: "stroke-dasharray 400ms ease" }}
+      />
+    </svg>
+  );
+}
+
+function Card({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="card-surface hover-lift flex flex-col gap-2 p-4">
+      <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
+      {children}
+    </div>
+  );
+}
+
+/** TradeZella-style KPI row: net P&L, win rate gauges and win/loss ratio bar. */
+export function StatsBar({
+  metrics,
+  stats,
+  currency,
+  onToggleCurrency,
+}: {
+  metrics: Metrics;
+  stats: AvgStats;
+  currency: "USD" | "R";
+  onToggleCurrency: () => void;
+}) {
+  const pnlColor = metrics.totalPnl > 0 ? WIN_GREEN : metrics.totalPnl < 0 ? LOSS_RED : "#8b9298";
+  const ratioTotal = stats.avgWin + stats.avgLoss;
+  const winShare = ratioTotal ? (stats.avgWin / ratioTotal) * 100 : 50;
+  const ratio = stats.avgLoss ? stats.avgWin / stats.avgLoss : stats.avgWin ? Infinity : 0;
+
+  return (
+    <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <Card label="Net P&L">
+        <div className="flex items-end justify-between gap-2">
+          <span
+            className="font-mono text-[30px] leading-none tabular"
+            style={{ color: pnlColor, fontWeight: 560 }}
+          >
+            {currency === "USD"
+              ? money(metrics.totalPnl)
+              : `${metrics.avgRr == null ? "0.00" : (metrics.avgRr * metrics.count).toFixed(2)}R`}
+          </span>
+          <button
+            onClick={onToggleCurrency}
+            className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-[#d7dbe0] hover:bg-white/12"
+          >
+            {currency === "USD" ? "$" : "R"}
+          </button>
+        </div>
+        <span className="font-mono text-[11px] text-[#6a7076]">{metrics.count} trades</span>
+      </Card>
+
+      <Card label="Trade Win %">
+        <div className="flex items-center justify-between gap-2">
+          <span className="font-mono text-[26px] leading-none tabular text-white" style={{ fontWeight: 560 }}>
+            {metrics.winRate.toFixed(1)}%
+          </span>
+          <Gauge value={metrics.winRate} color={WIN_GREEN} />
+        </div>
+        <span className="font-mono text-[11px] text-[#6a7076]">
+          {Math.round((metrics.winRate / 100) * metrics.count)}W ·{" "}
+          {metrics.count - Math.round((metrics.winRate / 100) * metrics.count)}L
+        </span>
+      </Card>
+
+      <Card label="Day Win %">
+        <div className="flex items-center justify-between gap-2">
+          <span className="font-mono text-[26px] leading-none tabular text-white" style={{ fontWeight: 560 }}>
+            {stats.dayWinRate.toFixed(1)}%
+          </span>
+          <Gauge value={stats.dayWinRate} color="#5ec8f5" />
+        </div>
+        <span className="font-mono text-[11px] text-[#6a7076]">
+          {stats.greenDays} green · {stats.redDays} red days
+        </span>
+      </Card>
+
+      <Card label="Avg Win / Loss">
+        <div className="flex items-baseline justify-between gap-2">
+          <span className="font-mono text-[15px] tabular" style={{ color: WIN_GREEN }}>
+            ${stats.avgWin.toFixed(0)}
+          </span>
+          <span className="font-mono text-[18px] tabular text-white" style={{ fontWeight: 560 }}>
+            {ratio === Infinity ? "∞" : ratio.toFixed(2)}
+          </span>
+          <span className="font-mono text-[15px] tabular" style={{ color: LOSS_RED }}>
+            ${stats.avgLoss.toFixed(0)}
+          </span>
+        </div>
+        <div className="flex h-2 overflow-hidden rounded-full bg-white/6">
+          <span style={{ width: `${winShare}%`, background: WIN_GREEN }} />
+          <span style={{ width: `${100 - winShare}%`, background: LOSS_RED }} />
+        </div>
+        <span className="font-mono text-[11px] text-[#6a7076]">Avg win vs avg loss</span>
+      </Card>
+    </section>
+  );
+}

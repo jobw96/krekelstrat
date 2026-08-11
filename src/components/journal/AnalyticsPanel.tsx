@@ -1,0 +1,114 @@
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { ExternalLink } from "lucide-react";
+import { WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
+import { performanceCurve } from "@/lib/journal-stats";
+
+const LINKS = [
+  { label: "ForexFactory", href: "https://www.forexfactory.com/calendar", note: "Red folder news" },
+  { label: "TradingView", href: "https://www.tradingview.com/chart/?symbol=CME_MINI%3AMNQ1%21", note: "MNQ chart" },
+  { label: "CME MNQ", href: "https://www.cmegroup.com/markets/equities/nasdaq/micro-e-mini-nasdaq-100.html", note: "Contract specs" },
+  { label: "Econoday", href: "https://www.econoday.com", note: "Macro calendar" },
+];
+
+/** Right-hand analytics stack: performance curves + quick external tools. */
+export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
+  const data = performanceCurve(trades);
+
+  return (
+    <div className="flex flex-col gap-3">
+      <section className="card-surface flex flex-col gap-3 p-4">
+        <header className="flex flex-col gap-0.5">
+          <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
+            Win % · Avg Win · Avg Loss
+          </h3>
+          <span className="text-[11px] text-[#6a7076]">Cumulative curves over time</span>
+        </header>
+
+        {data.length === 0 ? (
+          <p className="py-10 text-center text-[12px] text-[#6a7076]">No data in this range.</p>
+        ) : (
+          <div className="h-[220px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={data} margin={{ top: 6, right: 6, bottom: 0, left: -18 }}>
+                <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fill: "#6a7076", fontSize: 10 }}
+                  axisLine={false}
+                  tickLine={false}
+                  minTickGap={24}
+                />
+                <YAxis
+                  yAxisId="pct"
+                  tick={{ fill: "#6a7076", fontSize: 10 }}
+                  axisLine={false}
+                  tickLine={false}
+                  domain={[0, 100]}
+                />
+                <YAxis yAxisId="usd" orientation="right" hide />
+                <Tooltip
+                  contentStyle={{
+                    background: "#0f1216",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: 10,
+                    fontSize: 12,
+                  }}
+                  labelStyle={{ color: "#8b9298" }}
+                />
+                <Line
+                  yAxisId="pct"
+                  type="monotone"
+                  dataKey="winRate"
+                  name="Win %"
+                  stroke="#5ec8f5"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  yAxisId="usd"
+                  type="monotone"
+                  dataKey="avgWin"
+                  name="Avg win $"
+                  stroke={WIN_GREEN}
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  yAxisId="usd"
+                  type="monotone"
+                  dataKey="avgLoss"
+                  name="Avg loss $"
+                  stroke={LOSS_RED}
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </section>
+
+      <section className="card-surface flex flex-col gap-3 p-4">
+        <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
+          Quick tools
+        </h3>
+        <div className="grid grid-cols-2 gap-2">
+          {LINKS.map((l) => (
+            <a
+              key={l.label}
+              href={l.href}
+              target="_blank"
+              rel="noreferrer"
+              className="hover-lift flex flex-col gap-0.5 rounded-xl bg-white/5 p-3 text-left"
+            >
+              <span className="flex items-center gap-1.5 text-[12.5px] text-white">
+                {l.label} <ExternalLink className="size-3 text-[#6a7076]" />
+              </span>
+              <span className="text-[10.5px] text-[#6a7076]">{l.note}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
