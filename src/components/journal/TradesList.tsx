@@ -4,7 +4,7 @@ import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   money,
-  WIN_GREEN as _WG,
+  
   signedScreenshotUrl,
   WIN_GREEN,
   LOSS_RED,
