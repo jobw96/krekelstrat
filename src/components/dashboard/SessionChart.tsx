@@ -134,7 +134,7 @@ export function SessionChart({
         viewBox={`0 0 ${W} ${H}`}
         width={W}
         height={H}
-        className="block w-full"
+        className="block w-full" style={{ height: H }}
 
         onMouseMove={onMove}
         onMouseLeave={() => setHover(null)}
