@@ -28,8 +28,66 @@ function Detail({ label, value }: { label: string; value: string }) {
   );
 }
 
+function Reflection({
+  label,
+  value,
+  color,
+  placeholder,
+  onSave,
+}: {
+  label: string;
+  value: string | null;
+  color: string;
+  placeholder: string;
+  onSave: (v: string) => Promise<void>;
+}) {
+  const [draft, setDraft] = useState(value ?? "");
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setDraft(value ?? "");
+  }, [value]);
+
+  const dirty = draft !== (value ?? "");
+
+  return (
+    <div className="flex flex-col gap-1">
+      <span className="text-[10px] uppercase tracking-[0.1em]" style={{ color }}>
+        {label}
+      </span>
+      <textarea
+        value={draft}
+        onChange={(e) => {
+          setDraft(e.target.value);
+          setSaved(false);
+        }}
+        onBlur={async () => {
+          if (!dirty) return;
+          await onSave(draft);
+          setSaved(true);
+        }}
+        rows={3}
+        placeholder={placeholder}
+        className="w-full resize-y rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#d7dbe0] outline-none placeholder:text-[#5c6268] focus:bg-white/6"
+        style={{ boxShadow: `inset 0 0 0 1px ${color}2e` }}
+      />
+      <span className="h-3 text-[10px] text-[#6a7076]">
+        {dirty ? "Unsaved — click outside to save" : saved ? "Saved" : ""}
+      </span>
+    </div>
+  );
+}
+
 /** Expanded panel: lazily resolves the signed screenshot URL for one trade. */
-function TradeDetails({ trade, strategyName }: { trade: Trade; strategyName: string }) {
+function TradeDetails({
+  trade,
+  strategyName,
+  onChanged,
+}: {
+  trade: Trade;
+  strategyName: string;
+  onChanged: () => void;
+}) {
   const [shot, setShot] = useState<string | null>(null);
 
   useEffect(() => {
@@ -43,40 +101,74 @@ function TradeDetails({ trade, strategyName }: { trade: Trade; strategyName: str
     };
   }, [trade.screenshot_url]);
 
+  async function patch(field: "went_right" | "went_wrong" | "improvement", v: string) {
+    await supabase.from("trades").update({ [field]: v || null }).eq("id", trade.id);
+    onChanged();
+  }
+
   return (
-    <div className="flex flex-col gap-3 border-t border-white/6 px-3 pb-3 pt-3">
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Detail label="P&L" value={money(Number(trade.pnl))} />
-        <Detail label="R:R" value={trade.rr != null ? `${Number(trade.rr).toFixed(2)}R` : "—"} />
-        <Detail label="Session" value={trade.session ?? "—"} />
-        <Detail label="Strategy" value={strategyName} />
+    <div className="grid gap-4 border-t border-white/6 p-3 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]">
+      <div className="flex flex-col gap-2">
+        {trade.screenshot_url ? (
+          shot ? (
+            <a href={shot} target="_blank" rel="noreferrer" className="block">
+              <img
+                src={shot}
+                alt="Trade screenshot"
+                loading="lazy"
+                className="w-full rounded-xl border border-white/8"
+              />
+            </a>
+          ) : (
+            <div className="h-48 w-full animate-pulse rounded-xl bg-white/5" />
+          )
+        ) : (
+          <div className="grid h-40 place-items-center rounded-xl border border-dashed border-white/8 text-[11px] text-[#6a7076]">
+            No screenshot attached
+          </div>
+        )}
       </div>
 
-      {trade.notes && (
-        <p className="rounded-lg bg-white/4 p-3 text-[12px] leading-[1.55] text-[#8b9298]">
-          {trade.notes}
-        </p>
-      )}
+      <div className="flex min-w-0 flex-col gap-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2">
+          <Detail label="P&L" value={money(Number(trade.pnl))} />
+          <Detail label="R:R" value={trade.rr != null ? `${Number(trade.rr).toFixed(2)}R` : "—"} />
+          <Detail label="Session" value={trade.session ?? "—"} />
+          <Detail label="Strategy" value={strategyName} />
+        </div>
 
-      {trade.screenshot_url ? (
-        shot ? (
-          <a href={shot} target="_blank" rel="noreferrer" className="block">
-            <img
-              src={shot}
-              alt="Trade screenshot"
-              loading="lazy"
-              className="w-full rounded-xl border border-white/8"
-            />
-          </a>
-        ) : (
-          <div className="h-40 w-full animate-pulse rounded-xl bg-white/5" />
-        )
-      ) : (
-        <p className="text-[11px] text-[#6a7076]">No screenshot attached.</p>
-      )}
+        {trade.notes && (
+          <p className="rounded-lg bg-white/4 p-3 text-[12px] leading-[1.55] text-[#8b9298]">
+            {trade.notes}
+          </p>
+        )}
+
+        <Reflection
+          label="Rights — what went well"
+          value={trade.went_right}
+          color={WIN_GREEN}
+          placeholder="Which rules did you follow correctly?"
+          onSave={(v) => patch("went_right", v)}
+        />
+        <Reflection
+          label="Wrongs — what went wrong"
+          value={trade.went_wrong}
+          color={LOSS_RED}
+          placeholder="Mistakes, rule breaks, emotions…"
+          onSave={(v) => patch("went_wrong", v)}
+        />
+        <Reflection
+          label="Improvement next time"
+          value={trade.improvement}
+          color="#8b9298"
+          placeholder="One concrete adjustment…"
+          onSave={(v) => patch("improvement", v)}
+        />
+      </div>
     </div>
   );
 }
+
 
 
 /** Chronological trade list, showing 8 rows and expanding 5 at a time. */
