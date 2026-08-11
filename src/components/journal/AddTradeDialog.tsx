@@ -75,13 +75,22 @@ export function AddTradeDialog({
   strategies,
   onClose,
   onSaved,
+  defaultDate,
 }: {
   userId: string;
   strategies: Strategy[];
   onClose: () => void;
   onSaved: () => void;
+  defaultDate?: string | null;
 }) {
-  const [date, setDate] = useState(DateTime.now().toFormat("yyyy-LL-dd'T'HH:mm"));
+  const [date, setDate] = useState(
+    defaultDate
+      ? DateTime.fromISO(defaultDate).set({
+          hour: DateTime.now().hour,
+          minute: DateTime.now().minute,
+        }).toFormat("yyyy-LL-dd'T'HH:mm")
+      : DateTime.now().toFormat("yyyy-LL-dd'T'HH:mm"),
+  );
   const [strategyId, setStrategyId] = useState<string>("");
   const [session, setSession] = useState<string>(SESSION_OPTIONS[0]!);
   const [pnl, setPnl] = useState("");
