@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { Plus } from "lucide-react";
 import { money, WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
 import { groupByDay, weekSummaries } from "@/lib/journal-stats";
 import { LOCAL_ZONE } from "@/lib/sessions";
@@ -20,13 +21,16 @@ export function ZellaCalendar({
   onMode,
   onSelectDay,
   onMonthChange,
+  onAddDay,
 }: {
   month: DateTime;
   trades: Trade[];
   mode: CalendarMode;
   onMode: (m: CalendarMode) => void;
   onSelectDay: (day: string) => void;
+  onAddDay: (day: string) => void;
   onMonthChange: (m: DateTime) => void;
+  onAddDay: (day: string) => void;
 }) {
   const byDay = groupByDay(trades);
   const start = month.startOf("month");
@@ -113,6 +117,7 @@ export function ZellaCalendar({
             mode={mode}
             week={w}
             onSelectDay={onSelectDay}
+            onAddDay={onAddDay}
           />
         ))}
       </div>
@@ -178,6 +183,7 @@ function WeekRow({
   mode,
   week,
   onSelectDay,
+  onAddDay,
 }: {
   cells: DateTime[];
   byDay: ReturnType<typeof groupByDay>;
@@ -185,6 +191,7 @@ function WeekRow({
   mode: CalendarMode;
   week: { index: number; pnl: number; days: number };
   onSelectDay: (day: string) => void;
+  onAddDay: (day: string) => void;
 }) {
   const wColor = week.pnl > 0 ? WIN_GREEN : week.pnl < 0 ? LOSS_RED : "#6a7076";
   return (
