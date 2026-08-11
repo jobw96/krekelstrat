@@ -226,7 +226,6 @@ function JournalPage() {
 
           <ControlBar
             range={range}
-            range={range}
             onRange={setRange}
             from={from}
             to={to}
