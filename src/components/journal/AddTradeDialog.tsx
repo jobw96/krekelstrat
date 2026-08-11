@@ -134,16 +134,11 @@ export function AddTradeDialog({
         </header>
 
         <div className="grid grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
-            Date & time
-            <input
-              type="datetime-local"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className={inputCls}
-              required
-            />
-          </label>
+          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+            Date &amp; time
+            <DateTimePicker value={date} onChange={setDate} />
+          </div>
+
           <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Strategy
             <SelectField
