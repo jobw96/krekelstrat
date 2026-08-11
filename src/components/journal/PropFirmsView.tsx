@@ -29,6 +29,18 @@ function Stat({ label, value, sub, color }: { label: string; value: string; sub?
   );
 }
 
+function HeroStat({ label, value, sub, color }: { label: string; value: string; sub?: string; color: string }) {
+  return (
+    <div className="card-surface flex flex-col gap-1.5 p-4">
+      <span className="text-[10.5px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
+      <span className="font-mono text-[26px] leading-none tabular" style={{ color, fontWeight: 560 }}>
+        {value}
+      </span>
+      {sub && <span className="text-[11px] text-[#6a7076]">{sub}</span>}
+    </div>
+  );
+}
+
 /** Prop firm tracker: evaluations, costs, pass/breach rates and funded stats. */
 export function PropFirmsView({ userId }: { userId: string }) {
   const qc = useQueryClient();
@@ -65,8 +77,18 @@ export function PropFirmsView({ userId }: { userId: string }) {
     };
   });
 
+  const roi = s.totalCost ? (s.net / s.totalCost) * 100 : 0;
+  const netColor = s.net > 0 ? WIN_GREEN : s.net < 0 ? LOSS_RED : "#8b9298";
+
   return (
     <div className="flex flex-col gap-3">
+      <section className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+        <HeroStat label="Total costs" value={`-${usd(s.totalCost)}`} sub={`${s.total} accounts · avg ${s.total ? usd(s.avgCost) : "—"}`} color={LOSS_RED} />
+        <HeroStat label="Payouts" value={`+${usd(s.totalPayout)}`} sub={`${s.funded} funded accounts`} color={WIN_GREEN} />
+        <HeroStat label="Net P&L" value={`${s.net < 0 ? "-" : "+"}${usd(s.net)}`} sub="payouts minus all fees" color={netColor} />
+        <HeroStat label="ROI" value={s.totalCost ? `${roi > 0 ? "+" : ""}${roi.toFixed(1)}%` : "—"} sub="return on spend" color={netColor} />
+      </section>
+
       <section className="card-surface flex flex-col gap-3 p-4">
         <header className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
