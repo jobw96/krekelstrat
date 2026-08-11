@@ -11,7 +11,7 @@ export function AppRail() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
-    <aside className="card-surface sticky top-5 hidden h-[calc(100vh-40px)] w-[76px] shrink-0 flex-col items-center gap-2 py-6 lg:flex">
+    <aside className="card-surface sticky top-5 hidden h-[calc(100vh-40px)] w-[76px] shrink-0 flex-col items-center gap-2 self-start py-6 lg:flex">
       <div className="mb-4 flex flex-col items-center gap-1.5">
         <img
           src={sjakAsset.url}
@@ -28,7 +28,7 @@ export function AppRail() {
             to={to}
             title={label}
             aria-label={label}
-            className="hover-lift group relative flex size-11 items-center justify-center rounded-2xl transition-colors duration-300"
+            className="group relative flex size-11 items-center justify-center rounded-2xl transition-colors duration-300"
             style={active ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
           >
             <Icon
