@@ -185,7 +185,7 @@ export function SessionChart({
             />
             <text
               x={W - PAD_R + 8}
-              y={openY + 3.5}
+              y={Math.abs(openY - lastY) < 13 ? openY - 8 : openY + 3.5}
               fill="#a9b0b6"
               fontSize={11}
               fontFamily="ui-monospace, monospace"
