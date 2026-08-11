@@ -1,13 +1,12 @@
-import { useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DateTime } from "luxon";
 import { LineChart } from "lucide-react";
 
 import type { MnqCandle } from "@/lib/mnq.functions";
 import { formatPoints, formatPrice, lastSessionStart, sessionOpenPrice } from "@/lib/mnq";
-import { LOCAL_ZONE, type ClockState } from "@/lib/sessions";
+import { LOCAL_ZONE, SESSIONS, type ClockState } from "@/lib/sessions";
 
-const W = 1000;
-const H = 260;
+const H = 228;
 const PAD_T = 18;
 const PAD_B = 26;
 const PAD_R = 72;
@@ -27,9 +26,27 @@ export function SessionChart({
   candles: MnqCandle[];
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [W, setW] = useState(1000);
   const [hover, setHover] = useState<Point | null>(null);
 
-  const def = state.active?.def ?? state.next.def;
+  useLayoutEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const w = entry?.contentRect.width ?? 0;
+      if (w > 0) setW(Math.round(w));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  const def =
+    state.active?.def ??
+    [...SESSIONS].sort(
+      (a, b) =>
+        lastSessionStart(b, now).toMillis() - lastSessionStart(a, now).toMillis(),
+    )[0]!;
   const open = sessionOpenPrice(def, now, candles);
 
   const model = useMemo(() => {
@@ -67,7 +84,7 @@ export function SessionChart({
     }));
 
     return { pts, path, area, y, x, min, max, guides, t0, t1 };
-  }, [candles, def, now, open]);
+  }, [candles, def, now, open, W]);
 
   if (!model) return null;
 
@@ -116,11 +133,14 @@ export function SessionChart({
         </div>
       </div>
 
+      <div ref={wrapRef} className="relative w-full overflow-hidden">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
-        preserveAspectRatio="none"
-        className="block h-[240px] w-full"
+        width={W}
+        height={H}
+        className="block w-full" style={{ height: H }}
+
         onMouseMove={onMove}
         onMouseLeave={() => setHover(null)}
       >
@@ -183,15 +203,6 @@ export function SessionChart({
               strokeDasharray="5 6"
               vectorEffect="non-scaling-stroke"
             />
-            <text
-              x={W - PAD_R + 8}
-              y={Math.abs(openY - lastY) < 13 ? openY - 8 : openY + 3.5}
-              fill="#a9b0b6"
-              fontSize={11}
-              fontFamily="ui-monospace, monospace"
-            >
-              {formatPrice(open!)}
-            </text>
           </>
         )}
 
@@ -248,9 +259,9 @@ export function SessionChart({
 
       {hover && (
         <div
-          className="pointer-events-none absolute top-14 rounded-lg border px-2.5 py-1.5 font-mono text-[11px] whitespace-nowrap"
+          className="pointer-events-none absolute top-1 rounded-lg border px-2.5 py-1.5 font-mono text-[11px] whitespace-nowrap"
           style={{
-            left: `calc(${(hover.x / W) * 100}% - 44px)`,
+            left: Math.min(Math.max(hover.x - 52, 0), Math.max(W - 116, 0)),
             borderColor: "rgba(255,255,255,0.09)",
             background: "rgba(12,14,17,0.92)",
             boxShadow: "0 18px 40px -28px rgba(0,0,0,0.95)",
@@ -263,6 +274,8 @@ export function SessionChart({
           </span>
         </div>
       )}
+      </div>
     </section>
+
   );
 }
