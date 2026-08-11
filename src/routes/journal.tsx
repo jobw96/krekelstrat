@@ -16,6 +16,7 @@ import {
 import { advancedStats, groupByDay } from "@/lib/journal-stats";
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
+import { StrategyDialog } from "@/components/journal/StrategyDialog";
 import { DayTradesDialog } from "@/components/journal/DayTradesDialog";
 import { TradesList } from "@/components/journal/TradesList";
 import { JournalNav, type JournalView } from "@/components/journal/JournalNav";
