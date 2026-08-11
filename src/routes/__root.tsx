@@ -131,6 +131,7 @@ function RootComponent() {
     { select: (s) => s.status === "pending" || s.isLoading || s.isTransitioning },
   );
   const [hydrated, setHydrated] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setHydrated(true));
@@ -138,6 +139,17 @@ function RootComponent() {
   }, []);
 
   const busy = !hydrated || transitioning;
+
+  // Only show the overlay when a transition actually takes a while,
+  // so quick route swaps are a single clean fade instead of a flash.
+  useEffect(() => {
+    if (!busy) {
+      setShowLoader(false);
+      return;
+    }
+    const t = setTimeout(() => setShowLoader(true), 180);
+    return () => clearTimeout(t);
+  }, [busy]);
   const bare = pathname.startsWith("/auth");
 
   return (
@@ -145,7 +157,7 @@ function RootComponent() {
       {bare ? (
         <div
           key={pathname}
-          className="view-enter transition-opacity duration-200 ease-out"
+          className="transition-opacity duration-150 ease-linear"
           style={{ opacity: busy ? 0 : 1 }}
         >
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
@@ -158,7 +170,7 @@ function RootComponent() {
             <AppRail />
             <div
               key={pathname}
-              className="view-enter flex min-w-0 flex-1 gap-4 transition-opacity duration-200 ease-out"
+              className="flex min-w-0 flex-1 gap-4 transition-opacity duration-150 ease-linear"
               style={{ opacity: busy ? 0 : 1 }}
             >
               <Outlet />
@@ -166,7 +178,7 @@ function RootComponent() {
           </div>
         </main>
       )}
-      <AppLoader overlay visible={busy} />
+      <AppLoader overlay visible={busy && showLoader} />
     </QueryClientProvider>
   );
 }

@@ -281,14 +281,8 @@ button:disabled,
 
 /* ---------- Premium view / route transitions ---------- */
 @keyframes view-in {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 6px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes overlay-in {
@@ -308,8 +302,7 @@ button:disabled,
 }
 
 @utility view-enter {
-  animation: view-in 260ms cubic-bezier(0.22, 0.8, 0.36, 1) both;
-  will-change: opacity, transform;
+  animation: view-in 180ms linear both;
 }
 
 @utility overlay-enter {
@@ -320,18 +313,14 @@ button:disabled,
   animation: dialog-in 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Children fade in with a gentle stagger for a layered, premium feel */
+/* Kept as a no-op wrapper: staggered child animations caused visible jitter
+   during route swaps, so children now appear with the parent fade. */
 @utility stagger-children {
   & > * {
-    animation: view-in 300ms cubic-bezier(0.22, 0.8, 0.36, 1) both;
+    animation: none;
   }
-  & > *:nth-child(1) { animation-delay: 20ms; }
-  & > *:nth-child(2) { animation-delay: 70ms; }
-  & > *:nth-child(3) { animation-delay: 120ms; }
-  & > *:nth-child(4) { animation-delay: 170ms; }
-  & > *:nth-child(5) { animation-delay: 210ms; }
-  & > *:nth-child(6) { animation-delay: 250ms; }
 }
+
 
 @media (prefers-reduced-motion: reduce) {
   .view-enter,
