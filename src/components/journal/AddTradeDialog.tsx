@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DateTime } from "luxon";
-import { Loader2, Upload, X } from "lucide-react";
+import { ChevronDown, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   SESSION_OPTIONS,
