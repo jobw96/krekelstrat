@@ -239,7 +239,7 @@ function Dashboard() {
                               diff == null ? "#8b9298" : diff >= 0 ? "#4fd18b" : "#e5525f",
                           }}
                         >
-                          {diff != null ? `${formatPoints(diff)} pts` : "—"}
+                          {diff != null ? formatPoints(diff) : "—"}
                         </span>
                       </div>
                       <div className="flex flex-col gap-1">
