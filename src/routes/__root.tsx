@@ -8,7 +8,10 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+
+import { AppRail } from "../components/AppRail";
+import { AppLoader } from "../components/AppLoader";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -124,13 +127,36 @@ function RootShell({ children }: { children: ReactNode }) {
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const routeLoading = useRouterState({ select: (s) => s.status === "pending" || s.isLoading });
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setHydrated(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  const busy = !hydrated || routeLoading;
+  const bare = pathname.startsWith("/auth");
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <div key={pathname} className="view-enter">
-        <Outlet />
-      </div>
+      {bare ? (
+        <div key={pathname} className="view-enter">
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </div>
+      ) : (
+        <main className="app-shell min-h-screen">
+          <div className="mx-auto flex w-full max-w-[1680px] gap-4 px-3 py-4 sm:px-5">
+            {/* Persistent navigation rail — never remounts between routes */}
+            <AppRail />
+            <div key={pathname} className="view-enter flex min-w-0 flex-1 gap-4">
+              <Outlet />
+            </div>
+          </div>
+        </main>
+      )}
+      <AppLoader overlay visible={busy} />
     </QueryClientProvider>
   );
 }
