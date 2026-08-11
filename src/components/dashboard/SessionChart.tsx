@@ -128,12 +128,14 @@ export function SessionChart({
         </div>
       </div>
 
+      <div ref={wrapRef} className="relative w-full overflow-hidden">
       <svg
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
         width={W}
         height={H}
         className="block w-full"
+
         onMouseMove={onMove}
         onMouseLeave={() => setHover(null)}
       >
