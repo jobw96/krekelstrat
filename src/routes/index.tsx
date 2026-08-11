@@ -256,10 +256,18 @@ function Dashboard() {
 
               {state?.active && (
                 <div className="flex flex-col gap-2">
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/8">
+                  <div
+                    className="h-[3px] w-full overflow-hidden rounded-full"
+                    style={{
+                      background: "rgba(255,255,255,0.06)",
+                      boxShadow: "inset 0 1px 1px rgba(0,0,0,0.6)",
+                    }}
+                  >
                     <motion.div
-                      className="h-1.5 rounded-full"
-                      style={{ background: toneColor[state.active.def.tone] }}
+                      className="h-[3px] rounded-full"
+                      style={{
+                        background: `linear-gradient(90deg, ${toneColor[state.active.def.tone]}66 0%, ${toneColor[state.active.def.tone]} 100%)`,
+                      }}
                       animate={{ width: `${state.progress * 100}%` }}
                       transition={{ duration: 0.5 }}
                     />
