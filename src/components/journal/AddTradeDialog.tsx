@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import {
   SESSION_OPTIONS,
   uploadScreenshot,
+  WIN_GREEN,
+  LOSS_RED,
   type Strategy,
   type TradeResult,
 } from "@/lib/journal";
