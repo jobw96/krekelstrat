@@ -70,12 +70,8 @@ function Item({
   );
 }
 
-const ACCOUNTS = ["All Accounts", "Funded Topstep 50k", "Personal MNQ"];
-
-/** Top control bar: account, date range, filters and sync timestamp. */
+/** Top control bar: strategy, date range, filters and sync timestamp. */
 export function ControlBar({
-  account,
-  onAccount,
   range,
   onRange,
   from,
@@ -88,8 +84,6 @@ export function ControlBar({
   syncedAt,
   onRefresh,
 }: {
-  account: string;
-  onAccount: (a: string) => void;
   range: RangeKey;
   onRange: (r: RangeKey) => void;
   from: string;
