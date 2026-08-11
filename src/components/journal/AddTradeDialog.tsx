@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DateTime } from "luxon";
-import { Loader2, Upload, X } from "lucide-react";
+import { ChevronDown, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   SESSION_OPTIONS,
@@ -11,6 +11,62 @@ import {
 
 const inputCls =
   "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]";
+
+function SelectField({
+  value,
+  options,
+  onChange,
+}: {
+  value: string;
+  options: { value: string; label: string }[];
+  onChange: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const current = options.find((o) => o.value === value);
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={`${inputCls} flex items-center justify-between text-left ${open ? "ring-1 ring-[#e5525f]" : ""}`}
+      >
+        <span>{current?.label ?? "None"}</span>
+        <ChevronDown
+          className={`size-3.5 text-[#6a7076] transition-transform ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="fixed inset-0 z-30 cursor-default"
+            onClick={() => setOpen(false)}
+          />
+          <div className="card-surface absolute left-0 right-0 top-[calc(100%+8px)] z-40 flex max-h-[220px] flex-col gap-0.5 overflow-y-auto p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
+            {options.map((o) => (
+              <button
+                key={o.value}
+                type="button"
+                onClick={() => {
+                  onChange(o.value);
+                  setOpen(false);
+                }}
+                className="rounded-lg px-2.5 py-1.5 text-left text-[12.5px] transition-colors hover:bg-white/8"
+                style={{
+                  color: o.value === value ? "#ffffff" : "#8b9298",
+                  fontWeight: o.value === value ? 560 : 400,
+                }}
+              >
+                {o.label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
 
 export function AddTradeDialog({
   userId,
@@ -88,47 +144,37 @@ export function AddTradeDialog({
               required
             />
           </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Strategy
-            <select
+            <SelectField
               value={strategyId}
-              onChange={(e) => setStrategyId(e.target.value)}
-              className={inputCls}
-            >
-              <option value="">None</option>
-              {strategies.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+              onChange={setStrategyId}
+              options={[
+                { value: "", label: "None" },
+                ...strategies.map((s) => ({ value: s.id, label: s.name })),
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Session
-            <select
+            <SelectField
               value={session}
-              onChange={(e) => setSession(e.target.value)}
-              className={inputCls}
-            >
-              {SESSION_OPTIONS.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+              onChange={setSession}
+              options={SESSION_OPTIONS.map((s) => ({ value: s, label: s }))}
+            />
+          </div>
+          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Result
-            <select
+            <SelectField
               value={result}
-              onChange={(e) => setResult(e.target.value as TradeResult)}
-              className={inputCls}
-            >
-              <option value="WIN">WIN</option>
-              <option value="LOSS">LOSS</option>
-              <option value="BE">BE</option>
-            </select>
-          </label>
+              onChange={(v) => setResult(v as TradeResult)}
+              options={[
+                { value: "WIN", label: "WIN" },
+                { value: "LOSS", label: "LOSS" },
+                { value: "BE", label: "BE" },
+              ]}
+            />
+          </div>
           <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             P&L ($)
             <input
