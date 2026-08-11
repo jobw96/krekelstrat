@@ -149,11 +149,8 @@ function JournalPage() {
     qc.invalidateQueries({ queryKey: ["strategies", user?.id] });
   };
 
-  async function addStrategy() {
-    const name = window.prompt("Strategy name (e.g. 'LO Reversion')");
-    if (!name || !user) return;
-    await supabase.from("strategies").insert({ user_id: user.id, name });
-    refresh();
+  function addStrategy() {
+    setAddingStrategy(true);
   }
 
   if (loading || !user) {
