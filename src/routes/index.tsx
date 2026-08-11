@@ -113,7 +113,7 @@ function Dashboard() {
 
   return (
     <main className="app-shell min-h-screen">
-      <div className="mx-auto flex w-full max-w-[1400px] gap-5 px-4 py-5 sm:px-6">
+      <div className="mx-auto flex w-full max-w-[1680px] gap-4 px-3 py-4 sm:px-5">
         {/* Icon rail */}
         <AppRail />
 
