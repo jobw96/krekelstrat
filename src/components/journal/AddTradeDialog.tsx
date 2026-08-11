@@ -92,6 +92,10 @@ export function AddTradeDialog({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const sign = result === "WIN" ? 1 : result === "LOSS" ? -1 : 0;
+  const signedPnl = Math.abs(Number(pnl || 0)) * (sign === 0 ? 0 : sign);
+
+
   async function save(e: React.FormEvent) {
     e.preventDefault();
     setBusy(true);
@@ -103,7 +107,7 @@ export function AddTradeDialog({
         user_id: userId,
         strategy_id: strategyId || null,
         date: DateTime.fromISO(date).toISO() ?? new Date().toISOString(),
-        pnl: Number(pnl || 0),
+        pnl: signedPnl,
         rr: rr ? Number(rr) : null,
         result,
         session,
@@ -174,16 +178,27 @@ export function AddTradeDialog({
           </div>
           <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             P&L ($)
-            <input
-              type="number"
-              step="0.01"
-              value={pnl}
-              onChange={(e) => setPnl(e.target.value)}
-              placeholder="450.00"
-              className={inputCls}
-              required
-            />
+            <span className="relative">
+              <span
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-[13px]"
+                style={{ color: sign > 0 ? "#3ecf8e" : sign < 0 ? "#e5525f" : "#6a7076" }}
+              >
+                {sign > 0 ? "+" : sign < 0 ? "−" : "±"}
+              </span>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={pnl}
+                onChange={(e) => setPnl(e.target.value.replace("-", ""))}
+                placeholder="450.00"
+                className={`${inputCls} pl-7`}
+                style={{ color: sign > 0 ? "#3ecf8e" : sign < 0 ? "#e5525f" : "#ffffff" }}
+                required
+              />
+            </span>
           </label>
+
           <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             R:R
             <input
