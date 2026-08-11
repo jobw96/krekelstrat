@@ -462,8 +462,11 @@ function StrategiesView({
         const color = pnl > 0 ? WIN_GREEN : pnl < 0 ? LOSS_RED : "#8b9298";
         return (
           <div key={s.id} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2.5">
-            <span className="flex flex-col">
+            <span className="flex min-w-0 flex-col">
               <span className="text-[12.5px] text-white">{s.name}</span>
+              {s.description && (
+                <span className="truncate text-[11.5px] text-[#8b9298]">{s.description}</span>
+              )}
               <span className="text-[11px] text-[#6a7076]">{list.length} trades</span>
             </span>
             <span className="flex items-center gap-3">
