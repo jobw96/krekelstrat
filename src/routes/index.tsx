@@ -1,18 +1,16 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { DateTime } from "luxon";
 
 import {
-  Activity,
   AlertTriangle,
-  Bell,
   CandlestickChart,
-  BellOff,
   Clock,
   NotebookPen,
   Timer,
 } from "lucide-react";
+
 import { useNow } from "@/hooks/useNow";
 import { useMnq } from "@/hooks/useMnq";
 import { useRedFolder } from "@/hooks/useRedFolder";
