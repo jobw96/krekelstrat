@@ -107,7 +107,7 @@ export function AddTradeDialog({
         user_id: userId,
         strategy_id: strategyId || null,
         date: DateTime.fromISO(date).toISO() ?? new Date().toISOString(),
-        pnl: Number(pnl || 0),
+        pnl: signedPnl,
         rr: rr ? Number(rr) : null,
         result,
         session,
