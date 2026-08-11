@@ -73,7 +73,7 @@ export function PnlCalendar({
             <button
               key={key}
               onClick={() => dayTrades.length && onSelectDay(key)}
-              className="hover-lift flex min-h-[74px] flex-col justify-between rounded-xl p-2 text-left"
+              className="hover-tint flex min-h-[74px] flex-col justify-between rounded-xl p-2 text-left"
               style={{
                 background: dayTrades.length
                   ? `${color}1f`

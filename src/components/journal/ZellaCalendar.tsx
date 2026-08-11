@@ -65,7 +65,7 @@ export function ZellaCalendar({
               <button
                 key={m.toISO()}
                 onClick={() => onMonthChange(m)}
-                className="hover-lift flex flex-col gap-1 rounded-xl p-3 text-left"
+                className="hover-tint flex flex-col gap-1 rounded-xl p-3 text-left"
                 style={{
                   background: count ? `${color}1c` : "rgba(255,255,255,0.03)",
                   border: `1px solid ${count ? `${color}4d` : "rgba(255,255,255,0.06)"}`,
@@ -198,7 +198,7 @@ function WeekRow({
           <button
             key={key}
             onClick={() => stat && onSelectDay(key)}
-            className="hover-lift flex min-h-[86px] flex-col justify-between rounded-xl p-2 text-left transition-colors"
+            className="hover-tint flex min-h-[86px] flex-col justify-between rounded-xl p-2 text-left transition-colors"
             style={{
               background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
               border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
