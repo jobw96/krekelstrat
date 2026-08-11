@@ -56,9 +56,9 @@ export function CatalystBanner({ read }: { read: CatalystRead }) {
       animate={{ opacity: 1, y: 0 }}
       className="card-surface flex flex-wrap items-center gap-x-6 gap-y-2 p-4"
       style={{
-        borderColor: `${color}55`,
-        backgroundImage: `linear-gradient(120deg, ${color}22 0%, rgba(255,255,255,0.03) 65%)`,
-        boxShadow: `0 0 0 1px ${color}22, 0 12px 34px -20px ${color}`,
+        borderColor: `${color}3d`,
+        backgroundImage: `linear-gradient(180deg, ${color}14 0%, rgba(255,255,255,0.02) 24%, rgba(255,255,255,0) 60%)`,
+        boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.06), 0 0 0 1px ${color}1f, 0 24px 56px -34px rgba(0,0,0,0.95)`,
       }}
     >
       <span className="inline-flex items-center gap-2 text-[14px] text-white" style={{ fontWeight: 560 }}>
