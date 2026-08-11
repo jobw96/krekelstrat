@@ -24,7 +24,6 @@ import { AppLoader } from "@/components/AppLoader";
 import { StatsBar } from "@/components/journal/StatsBar";
 import { ZellaCalendar, type CalendarMode } from "@/components/journal/ZellaCalendar";
 import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
-import { PropFirmsView } from "@/components/journal/PropFirmsView";
 import { ControlBar, type Filters, type RangeKey } from "@/components/journal/ControlBar";
 
 export const Route = createFileRoute("/journal")({
@@ -288,8 +287,6 @@ function JournalPage() {
                 onChanged={refresh}
               />
             )}
-
-            {view === "propfirms" && <PropFirmsView userId={user.id} />}
 
             {view === "resources" && <AnalyticsPanel trades={trades} />}
           </div>

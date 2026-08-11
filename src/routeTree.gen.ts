@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as JournalRouteImport } from './routes/journal'
+import { Route as PropFirmsRouteImport } from './routes/prop-firms'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const JournalRoute = JournalRouteImport.update({
   path: '/journal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PropFirmsRoute = PropFirmsRouteImport.update({
+  id: '/prop-firms',
+  path: '/prop-firms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
+  '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
+  '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
+  '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/journal'
+  fullPaths: '/' | '/auth' | '/journal' | '/prop-firms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/journal'
-  id: '__root__' | '/' | '/auth' | '/journal'
+  to: '/' | '/auth' | '/journal' | '/prop-firms'
+  id: '__root__' | '/' | '/auth' | '/journal' | '/prop-firms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   JournalRoute: typeof JournalRoute
+  PropFirmsRoute: typeof PropFirmsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prop-firms': {
+      id: '/prop-firms'
+      path: '/prop-firms'
+      fullPath: '/prop-firms'
+      preLoaderRoute: typeof PropFirmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,7 +106,18 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   JournalRoute: JournalRoute,
+  PropFirmsRoute: PropFirmsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
