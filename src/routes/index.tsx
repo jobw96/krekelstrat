@@ -122,12 +122,12 @@ function Dashboard() {
             <motion.div
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl border px-4 py-2.5 text-[12px]"
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border px-4 py-2.5 text-[12px]"
               style={{
-                borderColor: "rgba(255,77,94,0.45)",
-                background:
-                  "linear-gradient(120deg, rgba(255,77,94,0.18) 0%, rgba(255,255,255,0.03) 70%)",
-                color: "#ffc4ca",
+                borderColor: "rgba(255,77,94,0.28)",
+                background: "rgba(255,77,94,0.07)",
+                boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.05)",
+                color: "#f0b8bd",
               }}
             >
               <AlertTriangle className="size-3.5" style={{ color: "#ff4d5e" }} />
