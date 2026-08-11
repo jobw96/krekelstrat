@@ -16,6 +16,7 @@ import {
 import { advancedStats, groupByDay } from "@/lib/journal-stats";
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
+import { StrategyDialog } from "@/components/journal/StrategyDialog";
 import { DayTradesDialog } from "@/components/journal/DayTradesDialog";
 import { TradesList } from "@/components/journal/TradesList";
 import { JournalNav, type JournalView } from "@/components/journal/JournalNav";
@@ -52,6 +53,7 @@ function JournalPage() {
   const qc = useQueryClient();
 
   const [view, setView] = useState<JournalView>("dashboard");
+  const [addingStrategy, setAddingStrategy] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
@@ -149,11 +151,8 @@ function JournalPage() {
     qc.invalidateQueries({ queryKey: ["strategies", user?.id] });
   };
 
-  async function addStrategy() {
-    const name = window.prompt("Strategy name (e.g. 'LO Reversion')");
-    if (!name || !user) return;
-    await supabase.from("strategies").insert({ user_id: user.id, name });
-    refresh();
+  function addStrategy() {
+    setAddingStrategy(true);
   }
 
   if (loading || !user) {
@@ -291,6 +290,13 @@ function JournalPage() {
           userId={user.id}
           strategies={strategies}
           onClose={() => setAdding(false)}
+          onSaved={refresh}
+        />
+      )}
+      {addingStrategy && (
+        <StrategyDialog
+          userId={user.id}
+          onClose={() => setAddingStrategy(false)}
           onSaved={refresh}
         />
       )}
@@ -456,8 +462,11 @@ function StrategiesView({
         const color = pnl > 0 ? WIN_GREEN : pnl < 0 ? LOSS_RED : "#8b9298";
         return (
           <div key={s.id} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2.5">
-            <span className="flex flex-col">
+            <span className="flex min-w-0 flex-col">
               <span className="text-[12.5px] text-white">{s.name}</span>
+              {s.description && (
+                <span className="truncate text-[11.5px] text-[#8b9298]">{s.description}</span>
+              )}
               <span className="text-[11px] text-[#6a7076]">{list.length} trades</span>
             </span>
             <span className="flex items-center gap-3">
