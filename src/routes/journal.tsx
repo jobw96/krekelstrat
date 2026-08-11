@@ -69,6 +69,7 @@ function JournalPage() {
   const [to, setTo] = useState(() => DateTime.now().setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd"));
   const [currency, setCurrency] = useState<"USD" | "R">("USD");
   const [adding, setAdding] = useState(false);
+  const [addDate, setAddDate] = useState<string | null>(null);
   const [day, setDay] = useState<string | null>(null);
 
   const strategiesQ = useQuery({
@@ -166,7 +167,10 @@ function JournalPage() {
           onView={setView}
           collapsed={collapsed}
           onToggle={() => setCollapsed((c) => !c)}
-          onAddTrade={() => setAdding(true)}
+          onAddTrade={() => {
+            setAddDate(null);
+            setAdding(true);
+          }}
         />
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
@@ -247,6 +251,10 @@ function JournalPage() {
                     onMode={setCalMode}
                     onMonthChange={setMonth}
                     onSelectDay={setDay}
+                    onAddDay={(d) => {
+                      setAddDate(d);
+                      setAdding(true);
+                    }}
                   />
                   <AnalyticsPanel trades={trades} />
                 </div>
@@ -282,7 +290,11 @@ function JournalPage() {
         <AddTradeDialog
           userId={user.id}
           strategies={strategies}
-          onClose={() => setAdding(false)}
+          defaultDate={addDate}
+          onClose={() => {
+            setAdding(false);
+            setAddDate(null);
+          }}
           onSaved={refresh}
         />
       )}
