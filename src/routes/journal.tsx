@@ -52,6 +52,7 @@ function JournalPage() {
   const qc = useQueryClient();
 
   const [view, setView] = useState<JournalView>("dashboard");
+  const [addingStrategy, setAddingStrategy] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
