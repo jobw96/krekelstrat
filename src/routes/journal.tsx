@@ -225,8 +225,7 @@ function JournalPage() {
           </header>
 
           <ControlBar
-            account={account}
-            onAccount={setAccount}
+            range={range}
             range={range}
             onRange={setRange}
             from={from}
