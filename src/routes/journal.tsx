@@ -54,7 +54,6 @@ function JournalPage() {
   const [collapsed, setCollapsed] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
-  const [account, setAccount] = useState("All Accounts");
   const [range, setRange] = useState<RangeKey>("month");
   const [filters, setFilters] = useState<Filters>({
     strategy: "all",
@@ -188,9 +187,6 @@ function JournalPage() {
               <h1 className="truncate text-[18px] text-white" style={{ fontWeight: 560 }}>
                 Trading Journal
               </h1>
-              <span className="hidden rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-[#6a7076] lg:inline">
-                {account}
-              </span>
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
@@ -225,8 +221,6 @@ function JournalPage() {
           </header>
 
           <ControlBar
-            account={account}
-            onAccount={setAccount}
             range={range}
             onRange={setRange}
             from={from}
