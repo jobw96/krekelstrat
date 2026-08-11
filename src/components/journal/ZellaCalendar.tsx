@@ -195,44 +195,65 @@ function WeekRow({
         const inMonth = c.month === month.month;
         const color = !stat ? "#6a7076" : stat.pnl > 0 ? WIN_GREEN : stat.pnl < 0 ? LOSS_RED : "#8b9298";
         return (
-          <button
+          <div
             key={key}
-            onClick={() => stat && onSelectDay(key)}
-            className="hover-tint flex min-h-[86px] flex-col justify-between rounded-xl p-2 text-left transition-colors"
-            style={{
-              background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
-              border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
-              opacity: inMonth ? 1 : 0.32,
-              cursor: stat ? "pointer" : "default",
-            }}
+            className="group relative"
+            style={{ opacity: inMonth ? 1 : 0.32 }}
           >
-            <span className="font-mono text-[11px] text-[#8b9298]">{c.day}</span>
-            {stat && (
-              <span className="flex flex-col gap-0.5">
-                {mode === "pnl" && (
-                  <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
-                    {money(stat.pnl)}
+            <button
+              onClick={() => stat && onSelectDay(key)}
+              className="hover-tint flex min-h-[86px] w-full flex-col justify-between rounded-xl p-2 text-left transition-colors"
+              style={{
+                background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
+                border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
+                cursor: stat ? "pointer" : "default",
+              }}
+            >
+              <span className="font-mono text-[11px] text-[#8b9298]">{c.day}</span>
+              {stat && (
+                <span className="flex flex-col gap-0.5">
+                  {mode === "pnl" && (
+                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                      {money(stat.pnl)}
+                    </span>
+                  )}
+                  {mode === "winrate" && (
+                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                      {stat.winRate.toFixed(1)}%
+                    </span>
+                  )}
+                  {mode === "trades" && (
+                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                      {stat.count}
+                    </span>
+                  )}
+                  <span className="text-[10px] text-[#8b9298]">
+                    {stat.count} trade{stat.count > 1 ? "s" : ""}
                   </span>
-                )}
-                {mode === "winrate" && (
-                  <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
-                    {stat.winRate.toFixed(1)}%
-                  </span>
-                )}
-                {mode === "trades" && (
-                  <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
-                    {stat.count}
-                  </span>
-                )}
-                <span className="text-[10px] text-[#8b9298]">
-                  {stat.count} trade{stat.count > 1 ? "s" : ""}
+                  <span className="text-[10px] text-[#6a7076]">{stat.winRate.toFixed(1)}%</span>
                 </span>
-                <span className="text-[10px] text-[#6a7076]">{stat.winRate.toFixed(1)}%</span>
-              </span>
-            )}
-          </button>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddDay(key);
+              }}
+              aria-label={`Add trade on ${key}`}
+              className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100"
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                border: "1px solid rgba(255,255,255,0.14)",
+                color: "#d7dbe0",
+              }}
+            >
+              <Plus className="size-3" strokeWidth={2} />
+            </button>
+          </div>
         );
       })}
+
       <div
         className="flex min-h-[86px] flex-col justify-between rounded-xl p-2"
         style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
