@@ -144,47 +144,37 @@ export function AddTradeDialog({
               required
             />
           </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Strategy
-            <select
+            <SelectField
               value={strategyId}
-              onChange={(e) => setStrategyId(e.target.value)}
-              className={inputCls}
-            >
-              <option value="">None</option>
-              {strategies.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+              onChange={setStrategyId}
+              options={[
+                { value: "", label: "None" },
+                ...strategies.map((s) => ({ value: s.id, label: s.name })),
+              ]}
+            />
+          </div>
+          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Session
-            <select
+            <SelectField
               value={session}
-              onChange={(e) => setSession(e.target.value)}
-              className={inputCls}
-            >
-              {SESSION_OPTIONS.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+              onChange={setSession}
+              options={SESSION_OPTIONS.map((s) => ({ value: s, label: s }))}
+            />
+          </div>
+          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             Result
-            <select
+            <SelectField
               value={result}
-              onChange={(e) => setResult(e.target.value as TradeResult)}
-              className={inputCls}
-            >
-              <option value="WIN">WIN</option>
-              <option value="LOSS">LOSS</option>
-              <option value="BE">BE</option>
-            </select>
-          </label>
+              onChange={(v) => setResult(v as TradeResult)}
+              options={[
+                { value: "WIN", label: "WIN" },
+                { value: "LOSS", label: "LOSS" },
+                { value: "BE", label: "BE" },
+              ]}
+            />
+          </div>
           <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
             P&L ($)
             <input
