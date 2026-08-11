@@ -1,9 +1,11 @@
 export function AppLoader({
   overlay = false,
+  contained = false,
   visible = true,
   label = "Loading",
 }: {
   overlay?: boolean;
+  contained?: boolean;
   visible?: boolean;
   label?: string;
 }) {
@@ -12,7 +14,7 @@ export function AppLoader({
       aria-hidden={!visible}
       className={
         overlay
-          ? "pointer-events-none fixed inset-0 z-[90] flex items-center justify-center transition-opacity duration-200 ease-out"
+          ? `pointer-events-none ${contained ? "absolute" : "fixed"} inset-0 z-[90] flex items-center justify-center transition-opacity duration-200 ease-out`
           : "flex min-h-[60vh] w-full items-center justify-center"
       }
       style={

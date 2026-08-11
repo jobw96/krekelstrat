@@ -161,30 +161,35 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {bare ? (
-        <div
-          key={pathname}
-          className="transition-opacity duration-150 ease-linear"
-          style={{ opacity: busy ? 0 : 1 }}
-        >
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </div>
+        <>
+          <div
+            key={pathname}
+            className="transition-opacity duration-150 ease-linear"
+            style={{ opacity: busy ? 0 : 1 }}
+          >
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </div>
+          <AppLoader overlay visible={busy && showLoader} />
+        </>
       ) : (
         <main className="app-shell min-h-screen">
           <div className="mx-auto flex w-full max-w-[1680px] gap-4 px-3 py-4 sm:px-5">
-            {/* Persistent navigation rail — never remounts between routes */}
+            {/* The rail is outside every route transition and loading layer. */}
             <AppRail />
-            <div
-              key={pathname}
-              className="flex min-h-[calc(100vh-32px)] min-w-0 flex-1 gap-4 transition-opacity duration-150 ease-linear"
-              style={{ opacity: busy ? 0 : 1 }}
-            >
-              <Outlet />
+            <div className="relative min-h-[calc(100vh-32px)] min-w-0 flex-1">
+              <div
+                key={pathname}
+                className="flex min-h-[calc(100vh-32px)] min-w-0 w-full gap-4 transition-opacity duration-150 ease-linear"
+                style={{ opacity: busy ? 0 : 1 }}
+              >
+                <Outlet />
+              </div>
+              <AppLoader contained overlay visible={busy && showLoader} />
             </div>
           </div>
         </main>
       )}
-      <AppLoader overlay visible={busy && showLoader} />
     </QueryClientProvider>
   );
 }
