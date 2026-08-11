@@ -6,7 +6,7 @@ import type { MnqCandle } from "@/lib/mnq.functions";
 import { formatPoints, formatPrice, lastSessionStart, sessionOpenPrice } from "@/lib/mnq";
 import { LOCAL_ZONE, type ClockState } from "@/lib/sessions";
 
-const H = 260;
+const H = 228;
 const PAD_T = 18;
 const PAD_B = 26;
 const PAD_R = 72;
@@ -198,15 +198,6 @@ export function SessionChart({
               strokeDasharray="5 6"
               vectorEffect="non-scaling-stroke"
             />
-            <text
-              x={W - PAD_R + 8}
-              y={Math.abs(openY - lastY) < 14 ? (lastY <= openY ? openY + 14 : openY - 9) : openY + 3.5}
-              fill="#a9b0b6"
-              fontSize={11}
-              fontFamily="ui-monospace, monospace"
-            >
-              {formatPrice(open!)}
-            </text>
           </>
         )}
 
