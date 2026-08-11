@@ -35,7 +35,7 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className="card-surface hover-lift flex flex-col gap-2 p-4">
+    <div className="card-surface flex flex-col gap-2 p-4">
       <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
       {children}
     </div>

@@ -243,3 +243,14 @@ select optgroup {
 select:disabled option {
   color: #6a7076;
 }
+
+/* Subtle hover for large clickable surfaces (cards, calendar cells) */
+@utility hover-tint {
+  transition:
+    background-color 160ms ease,
+    box-shadow 160ms ease;
+
+  &:hover {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+  }
+}

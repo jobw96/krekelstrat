@@ -99,7 +99,7 @@ export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
               href={l.href}
               target="_blank"
               rel="noreferrer"
-              className="hover-lift flex flex-col gap-0.5 rounded-xl bg-white/5 p-3 text-left"
+              className="hover-tint flex flex-col gap-0.5 rounded-xl bg-white/5 p-3 text-left hover:bg-white/8"
             >
               <span className="flex items-center gap-1.5 text-[12.5px] text-white">
                 {l.label} <ExternalLink className="size-3 text-[#6a7076]" />

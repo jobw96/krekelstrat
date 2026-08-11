@@ -318,7 +318,7 @@ function DayView({ trades, onSelectDay }: { trades: Trade[]; onSelectDay: (d: st
           <button
             key={d.key}
             onClick={() => onSelectDay(d.key)}
-            className="hover-lift flex items-center justify-between rounded-xl bg-white/4 px-3 py-2.5 text-left"
+            className="hover-tint flex items-center justify-between rounded-xl bg-white/4 px-3 py-2.5 text-left"
           >
             <span className="font-mono text-[12px] text-[#d7dbe0]">
               {DateTime.fromISO(d.key).toFormat("cccc dd LLL yyyy")}
