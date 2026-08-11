@@ -30,7 +30,6 @@ export function ZellaCalendar({
   onSelectDay: (day: string) => void;
   onAddDay: (day: string) => void;
   onMonthChange: (m: DateTime) => void;
-  onAddDay: (day: string) => void;
 }) {
   const byDay = groupByDay(trades);
   const start = month.startOf("month");
