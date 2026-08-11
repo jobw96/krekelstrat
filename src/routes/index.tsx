@@ -110,62 +110,6 @@ function Dashboard() {
 
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-5">
-          <header className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <Activity className="size-4 text-[#e5525f] lg:hidden" strokeWidth={1.8} />
-              <span className="text-[18px] text-white" style={{ fontWeight: 560 }}>
-                Krekelstrat Terminal
-              </span>
-              <Link
-                to="/journal"
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/12 lg:hidden"
-              >
-                <NotebookPen className="size-3.5" /> Journal
-              </Link>
-            </div>
-            <div className="flex items-center gap-3">
-              {nextRedFolder && (
-                <span
-                  className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px]"
-                  style={{ background: "rgba(229,82,95,0.14)", color: "#f08a93" }}
-                >
-                  <span
-                    className="pulse-dot inline-block size-1.5 rounded-full"
-                    style={{ background: "#e5525f" }}
-                  />
-                  {nextRedFolder.title} ·{" "}
-                  {DateTime.fromMillis(nextRedFolder.time)
-                    .setZone(LOCAL_ZONE)
-                    .toFormat("HH:mm")}{" "}
-                  AMS
-                </span>
-              )}
-
-
-
-
-              <span className="hidden rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#8b9298] sm:inline">
-                MNQ=F · Yahoo Finance · ~10 min delayed
-                {mnq.data?.quoteTime
-                  ? ` · quote ${DateTime.fromMillis(mnq.data.quoteTime)
-                      .setZone(LOCAL_ZONE)
-                      .toFormat("HH:mm")} AMS`
-                  : ""}
-              </span>
-              <button
-                onClick={() => setSound((s) => !s)}
-                className="hover-lift inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[13px] lg:hidden"
-                style={
-                  sound
-                    ? { background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }
-                    : { background: "rgba(255,255,255,0.06)", color: "#d7dbe0" }
-                }
-              >
-                {sound ? <Bell className="size-3.5" /> : <BellOff className="size-3.5" />}
-                {sound ? "Alerts on" : "Alerts off"}
-              </button>
-            </div>
-          </header>
 
           {now && state && (
             <ActiveSessionBar
