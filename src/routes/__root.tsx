@@ -126,8 +126,10 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const routeLoading = useRouterState({ select: (s) => s.status === "pending" || s.isLoading });
+  const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname ?? s.location.pathname });
+  const transitioning = useRouterState(
+    { select: (s) => s.status === "pending" || s.isLoading || s.isTransitioning },
+  );
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
@@ -135,13 +137,17 @@ function RootComponent() {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  const busy = !hydrated || routeLoading;
+  const busy = !hydrated || transitioning;
   const bare = pathname.startsWith("/auth");
 
   return (
     <QueryClientProvider client={queryClient}>
       {bare ? (
-        <div key={pathname} className="view-enter">
+        <div
+          key={pathname}
+          className="view-enter transition-[opacity,filter] duration-300"
+          style={busy ? { opacity: 0, filter: "blur(6px)" } : undefined}
+        >
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
         </div>
@@ -150,7 +156,11 @@ function RootComponent() {
           <div className="mx-auto flex w-full max-w-[1680px] gap-4 px-3 py-4 sm:px-5">
             {/* Persistent navigation rail — never remounts between routes */}
             <AppRail />
-            <div key={pathname} className="view-enter flex min-w-0 flex-1 gap-4">
+            <div
+              key={pathname}
+              className="view-enter flex min-w-0 flex-1 gap-4 transition-[opacity,filter] duration-300"
+              style={busy ? { opacity: 0, filter: "blur(6px)" } : undefined}
+            >
               <Outlet />
             </div>
           </div>
