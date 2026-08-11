@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ChevronDown, Filter, RefreshCw } from "lucide-react";
 import { SESSION_OPTIONS, type Strategy, type TradeResult } from "@/lib/journal";
+import { DatePicker } from "@/components/journal/DateTimePicker";
+
 
 export type RangeKey = "month" | "30d" | "ytd" | "all" | "custom";
 
