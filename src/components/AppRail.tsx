@@ -1,14 +1,23 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { CandlestickChart, NotebookPen } from "lucide-react";
+import { CandlestickChart, Landmark, NotebookPen } from "lucide-react";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 
 const RAIL_ITEMS = [
-  { icon: CandlestickChart, label: "Sessions", to: "/" as const },
-  { icon: NotebookPen, label: "Journal", to: "/journal" as const },
+  { icon: CandlestickChart, label: "Sessions", to: "/" as const, search: undefined },
+  { icon: NotebookPen, label: "Journal", to: "/journal" as const, search: undefined },
+  {
+    icon: Landmark,
+    label: "Prop Firms",
+    to: "/journal" as const,
+    search: { view: "propfirms" as const },
+  },
 ];
 
 export function AppRail() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const searchView = useRouterState({
+    select: (s) => (s.location.search as { view?: string }).view,
+  });
 
   return (
     <aside className="card-surface sticky top-5 hidden h-[calc(100vh-40px)] w-[76px] shrink-0 flex-col items-center gap-2 self-start py-6 lg:flex">
@@ -20,12 +29,17 @@ export function AppRail() {
         />
         <span className="text-[10px] tracking-[0.06em] text-[#6a7076]">NQ/MNQ</span>
       </div>
-      {RAIL_ITEMS.map(({ icon: Icon, label, to }) => {
-        const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
+      {RAIL_ITEMS.map(({ icon: Icon, label, to, search }) => {
+        const isProp = search?.view === "propfirms";
+        const active =
+          to === "/"
+            ? pathname === "/"
+            : pathname.startsWith(to) && (isProp ? searchView === "propfirms" : searchView !== "propfirms");
         return (
           <Link
             key={label}
             to={to}
+            search={search ?? {}}
             title={label}
             aria-label={label}
             className="group relative flex size-11 items-center justify-center rounded-2xl transition-colors duration-300"
@@ -45,3 +59,4 @@ export function AppRail() {
     </aside>
   );
 }
+
