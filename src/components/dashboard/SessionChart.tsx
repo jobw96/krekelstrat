@@ -4,7 +4,7 @@ import { LineChart } from "lucide-react";
 
 import type { MnqCandle } from "@/lib/mnq.functions";
 import { formatPoints, formatPrice, lastSessionStart, sessionOpenPrice } from "@/lib/mnq";
-import { LOCAL_ZONE, type ClockState } from "@/lib/sessions";
+import { LOCAL_ZONE, SESSIONS, type ClockState } from "@/lib/sessions";
 
 const H = 228;
 const PAD_T = 18;
@@ -41,7 +41,12 @@ export function SessionChart({
     return () => ro.disconnect();
   }, []);
 
-  const def = state.active?.def ?? state.next.def;
+  const def =
+    state.active?.def ??
+    [...SESSIONS].sort(
+      (a, b) =>
+        lastSessionStart(b, now).toMillis() - lastSessionStart(a, now).toMillis(),
+    )[0]!;
   const open = sessionOpenPrice(def, now, candles);
 
   const model = useMemo(() => {
