@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { DateTime } from "luxon";
 import { LineChart } from "lucide-react";
 
@@ -6,7 +6,6 @@ import type { MnqCandle } from "@/lib/mnq.functions";
 import { formatPoints, formatPrice, lastSessionStart, sessionOpenPrice } from "@/lib/mnq";
 import { LOCAL_ZONE, type ClockState } from "@/lib/sessions";
 
-const W = 1000;
 const H = 260;
 const PAD_T = 18;
 const PAD_B = 26;
@@ -27,7 +26,20 @@ export function SessionChart({
   candles: MnqCandle[];
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [W, setW] = useState(1000);
   const [hover, setHover] = useState<Point | null>(null);
+
+  useLayoutEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => {
+      const w = entry?.contentRect.width ?? 0;
+      if (w > 0) setW(Math.round(w));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const def = state.active?.def ?? state.next.def;
   const open = sessionOpenPrice(def, now, candles);
@@ -67,7 +79,7 @@ export function SessionChart({
     }));
 
     return { pts, path, area, y, x, min, max, guides, t0, t1 };
-  }, [candles, def, now, open]);
+  }, [candles, def, now, open, W]);
 
   if (!model) return null;
 
@@ -119,8 +131,9 @@ export function SessionChart({
       <svg
         ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
-        preserveAspectRatio="none"
-        className="block h-[240px] w-full"
+        width={W}
+        height={H}
+        className="block w-full"
         onMouseMove={onMove}
         onMouseLeave={() => setHover(null)}
       >
@@ -250,7 +263,7 @@ export function SessionChart({
         <div
           className="pointer-events-none absolute top-14 rounded-lg border px-2.5 py-1.5 font-mono text-[11px] whitespace-nowrap"
           style={{
-            left: `calc(${(hover.x / W) * 100}% - 44px)`,
+            left: Math.min(Math.max(hover.x - 52, 0), Math.max(W - 116, 0)),
             borderColor: "rgba(255,255,255,0.09)",
             background: "rgba(12,14,17,0.92)",
             boxShadow: "0 18px 40px -28px rgba(0,0,0,0.95)",
