@@ -92,7 +92,7 @@ function Dashboard() {
   const mnq = useMnq();
   const news = useRedFolder();
   const [sound, setSound] = useState(false);
-  const [tz, setTz] = useState<"NY" | "AMS">("NY");
+  const { tz, setTz } = useTzPref();
   const compact = true;
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
