@@ -34,9 +34,8 @@ export function AppRail() {
             style={active ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
           >
             <Icon
-              className="size-[18px] transition-colors duration-200 group-hover:text-[#d7dbe0]"
+              className={`size-[18px] transition-colors duration-200 ${active ? "text-white" : "text-[#6a7076] group-hover:text-[#d7dbe0]"}`}
               strokeWidth={1.6}
-              style={{ color: active ? "#ffffff" : "#6a7076" }}
             />
             {active && (
               <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
