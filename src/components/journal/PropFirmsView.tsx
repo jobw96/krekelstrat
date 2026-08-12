@@ -217,9 +217,11 @@ export function PropFirmsView({ userId }: { userId: string }) {
                             >
                               {STATUS_LABEL[r.status]}
                             </span>
-                            <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#8b9298]">
-                              {r.phase}
-                            </span>
+                            {r.status !== "breached" && (
+                              <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#8b9298]">
+                                {r.phase}
+                              </span>
+                            )}
                           </span>
                           <span className="font-mono text-[11px] text-[#6a7076]">
                             {r.account_size ? `$${(r.account_size / 1000).toFixed(0)}K` : "—"} ·{" "}
