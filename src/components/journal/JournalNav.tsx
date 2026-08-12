@@ -4,7 +4,6 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  Home,
   LayoutGrid,
   Link2,
   ListOrdered,
