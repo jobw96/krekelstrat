@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { ChevronDown, Loader2, Upload, X } from "lucide-react";
+import { ChevronDown, ClipboardPaste, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   SESSION_OPTIONS,
@@ -103,8 +103,28 @@ export function AddTradeDialog({
   const [wentWrong, setWentWrong] = useState("");
   const [improvement, setImprovement] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [dragging, setDragging] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const preview = file ? URL.createObjectURL(file) : null;
+  useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
+
+  // Paste a screenshot straight from the clipboard (Cmd/Ctrl+V) anywhere in the dialog.
+  useEffect(() => {
+    function onPaste(e: ClipboardEvent) {
+      const item = Array.from(e.clipboardData?.items ?? []).find((i) =>
+        i.type.startsWith("image/"),
+      );
+      const img = item?.getAsFile();
+      if (!img) return;
+      e.preventDefault();
+      const ext = img.type.split("/")[1] ?? "png";
+      setFile(new File([img], `pasted-${Date.now()}.${ext}`, { type: img.type }));
+    }
+    document.addEventListener("paste", onPaste);
+    return () => document.removeEventListener("paste", onPaste);
+  }, []);
 
   const sign = result === "WIN" ? 1 : result === "LOSS" ? -1 : 0;
   const signedPnl = Math.abs(Number(pnl || 0)) * (sign === 0 ? 0 : sign);
@@ -276,16 +296,54 @@ export function AddTradeDialog({
           />
         </label>
 
-        <label className="hover-lift flex cursor-pointer items-center gap-2 rounded-xl bg-white/6 px-3 py-2.5 text-[12px] text-[#d7dbe0] hover:bg-white/10">
-          <Upload className="size-4" />
-          {file ? file.name : "Upload screenshot (converted to WebP)"}
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-          />
-        </label>
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragging(true);
+          }}
+          onDragLeave={() => setDragging(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDragging(false);
+            const dropped = e.dataTransfer.files?.[0];
+            if (dropped?.type.startsWith("image/")) setFile(dropped);
+          }}
+          className="flex flex-col gap-2 rounded-xl p-2 transition-colors"
+          style={{
+            background: dragging ? "rgba(229,82,95,0.10)" : "rgba(255,255,255,0.06)",
+            boxShadow: dragging ? "inset 0 0 0 1px rgba(229,82,95,0.6)" : "none",
+          }}
+        >
+          {preview && (
+            <div className="relative overflow-hidden rounded-lg">
+              <img src={preview} alt="Screenshot preview" className="max-h-[180px] w-full object-cover" />
+              <button
+                type="button"
+                onClick={() => setFile(null)}
+                aria-label="Remove screenshot"
+                className="absolute right-2 top-2 rounded-full bg-black/70 p-1 text-white hover:bg-black"
+              >
+                <X className="size-3.5" />
+              </button>
+            </div>
+          )}
+          <div className="flex items-center gap-2">
+            <label className="hover-lift flex flex-1 cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/8">
+              <Upload className="size-4" />
+              {file ? file.name : "Upload of sleep een screenshot hierheen"}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              />
+            </label>
+            <span className="flex items-center gap-1.5 whitespace-nowrap text-[11px] text-[#6a7076]">
+              <ClipboardPaste className="size-3.5" />
+              of plak met Ctrl/Cmd + V
+            </span>
+          </div>
+        </div>
 
         {error && <p className="text-[12px] text-[#f08a93]">{error}</p>}
 
