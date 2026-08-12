@@ -80,30 +80,41 @@ export function AddTradeDialog({
   onClose,
   onSaved,
   defaultDate,
+  trade,
 }: {
   userId: string;
   strategies: Strategy[];
   onClose: () => void;
   onSaved: () => void;
   defaultDate?: string | null;
+  /** When provided, the dialog edits this trade instead of creating a new one. */
+  trade?: Trade | null;
 }) {
+  const editing = !!trade;
   const [date, setDate] = useState(
-    defaultDate
-      ? DateTime.fromISO(defaultDate).set({
-          hour: DateTime.now().hour,
-          minute: DateTime.now().minute,
-        }).toFormat("yyyy-LL-dd'T'HH:mm")
-      : DateTime.now().toFormat("yyyy-LL-dd'T'HH:mm"),
+    trade
+      ? DateTime.fromISO(trade.date).toFormat("yyyy-LL-dd'T'HH:mm")
+      : defaultDate
+        ? DateTime.fromISO(defaultDate).set({
+            hour: DateTime.now().hour,
+            minute: DateTime.now().minute,
+          }).toFormat("yyyy-LL-dd'T'HH:mm")
+        : DateTime.now().toFormat("yyyy-LL-dd'T'HH:mm"),
   );
-  const [strategyId, setStrategyId] = useState<string>("");
-  const [session, setSession] = useState<string>(SESSION_OPTIONS[0]!);
-  const [pnl, setPnl] = useState("");
-  const [rr, setRr] = useState("");
-  const [result, setResult] = useState<TradeResult>("WIN");
-  const [notes, setNotes] = useState("");
-  const [rightTags, setRightTags] = useState<string[]>([]);
-  const [wrongTags, setWrongTags] = useState<string[]>([]);
-  const [improvement, setImprovement] = useState("");
+  const [strategyId, setStrategyId] = useState<string>(trade?.strategy_id ?? "");
+  const [session, setSession] = useState<string>(trade?.session ?? SESSION_OPTIONS[0]!);
+  const [pnl, setPnl] = useState(trade ? String(Math.abs(Number(trade.pnl))) : "");
+  const [rr, setRr] = useState(trade?.rr != null ? String(trade.rr) : "");
+  const [result, setResult] = useState<TradeResult>(trade?.result ?? "WIN");
+  const [notes, setNotes] = useState(trade?.notes ?? "");
+  const [rightTags, setRightTags] = useState<string[]>(
+    trade?.went_right ? trade.went_right.split(" • ").filter(Boolean) : [],
+  );
+  const [wrongTags, setWrongTags] = useState<string[]>(
+    trade?.went_wrong ? trade.went_wrong.split(" • ").filter(Boolean) : [],
+  );
+  const [improvement, setImprovement] = useState(trade?.improvement ?? "");
+
 
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
