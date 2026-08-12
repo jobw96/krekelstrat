@@ -8,6 +8,8 @@ export type RedFolderEvent = {
   forecast: string;
   previous: string;
   actual: string;
+  /** "high" = red folder, "medium" = orange folder */
+  impact: "high" | "medium";
 };
 
 type FfItem = {
@@ -51,6 +53,7 @@ export const getRedFolderEvents = createServerFn({ method: "GET" }).handler(
           forecast: it.forecast ?? "",
           previous: it.previous ?? "",
           actual: it.actual ?? "",
+          impact: "high",
         });
       }
       events.sort((a, b) => a.time - b.time);
@@ -59,6 +62,49 @@ export const getRedFolderEvents = createServerFn({ method: "GET" }).handler(
     } catch (err) {
       console.error("[red-folder] feed unavailable:", err);
       return cache ?? { events: [], updatedAt: Date.now() };
+    }
+  },
+);
+
+type CalCache = { events: RedFolderEvent[]; updatedAt: number };
+let calCache: CalCache | null = null;
+
+/**
+ * All USD red folder (high) + orange folder (medium) events for the current week.
+ * Cached for 15 minutes; the underlying feed rolls over daily.
+ */
+export const getCalendarEvents = createServerFn({ method: "GET" }).handler(
+  async (): Promise<CalCache> => {
+    if (calCache && Date.now() - calCache.updatedAt < 15 * 60_000) return calCache;
+    try {
+      const res = await fetch("https://nfs.faireconomy.media/ff_calendar_thisweek.json", {
+        headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json" },
+      });
+      if (!res.ok) throw new Error(`Calendar feed error ${res.status}`);
+      const json = (await res.json()) as FfItem[];
+      const events: RedFolderEvent[] = [];
+      for (const it of Array.isArray(json) ? json : []) {
+        if (it.country !== "USD") continue;
+        const impact = (it.impact ?? "").toLowerCase();
+        if (impact !== "high" && impact !== "medium") continue;
+        const time = it.date ? Date.parse(it.date) : NaN;
+        if (!Number.isFinite(time)) continue;
+        events.push({
+          id: `${it.title ?? "event"}-${time}`,
+          title: it.title ?? "US event",
+          time,
+          forecast: it.forecast ?? "",
+          previous: it.previous ?? "",
+          actual: it.actual ?? "",
+          impact: impact === "high" ? "high" : "medium",
+        });
+      }
+      events.sort((a, b) => a.time - b.time);
+      calCache = { events, updatedAt: Date.now() };
+      return calCache;
+    } catch (err) {
+      console.error("[calendar] feed unavailable:", err);
+      return calCache ?? { events: [], updatedAt: Date.now() };
     }
   },
 );
