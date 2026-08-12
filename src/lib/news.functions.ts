@@ -122,7 +122,6 @@ async function loadCalendar(): Promise<CalendarPayload> {
 
   try {
     const res = await fetch(PROXY_SOURCE, { headers: HEADERS, signal: AbortSignal.timeout(20000) });
-    console.error("[calendar] proxy status", res.status);
     if (res.ok) {
       const text = await res.text();
       const start = text.indexOf("[{");
@@ -142,7 +141,6 @@ async function loadCalendar(): Promise<CalendarPayload> {
 
   try {
     const res = await fetch(XML_SOURCE, { headers: HEADERS, signal: AbortSignal.timeout(8000) });
-    console.error("[calendar] xml status", res.status);
     if (res.ok) {
       const events = normalize(parseXml(await res.text()));
       if (events.length) {
