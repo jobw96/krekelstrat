@@ -22,89 +22,120 @@ type FfItem = {
   actual?: string;
 };
 
-type Cached = { events: RedFolderEvent[]; updatedAt: number };
-let cache: Cached | null = null;
+export type CalendarPayload = { events: RedFolderEvent[]; updatedAt: number };
 
-/**
- * High-impact ("Red Folder") US economic events for the current week,
- * from the public ForexFactory weekly calendar JSON feed.
- * The feed rate-limits aggressively (HTTP 429), so results are cached
- * for 15 minutes and failures fall back to the last good payload.
- */
-export const getRedFolderEvents = createServerFn({ method: "GET" }).handler(
-  async (): Promise<Cached> => {
-    if (cache && Date.now() - cache.updatedAt < 15 * 60_000) return cache;
+/** ForexFactory weekly calendar mirrors; the primary host rate-limits (429). */
+const SOURCES = [
+  "https://nfs.faireconomy.media/ff_calendar_thisweek.json",
+  "https://faireconomy.media/ff_calendar_thisweek.json",
+];
+const XML_SOURCE = "https://nfs.faireconomy.media/ff_calendar_thisweek.xml";
+
+const HEADERS = {
+  "User-Agent":
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36",
+  Accept: "application/json,text/xml,*/*",
+  "Accept-Language": "en-US,en;q=0.9",
+  Referer: "https://www.forexfactory.com/calendar",
+};
+
+function normalize(items: FfItem[]): RedFolderEvent[] {
+  const events: RedFolderEvent[] = [];
+  for (const it of items) {
+    if (it.country !== "USD") continue;
+    const impact = (it.impact ?? "").toLowerCase();
+    if (impact !== "high" && impact !== "medium") continue;
+    const time = it.date ? Date.parse(it.date) : NaN;
+    if (!Number.isFinite(time)) continue;
+    events.push({
+      id: `${it.title ?? "event"}-${time}`,
+      title: it.title ?? "US event",
+      time,
+      forecast: it.forecast ?? "",
+      previous: it.previous ?? "",
+      actual: it.actual ?? "",
+      impact: impact === "high" ? "high" : "medium",
+    });
+  }
+  events.sort((a, b) => a.time - b.time);
+  return events;
+}
+
+function tag(block: string, name: string): string {
+  const m = block.match(new RegExp(`<${name}>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${name}>`));
+  return m ? m[1]!.trim() : "";
+}
+
+/** Fallback parser for the XML variant of the same weekly feed. */
+function parseXml(xml: string): FfItem[] {
+  const items: FfItem[] = [];
+  for (const m of xml.matchAll(/<event>([\s\S]*?)<\/event>/g)) {
+    const b = m[1]!;
+    const date = tag(b, "date");
+    const time = tag(b, "time");
+    items.push({
+      title: tag(b, "title"),
+      country: tag(b, "country"),
+      // Feed dates are US Eastern; combine date + time into a parseable string.
+      date: date && time ? `${date} ${time} EST` : date,
+      impact: tag(b, "impact"),
+      forecast: tag(b, "forecast"),
+      previous: tag(b, "previous"),
+    });
+  }
+  return items;
+}
+
+let cache: CalendarPayload | null = null;
+let lastAttempt = 0;
+
+async function loadCalendar(): Promise<CalendarPayload> {
+  const fresh = cache && Date.now() - cache.updatedAt < 15 * 60_000;
+  if (fresh) return cache!;
+  // Back off failed attempts so a rate-limited feed isn't hammered every render.
+  if (Date.now() - lastAttempt < 60_000 && cache) return cache;
+  lastAttempt = Date.now();
+
+  for (const url of SOURCES) {
     try {
-      const res = await fetch("https://nfs.faireconomy.media/ff_calendar_thisweek.json", {
-        headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json" },
-      });
-      if (!res.ok) throw new Error(`Calendar feed error ${res.status}`);
+      const res = await fetch(url, { headers: HEADERS });
+      if (!res.ok) throw new Error(`Calendar feed ${res.status}`);
       const json = (await res.json()) as FfItem[];
-      const events: RedFolderEvent[] = [];
-      for (const it of Array.isArray(json) ? json : []) {
-        if (it.country !== "USD") continue;
-        if ((it.impact ?? "").toLowerCase() !== "high") continue;
-        const time = it.date ? Date.parse(it.date) : NaN;
-        if (!Number.isFinite(time)) continue;
-        events.push({
-          id: `${it.title ?? "event"}-${time}`,
-          title: it.title ?? "US event",
-          time,
-          forecast: it.forecast ?? "",
-          previous: it.previous ?? "",
-          actual: it.actual ?? "",
-          impact: "high",
-        });
+      const events = normalize(Array.isArray(json) ? json : []);
+      if (events.length) {
+        cache = { events, updatedAt: Date.now() };
+        return cache;
       }
-      events.sort((a, b) => a.time - b.time);
-      cache = { events, updatedAt: Date.now() };
-      return cache;
     } catch (err) {
-      console.error("[red-folder] feed unavailable:", err);
-      return cache ?? { events: [], updatedAt: Date.now() };
+      console.error(`[calendar] ${url} unavailable:`, err);
     }
-  },
+  }
+
+  try {
+    const res = await fetch(XML_SOURCE, { headers: HEADERS });
+    if (res.ok) {
+      const events = normalize(parseXml(await res.text()));
+      if (events.length) {
+        cache = { events, updatedAt: Date.now() };
+        return cache;
+      }
+    }
+  } catch (err) {
+    console.error("[calendar] xml fallback unavailable:", err);
+  }
+
+  return cache ?? { events: [], updatedAt: Date.now() };
+}
+
+/** Red (high) + orange (medium) impact USD events for the current week. */
+export const getCalendarEvents = createServerFn({ method: "GET" }).handler(
+  async (): Promise<CalendarPayload> => loadCalendar(),
 );
 
-type CalCache = { events: RedFolderEvent[]; updatedAt: number };
-let calCache: CalCache | null = null;
-
-/**
- * All USD red folder (high) + orange folder (medium) events for the current week.
- * Cached for 15 minutes; the underlying feed rolls over daily.
- */
-export const getCalendarEvents = createServerFn({ method: "GET" }).handler(
-  async (): Promise<CalCache> => {
-    if (calCache && Date.now() - calCache.updatedAt < 15 * 60_000) return calCache;
-    try {
-      const res = await fetch("https://nfs.faireconomy.media/ff_calendar_thisweek.json", {
-        headers: { "User-Agent": "Mozilla/5.0", Accept: "application/json" },
-      });
-      if (!res.ok) throw new Error(`Calendar feed error ${res.status}`);
-      const json = (await res.json()) as FfItem[];
-      const events: RedFolderEvent[] = [];
-      for (const it of Array.isArray(json) ? json : []) {
-        if (it.country !== "USD") continue;
-        const impact = (it.impact ?? "").toLowerCase();
-        if (impact !== "high" && impact !== "medium") continue;
-        const time = it.date ? Date.parse(it.date) : NaN;
-        if (!Number.isFinite(time)) continue;
-        events.push({
-          id: `${it.title ?? "event"}-${time}`,
-          title: it.title ?? "US event",
-          time,
-          forecast: it.forecast ?? "",
-          previous: it.previous ?? "",
-          actual: it.actual ?? "",
-          impact: impact === "high" ? "high" : "medium",
-        });
-      }
-      events.sort((a, b) => a.time - b.time);
-      calCache = { events, updatedAt: Date.now() };
-      return calCache;
-    } catch (err) {
-      console.error("[calendar] feed unavailable:", err);
-      return calCache ?? { events: [], updatedAt: Date.now() };
-    }
+/** High-impact ("Red Folder") USD events only. */
+export const getRedFolderEvents = createServerFn({ method: "GET" }).handler(
+  async (): Promise<CalendarPayload> => {
+    const all = await loadCalendar();
+    return { events: all.events.filter((e) => e.impact === "high"), updatedAt: all.updatedAt };
   },
 );
