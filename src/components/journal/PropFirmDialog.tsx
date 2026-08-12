@@ -236,6 +236,17 @@ export function PropFirmDialog({
         </label>
 
         <label className="flex flex-col gap-1.5">
+          <span className={label}>Account name (optional)</span>
+          <input
+            value={customLabel}
+            onChange={(e) => setCustomLabel(e.target.value)}
+            maxLength={60}
+            placeholder={isCustom ? customFirm || "Custom name" : `${firm} — leave empty for default`}
+            className={field}
+          />
+        </label>
+
+        <label className="flex flex-col gap-1.5">
           <span className={label}>Notes</span>
           <textarea
             value={notes}
