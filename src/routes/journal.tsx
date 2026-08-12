@@ -28,6 +28,7 @@ import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
 import { ControlBar, type Filters, type RangeKey } from "@/components/journal/ControlBar";
 import { ShareJournalDialog } from "@/components/journal/ShareJournalDialog";
 import { buddyLabel, claimShares, fetchShares, type JournalShare } from "@/lib/shares";
+import { fetchCommentCounts } from "@/lib/comments";
 
 export const Route = createFileRoute("/journal")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -130,6 +131,24 @@ function JournalPage() {
       return (data ?? []) as Trade[];
     },
   });
+
+  const commentCountsQ = useQuery({
+    queryKey: ["comment-counts", ownerId, (tradesQ.data ?? []).length],
+    enabled: (tradesQ.data ?? []).length > 0,
+    queryFn: () => fetchCommentCounts((tradesQ.data ?? []).map((t) => t.id)),
+  });
+
+  const commentsByDay = useMemo(() => {
+    const counts = commentCountsQ.data ?? {};
+    const byDay: Record<string, number> = {};
+    for (const t of tradesQ.data ?? []) {
+      const n = counts[t.id] ?? 0;
+      if (!n) continue;
+      const key = DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd");
+      byDay[key] = (byDay[key] ?? 0) + n;
+    }
+    return byDay;
+  }, [commentCountsQ.data, tradesQ.data]);
 
   const strategies = strategiesQ.data ?? [];
   const allTrades = tradesQ.data ?? [];
@@ -347,6 +366,7 @@ function JournalPage() {
                     onMode={setCalMode}
                     onMonthChange={setMonth}
                     onSelectDay={setDay}
+                    commentsByDay={commentsByDay}
                     onAddDay={(d) => {
                       setAddDate(d);
                       setAdding(true);

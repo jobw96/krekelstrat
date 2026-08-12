@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { Plus } from "lucide-react";
+import { MessageSquare, Plus } from "lucide-react";
 import { money, WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
 import { groupByDay, weekSummaries } from "@/lib/journal-stats";
 import { LOCAL_ZONE } from "@/lib/sessions";
@@ -22,6 +22,7 @@ export function ZellaCalendar({
   onSelectDay,
   onMonthChange,
   onAddDay,
+  commentsByDay = {},
 }: {
   month: DateTime;
   trades: Trade[];
@@ -30,6 +31,7 @@ export function ZellaCalendar({
   onSelectDay: (day: string) => void;
   onAddDay: (day: string) => void;
   onMonthChange: (m: DateTime) => void;
+  commentsByDay?: Record<string, number>;
 }) {
   const byDay = groupByDay(trades);
   const start = month.startOf("month");
@@ -117,6 +119,7 @@ export function ZellaCalendar({
             week={w}
             onSelectDay={onSelectDay}
             onAddDay={onAddDay}
+            commentsByDay={commentsByDay}
           />
         ))}
       </div>
@@ -183,6 +186,7 @@ function WeekRow({
   week,
   onSelectDay,
   onAddDay,
+  commentsByDay,
 }: {
   cells: DateTime[];
   byDay: ReturnType<typeof groupByDay>;
@@ -191,6 +195,7 @@ function WeekRow({
   week: { index: number; pnl: number; days: number };
   onSelectDay: (day: string) => void;
   onAddDay: (day: string) => void;
+  commentsByDay: Record<string, number>;
 }) {
   const wColor = week.pnl > 0 ? WIN_GREEN : week.pnl < 0 ? LOSS_RED : "#6a7076";
   return (
@@ -256,6 +261,25 @@ function WeekRow({
             >
               <Plus className="size-3" strokeWidth={2} />
             </button>
+            {stat && (commentsByDay[key] ?? 0) > 0 && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelectDay(key);
+                }}
+                aria-label={`${commentsByDay[key]} comments on ${key}`}
+                className="hover-lift absolute bottom-1.5 right-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9.5px]"
+                style={{
+                  background: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  color: "#d7dbe0",
+                }}
+              >
+                <MessageSquare className="size-2.5" strokeWidth={2} />
+                {commentsByDay[key]}
+              </button>
+            )}
           </div>
         );
       })}
