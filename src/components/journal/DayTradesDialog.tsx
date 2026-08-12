@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { Pencil, Trash2, X } from "lucide-react";
+import { Pencil, Trash2, X, ZoomIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   money,
@@ -13,9 +13,32 @@ import {
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { TradeComments } from "@/components/journal/TradeComments";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
+import { ImageLightbox } from "@/components/journal/ImageLightbox";
 
 function resultColor(t: Trade) {
   return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
+}
+
+function TagRow({ label, value, color }: { label: string; value: string | null; color: string }) {
+  if (!value) return null;
+  const tags = value
+    .split(/[,\n]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
+      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">{label}</span>
+      {tags.map((tag, i) => (
+        <span
+          key={`${tag}-${i}`}
+          className="rounded-full px-2 py-0.5 text-[10.5px]"
+          style={{ background: `${color}1f`, color, border: `1px solid ${color}3d` }}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 export function DayTradesDialog({
@@ -33,6 +56,7 @@ export function DayTradesDialog({
 }) {
   const [shots, setShots] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<Trade | null>(null);
+  const [zoomed, setZoomed] = useState<string | null>(null);
   const total = trades.reduce((a, t) => a + Number(t.pnl), 0);
 
   useEffect(() => {
@@ -120,13 +144,30 @@ export function DayTradesDialog({
               </span>
             </div>
             {t.notes && <p className="text-[12px] leading-[1.5] text-[#8b9298]">{t.notes}</p>}
+
+            <div className="flex flex-col gap-1.5">
+              <TagRow label="Rights" value={t.went_right} color={WIN_GREEN} />
+              <TagRow label="Wrongs" value={t.went_wrong} color={LOSS_RED} />
+              <TagRow label="Improvement" value={t.improvement} color="#8b9298" />
+            </div>
+
             {shots[t.id] && (
-              <img
-                src={shots[t.id]}
-                alt="Trade screenshot"
-                loading="lazy"
-                className="w-full rounded-xl border border-white/8"
-              />
+              <button
+                type="button"
+                onClick={() => setZoomed(shots[t.id] ?? null)}
+                className="group/img relative block overflow-hidden rounded-xl border border-white/8"
+                aria-label="Zoom screenshot"
+              >
+                <img
+                  src={shots[t.id]}
+                  alt="Trade screenshot"
+                  loading="lazy"
+                  className="w-full transition-transform duration-200 group-hover/img:scale-[1.02]"
+                />
+                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#d7dbe0] opacity-0 transition-opacity group-hover/img:opacity-100">
+                  <ZoomIn className="size-3.5" />
+                </span>
+              </button>
             )}
             <TradeComments tradeId={t.id} onChanged={onChanged} />
           </article>
@@ -144,6 +185,8 @@ export function DayTradesDialog({
           onSaved={onChanged}
         />
       )}
+
+      {zoomed && <ImageLightbox src={zoomed} onClose={() => setZoomed(null)} />}
     </div>
   );
 }
