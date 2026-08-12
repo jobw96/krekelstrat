@@ -80,6 +80,7 @@ export type Database = {
           created_at: string
           firm: string
           id: string
+          label: string | null
           notes: string | null
           passed_at: string | null
           payout_total: number
@@ -97,6 +98,7 @@ export type Database = {
           created_at?: string
           firm: string
           id?: string
+          label?: string | null
           notes?: string | null
           passed_at?: string | null
           payout_total?: number
@@ -114,6 +116,7 @@ export type Database = {
           created_at?: string
           firm?: string
           id?: string
+          label?: string | null
           notes?: string | null
           passed_at?: string | null
           payout_total?: number

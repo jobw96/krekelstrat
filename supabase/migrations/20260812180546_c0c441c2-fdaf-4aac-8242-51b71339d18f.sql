@@ -1,0 +1,1 @@
+ALTER TABLE public.prop_accounts ADD COLUMN label text;
