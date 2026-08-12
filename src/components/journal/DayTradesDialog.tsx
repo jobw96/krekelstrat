@@ -154,7 +154,7 @@ export function DayTradesDialog({
             {shots[t.id] && (
               <button
                 type="button"
-                onClick={() => setZoomed(shots[t.id])}
+                onClick={() => setZoomed(shots[t.id] ?? null)}
                 className="group/img relative block overflow-hidden rounded-xl border border-white/8"
                 aria-label="Zoom screenshot"
               >
