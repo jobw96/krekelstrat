@@ -349,7 +349,7 @@ export function AddTradeDialog({
           <div className="flex items-center gap-2">
             <label className="hover-lift flex flex-1 cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/8">
               <Upload className="size-4" />
-              {file ? file.name : "Upload of sleep een screenshot hierheen"}
+              {file ? file.name : "Upload or drop a screenshot here"}
               <input
                 type="file"
                 accept="image/*"

@@ -29,7 +29,7 @@ export const Route = createFileRoute("/profile")({
 });
 
 const schema = z.object({
-  display_name: z.string().trim().max(40, { message: "Naam mag maximaal 40 tekens zijn" }),
+  display_name: z.string().trim().max(40, { message: "Name can be at most 40 characters" }),
 });
 
 const MAX_BYTES = 4 * 1024 * 1024;
@@ -63,8 +63,8 @@ function ProfilePage() {
 
   function pick(f: File | null) {
     if (!f) return;
-    if (!f.type.startsWith("image/")) return setError("Kies een afbeelding");
-    if (f.size > MAX_BYTES) return setError("Afbeelding mag maximaal 4 MB zijn");
+    if (!f.type.startsWith("image/")) return setError("Please choose an image");
+    if (f.size > MAX_BYTES) return setError("Image must be 4 MB or smaller");
     setError(null);
     setSaved(false);
     setFile(f);
@@ -93,7 +93,7 @@ function ProfilePage() {
       setPreview(null);
       setSaved(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Opslaan mislukt");
+      setError(err instanceof Error ? err.message : "Saving failed");
     } finally {
       setBusy(false);
     }
@@ -112,10 +112,10 @@ function ProfilePage() {
         <form onSubmit={save} className="card-surface flex flex-col gap-4 p-5">
           <div className="flex flex-col gap-1">
             <h2 className="text-[15px] text-white" style={{ fontWeight: 560 }}>
-              Trader profiel
+              Trader profile
             </h2>
             <p className="text-[12.5px] text-[#8b9298]">
-              Naam en foto worden getoond in de sidebar en bij gedeelde journals.
+              Your name and photo are shown in the sidebar and on shared journals.
             </p>
           </div>
 
@@ -124,11 +124,11 @@ function ProfilePage() {
               type="button"
               onClick={() => fileRef.current?.click()}
               disabled={!canEdit}
-              aria-label="Profielfoto kiezen"
+              aria-label="Choose profile photo"
               className="group relative size-[72px] shrink-0 overflow-hidden rounded-full border border-white/12 bg-white/6 disabled:cursor-default"
             >
               {shownAvatar ? (
-                <img src={shownAvatar} alt="Profielfoto" className="size-full object-cover" />
+                <img src={shownAvatar} alt="Profile photo" className="size-full object-cover" />
               ) : (
                 <span className="flex size-full items-center justify-center text-[20px] text-[#8b9298]">
                   {(name.trim()[0] ?? "?").toUpperCase()}
@@ -147,9 +147,9 @@ function ProfilePage() {
                 disabled={!canEdit}
                 className="hover-lift self-start rounded-full bg-white/6 px-3 py-1.5 text-[12.5px] text-[#d7dbe0] disabled:opacity-50"
               >
-                Foto uploaden
+                Upload photo
               </button>
-              <span className="text-[11px] text-[#6a7076]">PNG of JPG, max 4 MB</span>
+              <span className="text-[11px] text-[#6a7076]">PNG or JPG, max 4 MB</span>
             </div>
             <input
               ref={fileRef}
@@ -161,7 +161,7 @@ function ProfilePage() {
           </div>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]">Naam</span>
+            <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]">Name</span>
             <input
               value={name}
               onChange={(e) => {
@@ -170,7 +170,7 @@ function ProfilePage() {
               }}
               maxLength={40}
               disabled={!canEdit}
-              placeholder="Jouw naam"
+              placeholder="Your name"
               className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#e5525f]/60 focus:bg-white/6 disabled:opacity-60"
             />
           </label>
@@ -178,12 +178,12 @@ function ProfilePage() {
           <div className="flex flex-col gap-1.5">
             <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]">Account</span>
             <span className="rounded-lg border border-white/8 bg-white/3 px-3 py-2.5 text-[13px] text-[#8b9298]">
-              {loading ? "…" : canEdit ? user.email : "Guest mode · niet ingelogd"}
+              {loading ? "…" : canEdit ? user.email : "Guest mode · not signed in"}
             </span>
           </div>
 
           {error && <p className="text-[12px] text-[#f08a93]">{error}</p>}
-          {saved && !error && <p className="text-[12px] text-[#78d6a3]">Profiel opgeslagen.</p>}
+          {saved && !error && <p className="text-[12px] text-[#78d6a3]">Profile saved.</p>}
 
           <div className="mt-1 flex items-center justify-between gap-2">
             {canEdit ? (
@@ -195,14 +195,14 @@ function ProfilePage() {
                 }}
                 className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#d7dbe0]"
               >
-                <LogOut className="size-3.5" /> Uitloggen
+                <LogOut className="size-3.5" /> Sign out
               </button>
             ) : (
               <Link
                 to="/auth"
                 className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#d7dbe0]"
               >
-                Inloggen
+                Sign in
               </Link>
             )}
             <button
@@ -211,7 +211,7 @@ function ProfilePage() {
               className="hover-lift inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] disabled:opacity-60"
               style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
             >
-              {busy && <Loader2 className="size-4 animate-spin" />} Opslaan
+              {busy && <Loader2 className="size-4 animate-spin" />} Save
             </button>
           </div>
         </form>
@@ -219,10 +219,10 @@ function ProfilePage() {
         <section className="card-surface flex h-fit flex-col gap-3 p-5">
           <div className="flex flex-col gap-1">
             <h2 className="text-[15px] text-white" style={{ fontWeight: 560 }}>
-              Tijdzone
+              Timezone
             </h2>
             <p className="text-[12.5px] text-[#8b9298]">
-              Bepaalt hoe sessietijden op het dashboard worden getoond.
+              Controls how session times are displayed on the dashboard.
             </p>
           </div>
           <div className="flex flex-col gap-2">
