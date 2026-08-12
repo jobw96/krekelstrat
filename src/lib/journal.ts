@@ -29,6 +29,21 @@ export type Trade = {
 
 export const SESSION_OPTIONS = ["ASIA", "LO", "PRE", "MACRO", "NYMO", "LUNCH", "2PM"];
 
+/** Full session names, matching the Sessions & Volume Windows tab. */
+export const SESSION_LABELS: Record<string, string> = {
+  ASIA: "Asia Open",
+  LO: "London Open",
+  PRE: "US Pre-Market Open",
+  MACRO: "US Macro News Window",
+  NYMO: "NY Equity Open",
+  LUNCH: "NY Lunch Hour",
+  "2PM": "NY PM Session",
+};
+
+export function sessionLabel(s: string) {
+  return SESSION_LABELS[s] ?? s;
+}
+
 export const WIN_GREEN = "#10B981";
 export const LOSS_RED = "#e5525f";
 
