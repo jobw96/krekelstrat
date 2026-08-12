@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { DateTime } from "luxon";
 
 export type RedFolderEvent = {
   id: string;
@@ -20,6 +21,8 @@ type FfItem = {
   forecast?: string;
   previous?: string;
   actual?: string;
+  /** Pre-parsed epoch ms (used by the XML fallback). */
+  ms?: number;
 };
 
 export type CalendarPayload = { events: RedFolderEvent[]; updatedAt: number };
@@ -47,7 +50,7 @@ function normalize(items: FfItem[]): RedFolderEvent[] {
     if (it.country !== "USD") continue;
     const impact = (it.impact ?? "").toLowerCase();
     if (impact !== "high" && impact !== "medium") continue;
-    const time = it.date ? Date.parse(it.date) : NaN;
+    const time = it.ms ?? (it.date ? Date.parse(it.date) : NaN);
     if (!Number.isFinite(time)) continue;
     events.push({
       id: `${it.title ?? "event"}-${time}`,
@@ -75,11 +78,15 @@ function parseXml(xml: string): FfItem[] {
     const b = m[1]!;
     const date = tag(b, "date");
     const time = tag(b, "time");
+    // Feed uses MM-dd-yyyy plus a US Eastern 12h clock ("8:30am").
+    const dt = DateTime.fromFormat(`${date} ${time.toLowerCase()}`, "MM-dd-yyyy h:mma", {
+      zone: "America/New_York",
+    });
+    if (!dt.isValid) continue;
     items.push({
       title: tag(b, "title"),
       country: tag(b, "country"),
-      // Feed dates are US Eastern; combine date + time into a parseable string.
-      date: date && time ? `${date} ${time} EST` : date,
+      ms: dt.toMillis(),
       impact: tag(b, "impact"),
       forecast: tag(b, "forecast"),
       previous: tag(b, "previous"),
