@@ -11,6 +11,7 @@ import {
   type Trade,
 } from "@/lib/journal";
 import { LOCAL_ZONE } from "@/lib/sessions";
+import { TradeComments } from "@/components/journal/TradeComments";
 
 function resultColor(t: Trade) {
   return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
