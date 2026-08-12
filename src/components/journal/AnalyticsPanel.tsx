@@ -1,14 +1,8 @@
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ExternalLink } from "lucide-react";
 import { WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
 import { performanceCurve } from "@/lib/journal-stats";
+import { NewsPanel } from "./NewsPanel";
 
-const LINKS = [
-  { label: "ForexFactory", href: "https://www.forexfactory.com/calendar", note: "Red folder news" },
-  { label: "TradingView", href: "https://www.tradingview.com/chart/?symbol=CME_MINI%3AMNQ1%21", note: "MNQ chart" },
-  { label: "CME MNQ", href: "https://www.cmegroup.com/markets/equities/nasdaq/micro-e-mini-nasdaq-100.html", note: "Contract specs" },
-  { label: "Econoday", href: "https://www.econoday.com", note: "Macro calendar" },
-];
 
 /** Right-hand analytics stack: performance curves + quick external tools. */
 export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
