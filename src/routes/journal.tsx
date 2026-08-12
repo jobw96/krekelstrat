@@ -385,8 +385,6 @@ function JournalPage() {
               <TradesList trades={trades} strategies={strategies} onChanged={refresh} readOnly={readOnly} />
             )}
 
-            {view === "notebook" && <Notebook trades={trades} />}
-
             {view === "reports" && <ReportsView trades={trades} strategies={strategies} />}
 
             {view === "strategies" && (
