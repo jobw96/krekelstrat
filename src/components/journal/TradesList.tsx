@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Pencil, Trash2, ZoomIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   money,
@@ -14,6 +14,7 @@ import {
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { TradeComments } from "@/components/journal/TradeComments";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
+import { ImageLightbox } from "@/components/journal/ImageLightbox";
 
 const PAGE = 8;
 const STEP = 5;
