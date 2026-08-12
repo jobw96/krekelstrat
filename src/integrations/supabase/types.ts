@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      journal_shares: {
+        Row: {
+          created_at: string
+          hide_dollar_amounts: boolean
+          id: string
+          owner_email: string | null
+          owner_id: string
+          shared_with_email: string
+          shared_with_user_id: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          hide_dollar_amounts?: boolean
+          id?: string
+          owner_email?: string | null
+          owner_id: string
+          shared_with_email: string
+          shared_with_user_id?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          hide_dollar_amounts?: boolean
+          id?: string
+          owner_email?: string | null
+          owner_id?: string
+          shared_with_email?: string
+          shared_with_user_id?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       prop_accounts: {
         Row: {
           account_size: number | null
@@ -156,7 +189,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_journal_shares: { Args: never; Returns: number }
+      has_journal_access: { Args: { _owner: string }; Returns: boolean }
     }
     Enums: {
       [_ in never]: never
