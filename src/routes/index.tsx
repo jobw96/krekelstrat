@@ -14,6 +14,7 @@ import {
 import { useNow } from "@/hooks/useNow";
 import { useMnq } from "@/hooks/useMnq";
 import { useRedFolder } from "@/hooks/useRedFolder";
+import { useTzPref } from "@/hooks/useTzPref";
 import { ActiveSessionBar } from "@/components/dashboard/ActiveSessionBar";
 import { CatalystBanner } from "@/components/dashboard/NewsCatalyst";
 import { currentCatalyst, eventsToday } from "@/lib/news";
