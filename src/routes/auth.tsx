@@ -36,7 +36,7 @@ function AuthPage() {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading && session) navigate({ to: "/journal" });
+    if (!loading && session) navigate({ to: "/journal", search: { view: "trades" } });
   }, [loading, session, navigate]);
 
   async function submit(e: React.FormEvent) {
@@ -75,7 +75,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/journal" });
+    navigate({ to: "/journal", search: { view: "trades" } });
   }
 
   return (
