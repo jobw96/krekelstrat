@@ -50,6 +50,7 @@ export function PropFirmDialog({
   const [date, setDate] = useState(
     (account?.started_at ?? new Date().toISOString()).slice(0, 10),
   );
+  const [customLabel, setCustomLabel] = useState(account?.label ?? "");
   const [notes, setNotes] = useState(account?.notes ?? "");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -74,6 +75,7 @@ export function PropFirmDialog({
     const payload = {
       user_id: userId,
       firm: parsed.data.firm,
+      label: customLabel.trim() || null,
       account_size: Number(size) || null,
       phase,
       status,
@@ -230,6 +232,17 @@ export function PropFirmDialog({
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className={`${field} font-mono`}
+          />
+        </label>
+
+        <label className="flex flex-col gap-1.5">
+          <span className={label}>Account name (optional)</span>
+          <input
+            value={customLabel}
+            onChange={(e) => setCustomLabel(e.target.value)}
+            maxLength={60}
+            placeholder={isCustom ? customFirm || "Custom name" : `${firm} — leave empty for default`}
+            className={field}
           />
         </label>
 
