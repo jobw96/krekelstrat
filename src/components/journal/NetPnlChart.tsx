@@ -41,29 +41,37 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
   const [bucket, setBucket] = useState<Bucket>("day");
   const data = useMemo(() => bucketData(trades, bucket), [trades, bucket]);
 
+  const total = useMemo(() => data.reduce((a, d) => a + d.pnl, 0), [data]);
+
   return (
-    <section className="card-surface flex flex-col gap-3 p-4">
-      <header className="flex items-center justify-between gap-2">
-        <div className="flex flex-col gap-0.5">
-          <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
+    <section className="card-surface flex min-w-0 flex-col gap-3 p-3 sm:p-4">
+      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+        <div className="flex min-w-0 flex-col gap-0.5">
+          <h3 className="truncate text-[14px] text-white" style={{ fontWeight: 560 }}>
             Net P&amp;L
           </h3>
-          <span className="text-[11px] text-[#6a7076]">Per {bucket}</span>
+          <span
+            className="font-mono text-[11px] tabular"
+            style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#6a7076" }}
+          >
+            {money(total)} <span className="text-[#6a7076]">· per {bucket}</span>
+          </span>
         </div>
-        <div className="flex items-center gap-1 rounded-full bg-white/5 p-0.5">
+        <div className="flex shrink-0 items-center gap-0.5 rounded-full bg-white/5 p-0.5">
           {BUCKETS.map((b) => (
             <button
               key={b.id}
               type="button"
               onClick={() => setBucket(b.id)}
-              className="rounded-full px-2.5 py-1 text-[11px] transition-colors"
+              className="rounded-full px-2 py-1 text-[11px] transition-colors sm:px-2.5"
               style={
                 bucket === b.id
                   ? { background: "rgba(255,255,255,0.10)", color: "#ffffff" }
                   : { color: "#6a7076" }
               }
             >
-              {b.label}
+              <span className="sm:hidden">{b.label.charAt(0)}</span>
+              <span className="hidden sm:inline">{b.label}</span>
             </button>
           ))}
         </div>
@@ -72,22 +80,23 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
       {data.length === 0 ? (
         <p className="py-10 text-center text-[12px] text-[#6a7076]">No data in this range.</p>
       ) : (
-        <div className="h-[220px] w-full">
+        <div className="h-[180px] w-full min-w-0 sm:h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} margin={{ top: 6, right: 6, bottom: 0, left: -12 }}>
+            <BarChart data={data} margin={{ top: 6, right: 4, bottom: 0, left: -18 }}>
               <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
               <XAxis
                 dataKey="label"
                 tick={{ fill: "#6a7076", fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
-                minTickGap={18}
+                minTickGap={24}
+                interval="preserveStartEnd"
               />
               <YAxis
                 tick={{ fill: "#6a7076", fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
-                width={54}
+                width={52}
                 tickFormatter={(v: number) => money(Number(v))}
               />
               <ReferenceLine y={0} stroke="rgba(255,255,255,0.18)" />
@@ -102,7 +111,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
                 labelStyle={{ color: "#8b9298" }}
                 formatter={(v: number) => [money(Number(v)), "Net P&L"]}
               />
-              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={22}>
+              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={18}>
                 {data.map((d) => (
                   <Cell key={d.sort} fill={d.pnl >= 0 ? WIN_GREEN : LOSS_RED} />
                 ))}
@@ -111,6 +120,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
           </ResponsiveContainer>
         </div>
       )}
+
     </section>
   );
 }
