@@ -28,7 +28,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { session, loading } = useAuth();
+  const { session, isGuest, loading } = useAuth();
   const [mode, setMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,8 +36,10 @@ function AuthPage() {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading && session) navigate({ to: "/journal", search: { view: "trades" } });
-  }, [loading, session, navigate]);
+    // A guest (anonymous) session must not count as signed in, otherwise this
+    // page bounces back and a real account can never be used.
+    if (!loading && session && !isGuest) navigate({ to: "/journal", search: { view: "trades" } });
+  }, [loading, session, isGuest, navigate]);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
