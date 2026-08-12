@@ -4,6 +4,7 @@ import { ChevronDown, ClipboardPaste, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   SESSION_OPTIONS,
+  sessionLabel,
   uploadScreenshot,
   WIN_GREEN,
   LOSS_RED,
@@ -230,7 +231,7 @@ export function AddTradeDialog({
             <SelectField
               value={session}
               onChange={setSession}
-              options={SESSION_OPTIONS.map((s) => ({ value: s, label: s }))}
+              options={SESSION_OPTIONS.map((s) => ({ value: s, label: sessionLabel(s) }))}
             />
           </div>
           <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
