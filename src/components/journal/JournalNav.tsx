@@ -1,11 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import {
-  BookOpen,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
   LayoutGrid,
-  Link2,
   ListOrdered,
   PieChart,
   Plus,
@@ -16,19 +14,15 @@ export type JournalView =
   | "dashboard"
   | "day"
   | "trades"
-  | "notebook"
   | "reports"
-  | "strategies"
-  | "resources";
+  | "strategies";
 
 const ITEMS: { id: JournalView; label: string; icon: typeof LayoutGrid }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutGrid },
   { id: "day", label: "Day View", icon: CalendarDays },
   { id: "trades", label: "Trade Log", icon: ListOrdered },
-  { id: "notebook", label: "Notebook", icon: BookOpen },
   { id: "reports", label: "Reports", icon: PieChart },
   { id: "strategies", label: "Strategies", icon: Target },
-  { id: "resources", label: "Resources", icon: Link2 },
 ];
 
 /** Collapsible left navigation rail for the journal workspace. */
