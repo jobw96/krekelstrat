@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DateTime } from "luxon";
 import { ChevronDown, ClipboardPaste, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -114,6 +114,13 @@ export function AddTradeDialog({
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
 
   // Paste a screenshot straight from the clipboard (Cmd/Ctrl+V) anywhere in the dialog.
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    // Make sure the dialog owns focus, otherwise the browser routes paste elsewhere.
+    formRef.current?.focus({ preventScroll: true });
+  }, []);
+
   useEffect(() => {
     function onPaste(e: ClipboardEvent) {
       const item = Array.from(e.clipboardData?.items ?? []).find((i) =>
@@ -125,9 +132,14 @@ export function AddTradeDialog({
       const ext = img.type.split("/")[1] ?? "png";
       setFile(new File([img], `pasted-${Date.now()}.${ext}`, { type: img.type }));
     }
-    document.addEventListener("paste", onPaste);
-    return () => document.removeEventListener("paste", onPaste);
+    window.addEventListener("paste", onPaste, true);
+    document.addEventListener("paste", onPaste, true);
+    return () => {
+      window.removeEventListener("paste", onPaste, true);
+      document.removeEventListener("paste", onPaste, true);
+    };
   }, []);
+
 
   const sign = result === "WIN" ? 1 : result === "LOSS" ? -1 : 0;
   const signedPnl = Math.abs(Number(pnl || 0)) * (sign === 0 ? 0 : sign);
@@ -168,8 +180,10 @@ export function AddTradeDialog({
   return (
     <div className="overlay-enter fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-sm">
       <form
+        ref={formRef}
+        tabIndex={-1}
         onSubmit={save}
-        className="card-surface dialog-enter flex max-h-[90vh] w-full max-w-[520px] flex-col gap-3 overflow-y-auto p-5"
+        className="card-surface dialog-enter flex max-h-[90vh] w-full max-w-[520px] flex-col gap-3 overflow-y-auto p-5 outline-none"
       >
         <header className="flex items-center justify-between">
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
