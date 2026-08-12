@@ -92,6 +92,7 @@ function Dashboard() {
   const mnq = useMnq();
   const news = useRedFolder();
   const [sound, setSound] = useState(false);
+  const [tz, setTz] = useState<"NY" | "AMS">("NY");
   const compact = true;
   const state = now ? computeState(now) : null;
   useBeep(sound, state?.secondsToNext ?? 9999);
@@ -318,11 +319,40 @@ function Dashboard() {
 
 
               <section className="pb-10">
-                <div className="mb-4 flex items-center gap-2">
-                  <Clock className="size-3.5 text-[#6a7076]" strokeWidth={1.6} />
-                  <h2 className="text-[15px] tracking-[-0.011em] text-[#d7dbe0]">
-                    Sessions &amp; Volume Windows
-                  </h2>
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <Clock className="size-3.5 text-[#6a7076]" strokeWidth={1.6} />
+                    <h2 className="text-[15px] tracking-[-0.011em] text-[#d7dbe0]">
+                      Sessions &amp; Volume Windows
+                    </h2>
+                  </div>
+                  <div
+                    className="flex items-center gap-0.5 rounded-full p-0.5"
+                    style={{
+                      background: "rgba(255,255,255,0.04)",
+                      boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.06)",
+                    }}
+                  >
+                    {(["NY", "AMS"] as const).map((z) => (
+                      <button
+                        key={z}
+                        type="button"
+                        onClick={() => setTz(z)}
+                        className="rounded-full px-3 py-1 font-mono text-[10px] tracking-[0.08em] transition-colors"
+                        style={
+                          tz === z
+                            ? {
+                                background: "rgba(255,255,255,0.09)",
+                                color: "#e8ebee",
+                                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)",
+                              }
+                            : { color: "#6a7076" }
+                        }
+                      >
+                        {z}
+                      </button>
+                    ))}
+                  </div>
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                   {SESSIONS.map((def) => (
@@ -335,6 +365,8 @@ function Dashboard() {
                       candles={mnq.data?.candles ?? []}
                       events={news.data?.events ?? []}
                       compact={compact}
+                      zone={tz === "NY" ? NY_ZONE : LOCAL_ZONE}
+                      zoneLabel={tz}
                     />
 
 
