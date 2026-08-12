@@ -102,7 +102,7 @@ export function NewsPanel() {
           onClick={() => step(-1)}
           disabled={index <= 0}
           aria-label="Previous day"
-          className="grid size-7 place-items-center rounded-lg text-[#9aa1a8] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+          className="hover-lift grid size-7 place-items-center rounded-lg bg-white/[0.04] text-[#9aa1a8] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
         >
           <ChevronLeft className="size-4" strokeWidth={2} />
         </button>
@@ -124,7 +124,7 @@ export function NewsPanel() {
           onClick={() => step(1)}
           disabled={index < 0 || index >= days.length - 1}
           aria-label="Next day"
-          className="grid size-7 place-items-center rounded-lg text-[#9aa1a8] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+          className="hover-lift grid size-7 place-items-center rounded-lg bg-white/[0.04] text-[#9aa1a8] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
         >
           <ChevronRight className="size-4" strokeWidth={2} />
         </button>

@@ -1,10 +1,8 @@
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
 import { performanceCurve } from "@/lib/journal-stats";
-import { NewsPanel } from "./NewsPanel";
 
-
-/** Right-hand analytics stack: performance curves + quick external tools. */
+/** Right-hand analytics stack: performance curves. */
 export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
   const data = performanceCurve(trades);
 
@@ -81,9 +79,6 @@ export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
           </div>
         )}
       </section>
-
-      <NewsPanel />
-
     </div>
   );
 }

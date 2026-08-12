@@ -30,11 +30,11 @@ export function AppRail() {
             search={search ?? {}}
             title={label}
             aria-label={label}
-            className="group relative flex size-11 items-center justify-center rounded-2xl transition-colors duration-300"
+            className="group relative flex size-11 items-center justify-center rounded-2xl transition-all duration-200 hover:bg-white/[0.07]"
             style={active ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
           >
             <Icon
-              className="size-[18px]"
+              className="size-[18px] transition-colors duration-200 group-hover:text-[#d7dbe0]"
               strokeWidth={1.6}
               style={{ color: active ? "#ffffff" : "#6a7076" }}
             />
