@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { CandlestickChart, Landmark, NotebookPen } from "lucide-react";
+import { CandlestickChart, Landmark, Newspaper, NotebookPen } from "lucide-react";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 
 const RAIL_ITEMS = [
   { icon: CandlestickChart, label: "Sessions", to: "/" as const, search: undefined },
   { icon: NotebookPen, label: "Journal", to: "/journal" as const, search: undefined },
+  { icon: Newspaper, label: "News", to: "/news" as const, search: undefined },
   { icon: Landmark, label: "Prop Firms", to: "/prop-firms" as const, search: undefined },
 ];
 
