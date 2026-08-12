@@ -122,7 +122,7 @@ async function loadCalendar(): Promise<CalendarPayload> {
 
   try {
     const res = await fetch(XML_SOURCE, { headers: HEADERS });
-    console.log("[calendar] xml status", res.status);
+    console.error("[calendar] xml status", res.status);
     if (res.ok) {
       const events = normalize(parseXml(await res.text()));
       if (events.length) {
@@ -136,7 +136,7 @@ async function loadCalendar(): Promise<CalendarPayload> {
 
   try {
     const res = await fetch(PROXY_SOURCE, { headers: HEADERS });
-    console.log("[calendar] proxy status", res.status);
+    console.error("[calendar] proxy status", res.status);
     if (res.ok) {
       const text = await res.text();
       const start = text.indexOf("[{");
