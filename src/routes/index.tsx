@@ -26,8 +26,10 @@ import {
   formatCountdown,
   LOCAL_ZONE,
   NY_ZONE,
+  recentSessionIds,
   SESSIONS,
 } from "@/lib/sessions";
+
 import { SessionCard, redFolderImminent } from "@/components/dashboard/SessionCard";
 import { TimelineBar } from "@/components/dashboard/TimelineBar";
 
@@ -96,6 +98,8 @@ function Dashboard() {
   const { tz, setTz } = useTzPref();
   const compact = true;
   const state = now ? computeState(now) : null;
+  const recentIds = now ? recentSessionIds(now) : new Set<string>();
+
   useBeep(sound, state?.secondsToNext ?? 9999);
   const catalyst = now
     ? currentCatalyst(news.data?.events ?? [], now, mnq.data?.candles ?? [])
@@ -368,11 +372,11 @@ function Dashboard() {
                       compact={compact}
                       zone={tz === "NY" ? NY_ZONE : LOCAL_ZONE}
                       zoneLabel={tz}
+                      showOpen={recentIds.has(def.id)}
                     />
-
-
                   ))}
                 </div>
+
               </section>
             </>
           )}

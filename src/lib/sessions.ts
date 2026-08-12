@@ -159,3 +159,15 @@ export function statusOf(def: SessionDef, state: ClockState) {
   if (state.next.def.id === def.id) return "next" as const;
   return "closed" as const;
 }
+
+/** Ids of the 3 most recently started sessions (incl. the active one). */
+export function recentSessionIds(now: DateTime, count = 3): Set<string> {
+  const ms = now.toMillis();
+  const started = windowsAround(now).filter((w) => w.start.toMillis() <= ms);
+  const ids = new Set<string>();
+  for (let i = started.length - 1; i >= 0 && ids.size < count; i--) {
+    ids.add(started[i]!.def.id);
+  }
+  return ids;
+}
+
