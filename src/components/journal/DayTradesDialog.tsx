@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { Pencil, Trash2, X } from "lucide-react";
+import { Pencil, Trash2, X, ZoomIn } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   money,
@@ -13,9 +13,32 @@ import {
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { TradeComments } from "@/components/journal/TradeComments";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
+import { ImageLightbox } from "@/components/journal/ImageLightbox";
 
 function resultColor(t: Trade) {
   return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
+}
+
+function TagRow({ label, value, color }: { label: string; value: string | null; color: string }) {
+  if (!value) return null;
+  const tags = value
+    .split(/[,\n]/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return (
+    <div className="flex flex-wrap items-center gap-1.5">
+      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">{label}</span>
+      {tags.map((tag, i) => (
+        <span
+          key={`${tag}-${i}`}
+          className="rounded-full px-2 py-0.5 text-[10.5px]"
+          style={{ background: `${color}1f`, color, border: `1px solid ${color}3d` }}
+        >
+          {tag}
+        </span>
+      ))}
+    </div>
+  );
 }
 
 export function DayTradesDialog({
@@ -33,6 +56,7 @@ export function DayTradesDialog({
 }) {
   const [shots, setShots] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<Trade | null>(null);
+  const [zoomed, setZoomed] = useState<string | null>(null);
   const total = trades.reduce((a, t) => a + Number(t.pnl), 0);
 
   useEffect(() => {
