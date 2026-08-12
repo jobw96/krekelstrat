@@ -25,6 +25,7 @@ import { AppLoader } from "@/components/AppLoader";
 import { StatsBar } from "@/components/journal/StatsBar";
 import { ZellaCalendar, type CalendarMode } from "@/components/journal/ZellaCalendar";
 import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
+import { ReportsView } from "@/components/journal/ReportsView";
 import { ControlBar, type Filters, type RangeKey } from "@/components/journal/ControlBar";
 import { ShareJournalDialog } from "@/components/journal/ShareJournalDialog";
 import { buddyLabel, claimShares, fetchShares, type JournalShare } from "@/lib/shares";
@@ -386,7 +387,7 @@ function JournalPage() {
 
             {view === "notebook" && <Notebook trades={trades} />}
 
-            {view === "reports" && <Reports trades={trades} strategies={strategies} />}
+            {view === "reports" && <ReportsView trades={trades} strategies={strategies} />}
 
             {view === "strategies" && (
               <StrategiesView
@@ -500,60 +501,6 @@ function Notebook({ trades }: { trades: Trade[] }) {
         </article>
       ))}
     </section>
-  );
-}
-
-function Reports({ trades, strategies }: { trades: Trade[]; strategies: Strategy[] }) {
-  const bucket = (key: (t: Trade) => string) => {
-    const map = new Map<string, Trade[]>();
-    for (const t of trades) {
-      const k = key(t);
-      map.set(k, [...(map.get(k) ?? []), t]);
-    }
-    return [...map.entries()].map(([k, list]) => ({
-      key: k,
-      pnl: list.reduce((a, t) => a + Number(t.pnl), 0),
-      count: list.length,
-      winRate: (list.filter((t) => t.result === "WIN").length / list.length) * 100,
-    }));
-  };
-
-  const byStrategy = bucket(
-    (t) => strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy",
-  );
-  const bySession = bucket((t) => t.session ?? "No session");
-
-  const Table = ({ title, rows }: { title: string; rows: ReturnType<typeof bucket> }) => (
-    <section className="card-surface flex flex-col gap-2 p-4">
-      <h2 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-        {title}
-      </h2>
-      {rows.length === 0 && <p className="py-4 text-[12px] text-[#6a7076]">No data.</p>}
-      {rows
-        .sort((a, b) => b.pnl - a.pnl)
-        .map((r) => {
-          const color = r.pnl > 0 ? WIN_GREEN : r.pnl < 0 ? LOSS_RED : "#8b9298";
-          return (
-            <div key={r.key} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2">
-              <span className="text-[12.5px] text-[#d7dbe0]">{r.key}</span>
-              <span className="flex items-center gap-4 font-mono text-[11px] text-[#6a7076]">
-                <span>{r.count} trades</span>
-                <span>{r.winRate.toFixed(1)}%</span>
-                <span className="text-[13px] tabular" style={{ color, fontWeight: 560 }}>
-                  {money(r.pnl)}
-                </span>
-              </span>
-            </div>
-          );
-        })}
-    </section>
-  );
-
-  return (
-    <div className="grid gap-3 lg:grid-cols-2">
-      <Table title="By strategy" rows={byStrategy} />
-      <Table title="By session" rows={bySession} />
-    </div>
   );
 }
 
