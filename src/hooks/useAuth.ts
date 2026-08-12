@@ -15,7 +15,9 @@ export function useAuth() {
     });
     supabase.auth.getSession().then(async ({ data: { session: s } }) => {
       if (cancelled) return;
-      if (!s) {
+      const onAuthPage =
+        typeof window !== "undefined" && window.location.pathname.startsWith("/auth");
+      if (!s && !onAuthPage) {
         // Temporary: guest access while the site is not live yet.
         const { data: anon } = await supabase.auth.signInAnonymously();
         if (cancelled) return;
