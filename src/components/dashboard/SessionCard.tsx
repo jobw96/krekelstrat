@@ -20,7 +20,7 @@ import type { MnqCandle } from "@/lib/mnq.functions";
 import type { RedFolderEvent } from "@/lib/news.functions";
 import { currentCatalyst, eventsToday } from "@/lib/news";
 import { CatalystBadge, RedFolderList } from "./NewsCatalyst";
-import { Badge, Dot, toneColor } from "./primitives";
+import { Badge, Dot } from "./primitives";
 
 /** Conditional colors for the pts / ticks distance metric. */
 export const LIVE_GREEN = "#10B981";
@@ -62,7 +62,6 @@ export function SessionCard({
   zoneLabel?: string;
 }) {
   const status = statusOf(def, state);
-  const color = toneColor[def.tone];
   const active = status === "active";
 
   const open = sessionOpenPrice(def, now, candles);
