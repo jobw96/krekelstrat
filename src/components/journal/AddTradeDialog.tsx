@@ -103,7 +103,10 @@ export function AddTradeDialog({
   const [notes, setNotes] = useState("");
   const [wentRight, setWentRight] = useState("");
   const [wentWrong, setWentWrong] = useState("");
+  const [rightTags, setRightTags] = useState<string[]>([]);
+  const [wrongTags, setWrongTags] = useState<string[]>([]);
   const [improvement, setImprovement] = useState("");
+
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const [busy, setBusy] = useState(false);
