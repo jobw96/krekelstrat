@@ -88,27 +88,8 @@ export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
         )}
       </section>
 
-      <section className="card-surface flex flex-col gap-3 p-4">
-        <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-          Quick tools
-        </h3>
-        <div className="grid grid-cols-2 gap-2">
-          {LINKS.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              target="_blank"
-              rel="noreferrer"
-              className="hover-tint flex flex-col gap-0.5 rounded-xl bg-white/5 p-3 text-left hover:bg-white/8"
-            >
-              <span className="flex items-center gap-1.5 text-[12.5px] text-white">
-                {l.label} <ExternalLink className="size-3 text-[#6a7076]" />
-              </span>
-              <span className="text-[10.5px] text-[#6a7076]">{l.note}</span>
-            </a>
-          ))}
-        </div>
-      </section>
+      <NewsPanel />
+
     </div>
   );
 }
