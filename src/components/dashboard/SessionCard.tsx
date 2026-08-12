@@ -20,7 +20,7 @@ import type { MnqCandle } from "@/lib/mnq.functions";
 import type { RedFolderEvent } from "@/lib/news.functions";
 import { currentCatalyst, eventsToday } from "@/lib/news";
 import { CatalystBadge, RedFolderList } from "./NewsCatalyst";
-import { Badge, Dot, toneColor } from "./primitives";
+import { Badge, Dot } from "./primitives";
 
 /** Conditional colors for the pts / ticks distance metric. */
 export const LIVE_GREEN = "#10B981";
@@ -62,7 +62,6 @@ export function SessionCard({
   zoneLabel?: string;
 }) {
   const status = statusOf(def, state);
-  const color = toneColor[def.tone];
   const active = status === "active";
 
   const open = sessionOpenPrice(def, now, candles);
@@ -75,7 +74,6 @@ export function SessionCard({
   const redAlert = isMacro && todaysEvents.length > 0;
   const redHot = redAlert && redFolderImminent(events, now);
 
-  const accent = active ? LIVE_GREEN : redHot ? "#ff4d5e" : color;
 
   const surfaceStyle: Record<string, string | number> = active
     ? {
@@ -92,7 +90,9 @@ export function SessionCard({
             "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(255,77,94,0.16), 0 0 22px -12px rgba(255,77,94,0.7)",
           opacity: 0.94,
         }
-      : { opacity: 0.72 };
+      : status === "next"
+        ? { opacity: 0.82 }
+        : { opacity: 0.5 };
 
   const redFolderBadge = redAlert ? (
     <span
@@ -123,10 +123,15 @@ export function SessionCard({
       />
       Live now
     </span>
+  ) : status === "next" ? (
+    <Badge color="#8b9298">
+      <Dot color="#8b9298" />
+      Next
+    </Badge>
   ) : (
-    <Badge color={accent}>
-      <Dot color={accent} />
-      {compact ? (status === "next" ? "Next" : "Closed") : def.tag}
+    <Badge color={LIVE_RED}>
+      <Dot color={LIVE_RED} />
+      Closed
     </Badge>
   );
 
