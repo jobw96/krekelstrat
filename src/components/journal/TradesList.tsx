@@ -152,27 +152,46 @@ function TradeDetails({
           </p>
         )}
 
-        <Reflection
-          label="Rights — what went well"
-          value={trade.went_right}
-          color={WIN_GREEN}
-          placeholder="Which rules did you follow correctly?"
-          onSave={(v) => patch("went_right", v)}
-        />
-        <Reflection
-          label="Wrongs — what went wrong"
-          value={trade.went_wrong}
-          color={LOSS_RED}
-          placeholder="Mistakes, rule breaks, emotions…"
-          onSave={(v) => patch("went_wrong", v)}
-        />
-        <Reflection
-          label="Improvement next time"
-          value={trade.improvement}
-          color="#8b9298"
-          placeholder="One concrete adjustment…"
-          onSave={(v) => patch("improvement", v)}
-        />
+        {readOnly ? (
+          [
+            { label: "Rights — what went well", value: trade.went_right, color: WIN_GREEN },
+            { label: "Wrongs — what went wrong", value: trade.went_wrong, color: LOSS_RED },
+            { label: "Improvement next time", value: trade.improvement, color: "#8b9298" },
+          ].map((r) => (
+            <div key={r.label} className="flex flex-col gap-1">
+              <span className="text-[10px] uppercase tracking-[0.1em]" style={{ color: r.color }}>
+                {r.label}
+              </span>
+              <p className="rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#8b9298]">
+                {r.value || "—"}
+              </p>
+            </div>
+          ))
+        ) : (
+          <>
+            <Reflection
+              label="Rights — what went well"
+              value={trade.went_right}
+              color={WIN_GREEN}
+              placeholder="Which rules did you follow correctly?"
+              onSave={(v) => patch("went_right", v)}
+            />
+            <Reflection
+              label="Wrongs — what went wrong"
+              value={trade.went_wrong}
+              color={LOSS_RED}
+              placeholder="Mistakes, rule breaks, emotions…"
+              onSave={(v) => patch("went_wrong", v)}
+            />
+            <Reflection
+              label="Improvement next time"
+              value={trade.improvement}
+              color="#8b9298"
+              placeholder="One concrete adjustment…"
+              onSave={(v) => patch("improvement", v)}
+            />
+          </>
+        )}
       </div>
     </div>
   );
