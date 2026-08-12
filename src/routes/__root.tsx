@@ -12,6 +12,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { AppRail } from "../components/AppRail";
 import { AppLoader } from "../components/AppLoader";
+import { AuthGate } from "../components/AuthGate";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -157,6 +158,7 @@ function RootComponent() {
     return () => clearTimeout(t);
   }, [busy]);
   const bare = pathname.startsWith("/auth");
+  const isPublic = pathname === "/";
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -183,7 +185,7 @@ function RootComponent() {
                 className="flex min-h-[calc(100vh-32px)] min-w-0 w-full gap-4 transition-opacity duration-150 ease-linear"
                 style={{ opacity: busy ? 0 : 1 }}
               >
-                <Outlet />
+                {isPublic ? <Outlet /> : <AuthGate><Outlet /></AuthGate>}
               </div>
               <AppLoader contained overlay visible={busy && showLoader} />
             </div>
