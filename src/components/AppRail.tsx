@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { CandlestickChart, Landmark, Newspaper, NotebookPen } from "lucide-react";
+import { CandlestickChart, Landmark, Newspaper, NotebookPen, UserRound } from "lucide-react";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/lib/profile";
-import { ProfileDialog } from "@/components/ProfileDialog";
 
 const RAIL_ITEMS = [
   { icon: CandlestickChart, label: "Sessions", to: "/" as const, search: undefined },
@@ -17,23 +16,16 @@ export function AppRail() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { user, isGuest } = useAuth();
   const { data } = useProfile(isGuest ? undefined : user?.id);
-  const [editing, setEditing] = useState(false);
+  const [imgFailed, setImgFailed] = useState(false);
 
-  const canEdit = !!user && !isGuest;
-  const displayName = data?.profile?.display_name?.trim() || (canEdit ? "Naam instellen" : "NQ/MNQ");
-  const avatarSrc = data?.avatarUrl ?? sjakAsset.url;
+  const displayName = data?.profile?.display_name?.trim() || "NQ/MNQ";
+  const avatarSrc = !imgFailed ? (data?.avatarUrl ?? sjakAsset.url) : sjakAsset.url;
+  const profileActive = pathname.startsWith("/profile");
 
   return (
     <aside className="card-surface sticky top-5 hidden h-[calc(100vh-40px)] w-[76px] shrink-0 flex-col items-center gap-2 self-start py-6 lg:flex">
       <div className="group relative mb-4 flex flex-col items-center gap-1.5">
-        <button
-          type="button"
-          onClick={() => canEdit && setEditing(true)}
-          disabled={!canEdit}
-          title={canEdit ? "Profiel bewerken" : undefined}
-          aria-label={canEdit ? "Profiel bewerken" : "Profielfoto"}
-          className="relative flex size-11 items-center justify-center overflow-hidden rounded-full p-[2px] disabled:cursor-default"
-        >
+        <div className="relative flex size-11 items-center justify-center overflow-hidden rounded-full p-[2px]">
           <div
             className="absolute -inset-[100%] animate-[spin_6s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0%,var(--color-primary)_15%,transparent_30%,transparent_50%,var(--color-primary)_65%,transparent_80%,transparent_100%)] opacity-60 transition-opacity duration-500 group-hover:opacity-100"
             aria-hidden="true"
@@ -41,11 +33,12 @@ export function AppRail() {
           <div className="absolute inset-[2px] z-10 rounded-full bg-[#0f1216]" />
           <img
             src={avatarSrc}
+            onError={() => setImgFailed(true)}
             alt="Profielfoto"
             className="relative z-20 size-10 rounded-full object-cover"
           />
           <div className="pointer-events-none absolute inset-0 z-30 rounded-full border border-[var(--color-primary)]/20" />
-        </button>
+        </div>
         <span className="max-w-[68px] truncate text-center text-[10px] tracking-[0.06em] text-[#6a7076]">
           {displayName}
         </span>
@@ -73,14 +66,21 @@ export function AppRail() {
         );
       })}
 
-      {editing && user && (
-        <ProfileDialog
-          userId={user.id}
-          initialName={data?.profile?.display_name ?? ""}
-          initialAvatarUrl={data?.avatarUrl ?? null}
-          onClose={() => setEditing(false)}
+      <Link
+        to="/profile"
+        title="Profile"
+        aria-label="Profile"
+        className="group relative mt-auto flex size-11 items-center justify-center rounded-2xl transition-all duration-200 hover:bg-white/[0.07]"
+        style={profileActive ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
+      >
+        <UserRound
+          className={`size-[18px] transition-colors duration-200 ${profileActive ? "text-white" : "text-[#6a7076] group-hover:text-[#d7dbe0]"}`}
+          strokeWidth={1.6}
         />
-      )}
+        {profileActive && (
+          <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
+        )}
+      </Link>
     </aside>
   );
 }

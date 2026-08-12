@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PropFirmsRouteImport } from './routes/prop-firms'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,11 @@ const NewsRoute = NewsRouteImport.update({
   path: '/news',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PropFirmsRoute = PropFirmsRouteImport.update({
   id: '/prop-firms',
   path: '/prop-firms',
@@ -46,6 +52,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
+  '/profile': typeof ProfileRoute
   '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +60,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
+  '/profile': typeof ProfileRoute
   '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRoutesById {
@@ -61,14 +69,22 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
   '/news': typeof NewsRoute
+  '/profile': typeof ProfileRoute
   '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/journal' | '/news' | '/prop-firms'
+  fullPaths: '/' | '/auth' | '/journal' | '/news' | '/profile' | '/prop-firms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/journal' | '/news' | '/prop-firms'
-  id: '__root__' | '/' | '/auth' | '/journal' | '/news' | '/prop-firms'
+  to: '/' | '/auth' | '/journal' | '/news' | '/profile' | '/prop-firms'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/journal'
+    | '/news'
+    | '/profile'
+    | '/prop-firms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +92,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   JournalRoute: typeof JournalRoute
   NewsRoute: typeof NewsRoute
+  ProfileRoute: typeof ProfileRoute
   PropFirmsRoute: typeof PropFirmsRoute
 }
 
@@ -109,6 +126,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prop-firms': {
       id: '/prop-firms'
       path: '/prop-firms'
@@ -124,6 +148,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   JournalRoute: JournalRoute,
   NewsRoute: NewsRoute,
+  ProfileRoute: ProfileRoute,
   PropFirmsRoute: PropFirmsRoute,
 }
 export const routeTree = rootRouteImport
