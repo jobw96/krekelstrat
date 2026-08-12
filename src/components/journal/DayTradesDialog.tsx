@@ -58,7 +58,7 @@ export function DayTradesDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-sm">
-      <div className="card-surface flex max-h-[88vh] w-full max-w-[620px] flex-col gap-3 overflow-y-auto p-5">
+      <div className="card-surface flex max-h-[90vh] w-full max-w-[1240px] flex-col gap-3 overflow-y-auto p-5">
         <header className="flex items-center justify-between">
           <div className="flex flex-col">
             <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
@@ -76,8 +76,9 @@ export function DayTradesDialog({
           </button>
         </header>
 
+        <div className="grid grid-cols-1 items-start gap-3 md:grid-cols-2 xl:grid-cols-3">
         {trades.map((t) => (
-          <article key={t.id} className="glass-inset flex flex-col gap-2 p-3">
+          <article key={t.id} className="glass-inset flex min-w-0 flex-col gap-2 p-3">
             <div className="flex items-center justify-between gap-3">
               <span className="flex items-center gap-2 text-[12px] text-[#d7dbe0]">
                 <span
