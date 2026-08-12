@@ -373,7 +373,10 @@ function JournalPage() {
                       setAdding(true);
                     }}
                   />
-                  <AnalyticsPanel trades={trades} />
+                  <div className="flex flex-col gap-3">
+                    <NetPnlChart trades={filtered} />
+                    <AnalyticsPanel trades={trades} />
+                  </div>
                 </div>
                 <TradesList trades={trades} strategies={strategies} onChanged={refresh} readOnly={readOnly} />
               </>
