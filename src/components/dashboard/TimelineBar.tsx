@@ -67,15 +67,8 @@ export function TimelineBar({ now }: { now: DateTime }) {
               "linear-gradient(180deg, rgba(229,82,95,0) 0%, #f08a93 45%, rgba(229,82,95,0.15) 100%)",
             boxShadow: "0 0 8px 0 rgba(229,82,95,0.55)",
           }}
-        >
-          <span
-            className="absolute -top-[3px] left-1/2 size-1.5 -translate-x-1/2 rounded-full"
-            style={{
-              background: "#ffd7db",
-              boxShadow: "0 0 8px 1px rgba(229,82,95,0.7)",
-            }}
-          />
-        </div>
+        />
+
       </div>
 
       <div className="mt-2 flex justify-between font-mono text-[10px] text-[#6a7076]">
