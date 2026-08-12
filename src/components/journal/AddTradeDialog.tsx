@@ -114,6 +114,13 @@ export function AddTradeDialog({
   useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
 
   // Paste a screenshot straight from the clipboard (Cmd/Ctrl+V) anywhere in the dialog.
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    // Make sure the dialog owns focus, otherwise the browser routes paste elsewhere.
+    formRef.current?.focus({ preventScroll: true });
+  }, []);
+
   useEffect(() => {
     function onPaste(e: ClipboardEvent) {
       const item = Array.from(e.clipboardData?.items ?? []).find((i) =>
@@ -125,9 +132,14 @@ export function AddTradeDialog({
       const ext = img.type.split("/")[1] ?? "png";
       setFile(new File([img], `pasted-${Date.now()}.${ext}`, { type: img.type }));
     }
-    document.addEventListener("paste", onPaste);
-    return () => document.removeEventListener("paste", onPaste);
+    window.addEventListener("paste", onPaste, true);
+    document.addEventListener("paste", onPaste, true);
+    return () => {
+      window.removeEventListener("paste", onPaste, true);
+      document.removeEventListener("paste", onPaste, true);
+    };
   }, []);
+
 
   const sign = result === "WIN" ? 1 : result === "LOSS" ? -1 : 0;
   const signedPnl = Math.abs(Number(pnl || 0)) * (sign === 0 ? 0 : sign);
