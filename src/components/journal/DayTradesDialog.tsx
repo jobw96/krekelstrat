@@ -117,6 +117,7 @@ export function DayTradesDialog({
                 className="w-full rounded-xl border border-white/8"
               />
             )}
+            <TradeComments tradeId={t.id} onChanged={onChanged} />
           </article>
         ))}
       </div>
