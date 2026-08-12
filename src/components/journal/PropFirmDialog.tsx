@@ -50,6 +50,7 @@ export function PropFirmDialog({
   const [date, setDate] = useState(
     (account?.started_at ?? new Date().toISOString()).slice(0, 10),
   );
+  const [customLabel, setCustomLabel] = useState(account?.label ?? "");
   const [notes, setNotes] = useState(account?.notes ?? "");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
