@@ -120,13 +120,30 @@ export function DayTradesDialog({
               </span>
             </div>
             {t.notes && <p className="text-[12px] leading-[1.5] text-[#8b9298]">{t.notes}</p>}
+
+            <div className="flex flex-col gap-1.5">
+              <TagRow label="Rights" value={t.went_right} color={WIN_GREEN} />
+              <TagRow label="Wrongs" value={t.went_wrong} color={LOSS_RED} />
+              <TagRow label="Improvement" value={t.improvement} color="#8b9298" />
+            </div>
+
             {shots[t.id] && (
-              <img
-                src={shots[t.id]}
-                alt="Trade screenshot"
-                loading="lazy"
-                className="w-full rounded-xl border border-white/8"
-              />
+              <button
+                type="button"
+                onClick={() => setZoomed(shots[t.id])}
+                className="group/img relative block overflow-hidden rounded-xl border border-white/8"
+                aria-label="Zoom screenshot"
+              >
+                <img
+                  src={shots[t.id]}
+                  alt="Trade screenshot"
+                  loading="lazy"
+                  className="w-full transition-transform duration-200 group-hover/img:scale-[1.02]"
+                />
+                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#d7dbe0] opacity-0 transition-opacity group-hover/img:opacity-100">
+                  <ZoomIn className="size-3.5" />
+                </span>
+              </button>
             )}
             <TradeComments tradeId={t.id} onChanged={onChanged} />
           </article>
