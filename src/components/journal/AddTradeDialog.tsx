@@ -230,7 +230,7 @@ export function AddTradeDialog({
             <SelectField
               value={session}
               onChange={setSession}
-              options={SESSION_OPTIONS.map((s) => ({ value: s, label: s }))}
+              options={SESSION_OPTIONS.map((s) => ({ value: s, label: sessionLabel(s) }))}
             />
           </div>
           <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
