@@ -204,10 +204,12 @@ export function TradesList({
   trades,
   strategies,
   onChanged,
+  readOnly = false,
 }: {
   trades: Trade[];
   strategies: Strategy[];
   onChanged: () => void;
+  readOnly?: boolean;
 }) {
   const [visible, setVisible] = useState(PAGE);
   const [open, setOpen] = useState<Record<string, boolean>>({});
