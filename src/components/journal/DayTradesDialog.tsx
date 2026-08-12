@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { Trash2, X } from "lucide-react";
+import { Pencil, Trash2, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   money,
@@ -12,6 +12,7 @@ import {
 } from "@/lib/journal";
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { TradeComments } from "@/components/journal/TradeComments";
+import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
 
 function resultColor(t: Trade) {
   return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
@@ -31,6 +32,7 @@ export function DayTradesDialog({
   onChanged: () => void;
 }) {
   const [shots, setShots] = useState<Record<string, string>>({});
+  const [editing, setEditing] = useState<Trade | null>(null);
   const total = trades.reduce((a, t) => a + Number(t.pnl), 0);
 
   useEffect(() => {
@@ -101,6 +103,13 @@ export function DayTradesDialog({
                   {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
                 </span>
                 <button
+                  onClick={() => setEditing(t)}
+                  className="text-[#6a7076] transition-colors hover:text-white"
+                  aria-label="Edit trade"
+                >
+                  <Pencil className="size-3.5" />
+                </button>
+                <button
                   onClick={() => remove(t.id)}
                   className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
                   aria-label="Delete trade"
@@ -122,6 +131,16 @@ export function DayTradesDialog({
           </article>
         ))}
       </div>
+
+      {editing && (
+        <AddTradeDialog
+          userId={editing.user_id}
+          strategies={strategies}
+          trade={editing}
+          onClose={() => setEditing(null)}
+          onSaved={onChanged}
+        />
+      )}
     </div>
   );
 }

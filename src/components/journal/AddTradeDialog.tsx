@@ -9,6 +9,7 @@ import {
   LOSS_RED,
   type Strategy,
   type TradeResult,
+  type Trade,
 } from "@/lib/journal";
 import { DateTimePicker } from "@/components/journal/DateTimePicker";
 import { TagPicker, RIGHT_TAGS, WRONG_TAGS } from "@/components/journal/TagPicker";
@@ -80,30 +81,41 @@ export function AddTradeDialog({
   onClose,
   onSaved,
   defaultDate,
+  trade,
 }: {
   userId: string;
   strategies: Strategy[];
   onClose: () => void;
   onSaved: () => void;
   defaultDate?: string | null;
+  /** When provided, the dialog edits this trade instead of creating a new one. */
+  trade?: Trade | null;
 }) {
+  const editing = !!trade;
   const [date, setDate] = useState(
-    defaultDate
-      ? DateTime.fromISO(defaultDate).set({
-          hour: DateTime.now().hour,
-          minute: DateTime.now().minute,
-        }).toFormat("yyyy-LL-dd'T'HH:mm")
-      : DateTime.now().toFormat("yyyy-LL-dd'T'HH:mm"),
+    trade
+      ? DateTime.fromISO(trade.date).toFormat("yyyy-LL-dd'T'HH:mm")
+      : defaultDate
+        ? DateTime.fromISO(defaultDate).set({
+            hour: DateTime.now().hour,
+            minute: DateTime.now().minute,
+          }).toFormat("yyyy-LL-dd'T'HH:mm")
+        : DateTime.now().toFormat("yyyy-LL-dd'T'HH:mm"),
   );
-  const [strategyId, setStrategyId] = useState<string>("");
-  const [session, setSession] = useState<string>(SESSION_OPTIONS[0]!);
-  const [pnl, setPnl] = useState("");
-  const [rr, setRr] = useState("");
-  const [result, setResult] = useState<TradeResult>("WIN");
-  const [notes, setNotes] = useState("");
-  const [rightTags, setRightTags] = useState<string[]>([]);
-  const [wrongTags, setWrongTags] = useState<string[]>([]);
-  const [improvement, setImprovement] = useState("");
+  const [strategyId, setStrategyId] = useState<string>(trade?.strategy_id ?? "");
+  const [session, setSession] = useState<string>(trade?.session ?? SESSION_OPTIONS[0]!);
+  const [pnl, setPnl] = useState(trade ? String(Math.abs(Number(trade.pnl))) : "");
+  const [rr, setRr] = useState(trade?.rr != null ? String(trade.rr) : "");
+  const [result, setResult] = useState<TradeResult>(trade?.result ?? "WIN");
+  const [notes, setNotes] = useState(trade?.notes ?? "");
+  const [rightTags, setRightTags] = useState<string[]>(
+    trade?.went_right ? trade.went_right.split(" • ").filter(Boolean) : [],
+  );
+  const [wrongTags, setWrongTags] = useState<string[]>(
+    trade?.went_wrong ? trade.went_wrong.split(" • ").filter(Boolean) : [],
+  );
+  const [improvement, setImprovement] = useState(trade?.improvement ?? "");
+
 
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
@@ -150,10 +162,9 @@ export function AddTradeDialog({
     setBusy(true);
     setError(null);
     try {
-      let screenshot: string | null = null;
+      let screenshot: string | null = trade?.screenshot_url ?? null;
       if (file) screenshot = await uploadScreenshot(userId, file);
-      const { error: err } = await supabase.from("trades").insert({
-        user_id: userId,
+      const payload = {
         strategy_id: strategyId || null,
         date: DateTime.fromISO(date).toISO() ?? new Date().toISOString(),
         pnl: signedPnl,
@@ -166,7 +177,10 @@ export function AddTradeDialog({
 
         improvement: improvement || null,
         screenshot_url: screenshot,
-      });
+      };
+      const { error: err } = editing
+        ? await supabase.from("trades").update(payload).eq("id", trade!.id)
+        : await supabase.from("trades").insert({ ...payload, user_id: userId });
       if (err) throw err;
       onSaved();
       onClose();
@@ -187,7 +201,7 @@ export function AddTradeDialog({
       >
         <header className="flex items-center justify-between">
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
-            Add trade
+            {editing ? "Edit trade" : "Add trade"}
           </h2>
           <button type="button" onClick={onClose} className="text-[#8b9298] hover:text-white">
             <X className="size-4" />
@@ -368,7 +382,7 @@ export function AddTradeDialog({
           className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
           style={{ background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
         >
-          {busy && <Loader2 className="size-4 animate-spin" />} Save trade
+          {busy && <Loader2 className="size-4 animate-spin" />} {editing ? "Save changes" : "Save trade"}
         </button>
       </form>
     </div>
