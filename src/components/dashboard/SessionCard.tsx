@@ -68,6 +68,7 @@ export function SessionCard({
   const diff = open != null && price != null ? price - open : null;
   const diffColor = distanceColor(diff);
   const read = detectPhase(open, price, candles);
+  const upcoming = status === "next" || open == null;
   const isMacro = def.id === "macro";
   const todaysEvents = isMacro ? eventsToday(events, now) : [];
   const catalyst = isMacro ? currentCatalyst(events, now, candles) : null;
@@ -162,6 +163,12 @@ export function SessionCard({
 
         {redFolderBadge}
 
+        {upcoming ? (
+          <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
+            <span className="text-[9px] uppercase tracking-[0.08em] text-[#6a7076]">Open</span>
+            <span className="font-mono text-[11px] text-[#6a7076]">Awaiting session open</span>
+          </div>
+        ) : (
         <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
           <div className="flex flex-col">
             <span className="text-[9px] uppercase tracking-[0.08em] text-[#6a7076]">
@@ -183,6 +190,7 @@ export function SessionCard({
             </span>
           </div>
         </div>
+        )}
       </motion.article>
     );
   }
@@ -262,6 +270,7 @@ export function SessionCard({
         </div>
       </dl>
 
+      {!upcoming && (
       <div className="glass-inset flex items-end justify-between p-3">
         <div className="flex flex-col gap-0.5">
           <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
@@ -286,6 +295,7 @@ export function SessionCard({
           </span>
         </div>
       </div>
+      )}
 
       <p className="text-[13px] leading-[1.5] text-[#8b9298]">{def.focus}</p>
 
