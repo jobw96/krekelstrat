@@ -107,7 +107,7 @@ async function loadCalendar(): Promise<CalendarPayload> {
 
   for (const url of SOURCES) {
     try {
-      const res = await fetch(url, { headers: HEADERS });
+      const res = await fetch(url, { headers: HEADERS, signal: AbortSignal.timeout(8000) });
       if (!res.ok) throw new Error(`Calendar feed ${res.status}`);
       const json = (await res.json()) as FfItem[];
       const events = normalize(Array.isArray(json) ? json : []);
@@ -121,21 +121,7 @@ async function loadCalendar(): Promise<CalendarPayload> {
   }
 
   try {
-    const res = await fetch(XML_SOURCE, { headers: HEADERS });
-    console.error("[calendar] xml status", res.status);
-    if (res.ok) {
-      const events = normalize(parseXml(await res.text()));
-      if (events.length) {
-        cache = { events, updatedAt: Date.now() };
-        return cache;
-      }
-    }
-  } catch (err) {
-    console.error("[calendar] xml fallback unavailable:", err);
-  }
-
-  try {
-    const res = await fetch(PROXY_SOURCE, { headers: HEADERS });
+    const res = await fetch(PROXY_SOURCE, { headers: HEADERS, signal: AbortSignal.timeout(20000) });
     console.error("[calendar] proxy status", res.status);
     if (res.ok) {
       const text = await res.text();
@@ -152,6 +138,20 @@ async function loadCalendar(): Promise<CalendarPayload> {
     }
   } catch (err) {
     console.error("[calendar] proxy fallback unavailable:", err);
+  }
+
+  try {
+    const res = await fetch(XML_SOURCE, { headers: HEADERS, signal: AbortSignal.timeout(8000) });
+    console.error("[calendar] xml status", res.status);
+    if (res.ok) {
+      const events = normalize(parseXml(await res.text()));
+      if (events.length) {
+        cache = { events, updatedAt: Date.now() };
+        return cache;
+      }
+    }
+  } catch (err) {
+    console.error("[calendar] xml fallback unavailable:", err);
   }
 
   return cache ?? { events: [], updatedAt: Date.now() };
