@@ -84,10 +84,12 @@ function TradeDetails({
   trade,
   strategyName,
   onChanged,
+  readOnly = false,
 }: {
   trade: Trade;
   strategyName: string;
   onChanged: () => void;
+  readOnly?: boolean;
 }) {
   const [shot, setShot] = useState<string | null>(null);
 
