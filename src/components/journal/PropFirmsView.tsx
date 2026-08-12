@@ -26,7 +26,11 @@ const GROUPS: { key: GroupKey; label: string; color: string }[] = [
 ];
 
 const groupOf = (r: PropAccount): GroupKey =>
-  r.status === "breached" ? "breached" : r.phase === "funded" ? "funded" : "evaluation";
+  r.status === "breached"
+    ? "breached"
+    : r.phase === "funded" || r.status === "passed" || r.status === "payout"
+      ? "funded"
+      : "evaluation";
 
 function Stat({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
