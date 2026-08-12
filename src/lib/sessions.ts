@@ -142,7 +142,8 @@ export function formatRange(def: SessionDef, zone: string, now: DateTime) {
   const day = now.setZone(NY_ZONE).startOf("day");
   const start = day.set({ hour: def.nyStart[0], minute: def.nyStart[1] });
   const end = start.plus({ minutes: def.minutes });
-  return `${start.setZone(zone).toFormat("HH:mm")} – ${end.setZone(zone).toFormat("HH:mm")}`;
+  const fmt = zone === NY_ZONE ? "h:mm a" : "HH:mm";
+  return `${start.setZone(zone).toFormat(fmt)} – ${end.setZone(zone).toFormat(fmt)}`;
 }
 
 export function formatCountdown(totalSeconds: number) {
