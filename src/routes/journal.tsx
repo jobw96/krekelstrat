@@ -2,12 +2,13 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
-import { LogOut, Menu, Plus } from "lucide-react";
+import { ChevronDown, Eye, LogOut, Menu, Plus, Share2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
   computeMetrics,
   money,
+  setMoneyMask,
   WIN_GREEN,
   LOSS_RED,
   type Strategy,
@@ -25,6 +26,8 @@ import { StatsBar } from "@/components/journal/StatsBar";
 import { ZellaCalendar, type CalendarMode } from "@/components/journal/ZellaCalendar";
 import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
 import { ControlBar, type Filters, type RangeKey } from "@/components/journal/ControlBar";
+import { ShareJournalDialog } from "@/components/journal/ShareJournalDialog";
+import { buddyLabel, claimShares, fetchShares, type JournalShare } from "@/lib/shares";
 
 export const Route = createFileRoute("/journal")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -79,13 +82,35 @@ function JournalPage() {
   const [addDate, setAddDate] = useState<string | null>(null);
   const [day, setDay] = useState<string | null>(null);
 
-  const strategiesQ = useQuery({
-    queryKey: ["strategies", user?.id],
+  const [sharing, setSharing] = useState(false);
+  const [activeOwner, setActiveOwner] = useState<string | null>(null);
+  const [switcherOpen, setSwitcherOpen] = useState(false);
+
+  useEffect(() => {
+    if (user && !isGuest) void claimShares().then(() => qc.invalidateQueries({ queryKey: ["journal-shares", user.id] }));
+  }, [user, isGuest, qc]);
+
+  const sharesQ = useQuery({
+    queryKey: ["journal-shares", user?.id],
     enabled: !!user,
+    queryFn: fetchShares,
+  });
+  const buddyJournals: JournalShare[] = (sharesQ.data ?? []).filter(
+    (s) => s.owner_id !== user?.id && s.status === "accepted",
+  );
+  const activeShare = buddyJournals.find((s) => s.owner_id === activeOwner) ?? null;
+  const ownerId = activeShare ? activeShare.owner_id : user?.id;
+  const readOnly = !!activeShare;
+  setMoneyMask(!!activeShare?.hide_dollar_amounts);
+
+  const strategiesQ = useQuery({
+    queryKey: ["strategies", ownerId],
+    enabled: !!ownerId,
     queryFn: async (): Promise<Strategy[]> => {
       const { data, error } = await supabase
         .from("strategies")
         .select("*")
+        .eq("user_id", ownerId!)
         .order("created_at", { ascending: true });
       if (error) throw error;
       return (data ?? []) as Strategy[];
@@ -93,12 +118,13 @@ function JournalPage() {
   });
 
   const tradesQ = useQuery({
-    queryKey: ["trades", user?.id],
-    enabled: !!user,
+    queryKey: ["trades", ownerId],
+    enabled: !!ownerId,
     queryFn: async (): Promise<Trade[]> => {
       const { data, error } = await supabase
         .from("trades")
         .select("*")
+        .eq("user_id", ownerId!)
         .order("date", { ascending: false });
       if (error) throw error;
       return (data ?? []) as Trade[];
@@ -155,8 +181,8 @@ function JournalPage() {
     : [];
 
   const refresh = () => {
-    qc.invalidateQueries({ queryKey: ["trades", user?.id] });
-    qc.invalidateQueries({ queryKey: ["strategies", user?.id] });
+    qc.invalidateQueries({ queryKey: ["trades", ownerId] });
+    qc.invalidateQueries({ queryKey: ["strategies", ownerId] });
   };
 
   function addStrategy() {
@@ -170,6 +196,7 @@ function JournalPage() {
   return (
     <>
       <JournalNav
+          readOnly={readOnly}
           view={view}
           onView={setView}
           collapsed={collapsed}
@@ -190,14 +217,64 @@ function JournalPage() {
               >
                 <Menu className="size-4" />
               </button>
-              <h1 className="truncate text-[18px] text-white" style={{ fontWeight: 560 }}>
-                Trading Journal
-              </h1>
+              <div className="relative min-w-0">
+                <button
+                  onClick={() => setSwitcherOpen((o) => !o)}
+                  className="hover-tint flex min-w-0 items-center gap-1.5 rounded-lg px-1.5 py-1 text-left"
+                >
+                  <h1 className="truncate text-[18px] text-white" style={{ fontWeight: 560 }}>
+                    {activeShare ? buddyLabel(activeShare) : "Trading Journal"}
+                  </h1>
+                  <ChevronDown className="size-4 shrink-0 text-[#6a7076]" />
+                </button>
+                {switcherOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onMouseDown={() => setSwitcherOpen(false)} />
+                    <div className="card-surface absolute left-0 top-[110%] z-50 flex w-[260px] flex-col gap-0.5 p-1.5">
+                      <button
+                        onClick={() => {
+                          setActiveOwner(null);
+                          setSwitcherOpen(false);
+                        }}
+                        className="hover-tint rounded-lg px-2.5 py-2 text-left text-[12.5px]"
+                        style={{ color: activeShare ? "#8b9298" : "#ffffff" }}
+                      >
+                        My Journal
+                      </button>
+                      {buddyJournals.map((s) => (
+                        <button
+                          key={s.id}
+                          onClick={() => {
+                            setActiveOwner(s.owner_id);
+                            setSwitcherOpen(false);
+                          }}
+                          className="hover-tint truncate rounded-lg px-2.5 py-2 text-left text-[12.5px]"
+                          style={{ color: activeShare?.id === s.id ? "#ffffff" : "#8b9298" }}
+                        >
+                          {buddyLabel(s)} (Read-Only)
+                        </button>
+                      ))}
+                      {buddyJournals.length === 0 && (
+                        <span className="px-2.5 py-2 text-[11.5px] text-[#6a7076]">
+                          Nog geen gedeelde journals.
+                        </span>
+                      )}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
             <div className="flex shrink-0 items-center gap-2">
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
                 {isGuest ? "Guest mode · no login" : user.email}
               </span>
+              <button
+                onClick={() => setSharing(true)}
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+              >
+                <Share2 className="size-3.5" /> Share
+              </button>
+              {!readOnly && (
               <button
                 onClick={() => setAdding(true)}
                 className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] md:hidden"
@@ -205,6 +282,7 @@ function JournalPage() {
               >
                 <Plus className="size-4" /> Trade
               </button>
+              )}
               {isGuest ? (
                 <Link
                   to="/auth"
@@ -225,6 +303,17 @@ function JournalPage() {
               )}
             </div>
           </header>
+
+          {activeShare && (
+            <div
+              className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-[12.5px]"
+              style={{ background: "rgba(229,82,95,0.10)", border: "1px solid rgba(229,82,95,0.35)", color: "#f0b7bc" }}
+            >
+              <Eye className="size-3.5 shrink-0" />
+              Viewing {buddyLabel(activeShare)} (Read-Only)
+              {activeShare.hide_dollar_amounts && <span className="text-[#8b9298]">· dollar amounts hidden</span>}
+            </div>
+          )}
 
           <ControlBar
             range={range}
@@ -265,14 +354,14 @@ function JournalPage() {
                   />
                   <AnalyticsPanel trades={trades} />
                 </div>
-                <TradesList trades={trades} strategies={strategies} onChanged={refresh} />
+                <TradesList trades={trades} strategies={strategies} onChanged={refresh} readOnly={readOnly} />
               </>
             )}
 
             {view === "day" && <DayView trades={filtered} onSelectDay={setDay} />}
 
             {view === "trades" && (
-              <TradesList trades={trades} strategies={strategies} onChanged={refresh} />
+              <TradesList trades={trades} strategies={strategies} onChanged={refresh} readOnly={readOnly} />
             )}
 
             {view === "notebook" && <Notebook trades={trades} />}
@@ -281,6 +370,7 @@ function JournalPage() {
 
             {view === "strategies" && (
               <StrategiesView
+                readOnly={readOnly}
                 strategies={strategies}
                 trades={allTrades}
                 onAdd={addStrategy}
@@ -293,7 +383,10 @@ function JournalPage() {
         </div>
 
 
-      {adding && (
+      {sharing && (
+        <ShareJournalDialog userId={user.id} userEmail={user.email ?? null} onClose={() => setSharing(false)} />
+      )}
+      {adding && !readOnly && (
         <AddTradeDialog
           userId={user.id}
           strategies={strategies}
@@ -449,11 +542,13 @@ function StrategiesView({
   trades,
   onAdd,
   onChanged,
+  readOnly = false,
 }: {
   strategies: Strategy[];
   trades: Trade[];
   onAdd: () => void;
   onChanged: () => void;
+  readOnly?: boolean;
 }) {
   return (
     <section className="card-surface flex flex-col gap-2 p-4">
@@ -461,12 +556,14 @@ function StrategiesView({
         <h2 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
           Strategies
         </h2>
-        <button
-          onClick={onAdd}
-          className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#8b9298] hover:text-white"
-        >
-          + New strategy
-        </button>
+        {!readOnly && (
+          <button
+            onClick={onAdd}
+            className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#8b9298] hover:text-white"
+          >
+            + New strategy
+          </button>
+        )}
       </header>
       {strategies.map((s) => {
         const list = trades.filter((t) => t.strategy_id === s.id);
@@ -485,15 +582,17 @@ function StrategiesView({
               <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
                 {money(pnl)}
               </span>
-              <button
-                onClick={async () => {
-                  await supabase.from("strategies").delete().eq("id", s.id);
-                  onChanged();
-                }}
-                className="text-[11px] text-[#6a7076] hover:text-[#f08a93]"
-              >
-                Delete
-              </button>
+              {!readOnly && (
+                <button
+                  onClick={async () => {
+                    await supabase.from("strategies").delete().eq("id", s.id);
+                    onChanged();
+                  }}
+                  className="text-[11px] text-[#6a7076] hover:text-[#f08a93]"
+                >
+                  Delete
+                </button>
+              )}
             </span>
           </div>
         );
