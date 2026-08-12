@@ -26,8 +26,10 @@ import {
   formatCountdown,
   LOCAL_ZONE,
   NY_ZONE,
+  recentSessionIds,
   SESSIONS,
 } from "@/lib/sessions";
+
 import { SessionCard, redFolderImminent } from "@/components/dashboard/SessionCard";
 import { TimelineBar } from "@/components/dashboard/TimelineBar";
 
