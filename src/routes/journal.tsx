@@ -25,6 +25,7 @@ import { AppLoader } from "@/components/AppLoader";
 import { StatsBar } from "@/components/journal/StatsBar";
 import { ZellaCalendar, type CalendarMode } from "@/components/journal/ZellaCalendar";
 import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
+import { NetPnlChart } from "@/components/journal/NetPnlChart";
 import { ReportsView } from "@/components/journal/ReportsView";
 import { ControlBar, type Filters, type RangeKey } from "@/components/journal/ControlBar";
 import { ShareJournalDialog } from "@/components/journal/ShareJournalDialog";
@@ -373,7 +374,10 @@ function JournalPage() {
                       setAdding(true);
                     }}
                   />
-                  <AnalyticsPanel trades={trades} />
+                  <div className="flex flex-col gap-3">
+                    <NetPnlChart trades={filtered} />
+                    <AnalyticsPanel trades={trades} />
+                  </div>
                 </div>
                 <TradesList trades={trades} strategies={strategies} onChanged={refresh} readOnly={readOnly} />
               </>
