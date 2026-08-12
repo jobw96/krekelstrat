@@ -162,7 +162,7 @@ export function ShareJournalDialog({
         <Section title="Invitations for you">
           {incoming.length === 0 && (
             <p className="rounded-lg bg-white/4 px-3 py-3 text-[12px] text-[#6a7076]">
-              Geen uitnodigingen.
+              No invitations.
             </p>
           )}
           {incoming.map((s: JournalShare) => (
