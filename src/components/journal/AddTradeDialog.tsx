@@ -9,6 +9,7 @@ import {
   LOSS_RED,
   type Strategy,
   type TradeResult,
+  type Trade,
 } from "@/lib/journal";
 import { DateTimePicker } from "@/components/journal/DateTimePicker";
 import { TagPicker, RIGHT_TAGS, WRONG_TAGS } from "@/components/journal/TagPicker";
@@ -161,10 +162,9 @@ export function AddTradeDialog({
     setBusy(true);
     setError(null);
     try {
-      let screenshot: string | null = null;
+      let screenshot: string | null = trade?.screenshot_url ?? null;
       if (file) screenshot = await uploadScreenshot(userId, file);
-      const { error: err } = await supabase.from("trades").insert({
-        user_id: userId,
+      const payload = {
         strategy_id: strategyId || null,
         date: DateTime.fromISO(date).toISO() ?? new Date().toISOString(),
         pnl: signedPnl,
@@ -177,7 +177,10 @@ export function AddTradeDialog({
 
         improvement: improvement || null,
         screenshot_url: screenshot,
-      });
+      };
+      const { error: err } = editing
+        ? await supabase.from("trades").update(payload).eq("id", trade!.id)
+        : await supabase.from("trades").insert({ ...payload, user_id: userId });
       if (err) throw err;
       onSaved();
       onClose();
@@ -198,7 +201,7 @@ export function AddTradeDialog({
       >
         <header className="flex items-center justify-between">
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
-            Add trade
+            {editing ? "Edit trade" : "Add trade"}
           </h2>
           <button type="button" onClick={onClose} className="text-[#8b9298] hover:text-white">
             <X className="size-4" />
@@ -379,7 +382,7 @@ export function AddTradeDialog({
           className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
           style={{ background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
         >
-          {busy && <Loader2 className="size-4 animate-spin" />} Save trade
+          {busy && <Loader2 className="size-4 animate-spin" />} {editing ? "Save changes" : "Save trade"}
         </button>
       </form>
     </div>
