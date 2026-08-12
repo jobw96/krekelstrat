@@ -61,7 +61,7 @@ export function JournalNav({
       </button>
       )}
 
-      <nav className="mt-1 flex flex-col gap-0.5">
+      <nav className="mt-1 flex flex-col gap-1.5">
         {ITEMS.map((it) => {
           const active = view === it.id;
           return (
@@ -69,7 +69,8 @@ export function JournalNav({
               key={it.id}
               onClick={() => onView(it.id)}
               title={it.label}
-              className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[12.5px] transition-colors"
+              className="flex items-center gap-3 rounded-xl px-3 py-3.5 text-[13.5px] transition-colors"
+
               style={{
                 background: active ? "rgba(255,255,255,0.07)" : "transparent",
                 color: active ? "#ffffff" : "#8b9298",
