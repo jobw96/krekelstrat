@@ -32,8 +32,16 @@ export const SESSION_OPTIONS = ["ASIA", "LO", "PRE", "MACRO", "NYMO", "LUNCH", "
 export const WIN_GREEN = "#10B981";
 export const LOSS_RED = "#e5525f";
 
+let maskMoney = false;
+
+/** Hide dollar amounts globally (used when viewing a buddy's masked journal). */
+export function setMoneyMask(on: boolean) {
+  maskMoney = on;
+}
+
 export function money(n: number) {
   const sign = n > 0 ? "+" : n < 0 ? "-" : "";
+  if (maskMoney) return `${sign}$***`;
   return `${sign}$${Math.abs(n).toFixed(2)}`;
 }
 
