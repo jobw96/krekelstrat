@@ -214,7 +214,10 @@ export function PropFirmsView({ userId }: { userId: string }) {
                       >
                         <span className="flex min-w-0 flex-col">
                           <span className="flex items-center gap-2 text-[12.5px] text-white">
-                            {r.firm}
+                            {r.label?.trim() || r.firm}
+                            {r.label?.trim() && (
+                              <span className="text-[11px] text-[#6a7076]">{r.firm}</span>
+                            )}
                             <span
                               className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
                               style={{ background: `${STATUS_COLOR[r.status]}1f`, color: STATUS_COLOR[r.status] }}
