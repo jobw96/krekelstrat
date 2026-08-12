@@ -341,7 +341,7 @@ export function AddTradeDialog({
             </label>
             <span className="flex items-center gap-1.5 whitespace-nowrap text-[11px] text-[#6a7076]">
               <ClipboardPaste className="size-3.5" />
-              of plak met Ctrl/Cmd + V
+              or paste with Ctrl/Cmd + V
             </span>
           </div>
         </div>
