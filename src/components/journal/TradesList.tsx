@@ -192,6 +192,8 @@ function TradeDetails({
             />
           </>
         )}
+
+        <TradeComments tradeId={trade.id} />
       </div>
     </div>
   );
