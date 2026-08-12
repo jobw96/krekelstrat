@@ -48,6 +48,8 @@ export function SessionCard({
   candles,
   events = [],
   compact = false,
+  zone = NY_ZONE,
+  zoneLabel = "NY",
 }: {
   def: SessionDef;
   state: ClockState;
@@ -56,6 +58,8 @@ export function SessionCard({
   candles: MnqCandle[];
   events?: RedFolderEvent[];
   compact?: boolean;
+  zone?: string;
+  zoneLabel?: string;
 }) {
   const status = statusOf(def, state);
   const color = toneColor[def.tone];
@@ -145,7 +149,7 @@ export function SessionCard({
               {def.name}
             </h3>
             <span className="font-mono text-[10px] tracking-[0.04em] text-[#6a7076]">
-              {formatRange(def, LOCAL_ZONE, now)} AMS
+              {formatRange(def, zone, now)} {zoneLabel}
             </span>
           </div>
           {statusChip}
