@@ -75,7 +75,6 @@ export function SessionCard({
   const redAlert = isMacro && todaysEvents.length > 0;
   const redHot = redAlert && redFolderImminent(events, now);
 
-  const accent = active ? LIVE_GREEN : redHot ? "#ff4d5e" : color;
 
   const surfaceStyle: Record<string, string | number> = active
     ? {
