@@ -30,6 +30,8 @@ const SOURCES = [
   "https://faireconomy.media/ff_calendar_thisweek.json",
 ];
 const XML_SOURCE = "https://nfs.faireconomy.media/ff_calendar_thisweek.xml";
+/** Text proxy used when the feed rate-limits our egress IP (HTTP 429). */
+const PROXY_SOURCE = "https://r.jina.ai/https://nfs.faireconomy.media/ff_calendar_thisweek.json";
 
 const HEADERS = {
   "User-Agent":
@@ -90,10 +92,10 @@ let cache: CalendarPayload | null = null;
 let lastAttempt = 0;
 
 async function loadCalendar(): Promise<CalendarPayload> {
-  const fresh = cache && Date.now() - cache.updatedAt < 15 * 60_000;
+  const fresh = cache && Date.now() - cache.updatedAt < 60 * 60_000;
   if (fresh) return cache!;
   // Back off failed attempts so a rate-limited feed isn't hammered every render.
-  if (Date.now() - lastAttempt < 60_000 && cache) return cache;
+  if (Date.now() - lastAttempt < 5 * 60_000 && cache) return cache;
   lastAttempt = Date.now();
 
   for (const url of SOURCES) {
@@ -122,6 +124,25 @@ async function loadCalendar(): Promise<CalendarPayload> {
     }
   } catch (err) {
     console.error("[calendar] xml fallback unavailable:", err);
+  }
+
+  try {
+    const res = await fetch(PROXY_SOURCE, { headers: HEADERS });
+    if (res.ok) {
+      const text = await res.text();
+      const start = text.indexOf("[{");
+      const end = text.lastIndexOf("}]");
+      if (start !== -1 && end > start) {
+        const json = JSON.parse(text.slice(start, end + 2)) as FfItem[];
+        const events = normalize(Array.isArray(json) ? json : []);
+        if (events.length) {
+          cache = { events, updatedAt: Date.now() };
+          return cache;
+        }
+      }
+    }
+  } catch (err) {
+    console.error("[calendar] proxy fallback unavailable:", err);
   }
 
   return cache ?? { events: [], updatedAt: Date.now() };
