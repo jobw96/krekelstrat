@@ -223,7 +223,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                             </span>
                             {r.status !== "breached" && (
                               <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#8b9298]">
-                                {r.phase}
+                                {groupOf(r)}
                               </span>
                             )}
                           </span>
