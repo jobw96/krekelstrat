@@ -26,9 +26,9 @@ export function AppRail() {
     return () => clearInterval(id);
   }, []);
 
-  // Glow from 30 minutes before a red-folder release until the event has passed.
+  // Glow from 30 minutes before a red-folder release until 10 minutes after it.
   const upcoming = (redFolder?.events ?? []).find(
-    (e) => e.time - now <= 30 * 60_000 && e.time + 60_000 >= now,
+    (e) => e.time - now <= 30 * 60_000 && e.time + 10 * 60_000 >= now,
   );
   const minutesToNews = upcoming ? Math.max(0, Math.round((upcoming.time - now) / 60_000)) : null;
 
