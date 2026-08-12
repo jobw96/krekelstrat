@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { CandlestickChart, Landmark, NotebookPen } from "lucide-react";
+import { CandlestickChart, Landmark, Newspaper, NotebookPen } from "lucide-react";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 
 const RAIL_ITEMS = [
   { icon: CandlestickChart, label: "Sessions", to: "/" as const, search: undefined },
   { icon: NotebookPen, label: "Journal", to: "/journal" as const, search: undefined },
+  { icon: Newspaper, label: "News", to: "/news" as const, search: undefined },
   { icon: Landmark, label: "Prop Firms", to: "/prop-firms" as const, search: undefined },
 ];
 
@@ -29,13 +30,12 @@ export function AppRail() {
             search={search ?? {}}
             title={label}
             aria-label={label}
-            className="group relative flex size-11 items-center justify-center rounded-2xl transition-colors duration-300"
+            className="group relative flex size-11 items-center justify-center rounded-2xl transition-all duration-200 hover:bg-white/[0.07]"
             style={active ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
           >
             <Icon
-              className="size-[18px]"
+              className={`size-[18px] transition-colors duration-200 ${active ? "text-white" : "text-[#6a7076] group-hover:text-[#d7dbe0]"}`}
               strokeWidth={1.6}
-              style={{ color: active ? "#ffffff" : "#6a7076" }}
             />
             {active && (
               <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />

@@ -4,7 +4,6 @@ import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
-  Home,
   LayoutGrid,
   Link2,
   ListOrdered,
@@ -22,7 +21,7 @@ export type JournalView =
   | "strategies"
   | "resources";
 
-const ITEMS: { id: JournalView; label: string; icon: typeof Home }[] = [
+const ITEMS: { id: JournalView; label: string; icon: typeof LayoutGrid }[] = [
   { id: "dashboard", label: "Dashboard", icon: LayoutGrid },
   { id: "day", label: "Day View", icon: CalendarDays },
   { id: "trades", label: "Trade Log", icon: ListOrdered },
@@ -87,13 +86,6 @@ export function JournalNav({
       </nav>
 
       <div className="mt-auto flex flex-col gap-0.5">
-        <Link
-          to="/"
-          className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[12.5px] text-[#8b9298] transition-colors hover:text-white"
-        >
-          <Home className="size-4 shrink-0" />
-          {!collapsed && <span>Terminal</span>}
-        </Link>
         <button
           onClick={onToggle}
           className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[12.5px] text-[#6a7076] transition-colors hover:text-white"

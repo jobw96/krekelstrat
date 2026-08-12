@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as JournalRouteImport } from './routes/journal'
+import { Route as NewsRouteImport } from './routes/news'
 import { Route as PropFirmsRouteImport } from './routes/prop-firms'
 
 const IndexRoute = IndexRouteImport.update({
@@ -29,6 +30,11 @@ const JournalRoute = JournalRouteImport.update({
   path: '/journal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PropFirmsRoute = PropFirmsRouteImport.update({
   id: '/prop-firms',
   path: '/prop-firms',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
+  '/news': typeof NewsRoute
   '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
+  '/news': typeof NewsRoute
   '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRoutesById {
@@ -52,20 +60,22 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
+  '/news': typeof NewsRoute
   '/prop-firms': typeof PropFirmsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/journal' | '/prop-firms'
+  fullPaths: '/' | '/auth' | '/journal' | '/news' | '/prop-firms'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/journal' | '/prop-firms'
-  id: '__root__' | '/' | '/auth' | '/journal' | '/prop-firms'
+  to: '/' | '/auth' | '/journal' | '/news' | '/prop-firms'
+  id: '__root__' | '/' | '/auth' | '/journal' | '/news' | '/prop-firms'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   JournalRoute: typeof JournalRoute
+  NewsRoute: typeof NewsRoute
   PropFirmsRoute: typeof PropFirmsRoute
 }
 
@@ -92,6 +102,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prop-firms': {
       id: '/prop-firms'
       path: '/prop-firms'
@@ -106,6 +123,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   JournalRoute: JournalRoute,
+  NewsRoute: NewsRoute,
   PropFirmsRoute: PropFirmsRoute,
 }
 export const routeTree = rootRouteImport
