@@ -25,7 +25,7 @@ function sessionLabel(code: string) {
   return SESSIONS.find((s) => s.short === code)?.name ?? code;
 }
 
-function Kpi({ label, value, hint, color }: { label: string; value: string; hint?: string; color?: string }) {
+function Kpi({ label, value, hint, color }: { label: string; value: string; hint?: string | undefined; color?: string | undefined }) {
   return (
     <div className="glass-inset flex flex-col gap-1 p-3">
       <span className="text-[10.5px] uppercase tracking-[0.08em] text-[#6a7076]">{label}</span>
