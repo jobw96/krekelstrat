@@ -185,6 +185,8 @@ export function DayTradesDialog({
           onSaved={onChanged}
         />
       )}
+
+      {zoomed && <ImageLightbox src={zoomed} onClose={() => setZoomed(null)} />}
     </div>
   );
 }

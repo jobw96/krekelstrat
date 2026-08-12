@@ -94,6 +94,7 @@ function TradeDetails({
   readOnly?: boolean;
 }) {
   const [shot, setShot] = useState<string | null>(null);
+  const [zoomed, setZoomed] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -122,14 +123,25 @@ function TradeDetails({
       <div className="flex flex-col gap-2">
         {trade.screenshot_url ? (
           shot ? (
-            <a href={shot} target="_blank" rel="noreferrer" className="block">
-              <img
-                src={shot}
-                alt="Trade screenshot"
-                loading="lazy"
-                className="w-full rounded-xl border border-white/8"
-              />
-            </a>
+            <>
+              <button
+                type="button"
+                onClick={() => setZoomed(true)}
+                aria-label="Zoom screenshot"
+                className="group/img relative block overflow-hidden rounded-xl border border-white/8"
+              >
+                <img
+                  src={shot}
+                  alt="Trade screenshot"
+                  loading="lazy"
+                  className="w-full transition-transform duration-200 group-hover/img:scale-[1.02]"
+                />
+                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#d7dbe0] opacity-0 transition-opacity group-hover/img:opacity-100">
+                  <ZoomIn className="size-3.5" />
+                </span>
+              </button>
+              {zoomed && <ImageLightbox src={shot} onClose={() => setZoomed(false)} />}
+            </>
           ) : (
             <div className="h-48 w-full animate-pulse rounded-xl bg-white/5" />
           )
