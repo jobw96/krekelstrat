@@ -5,6 +5,7 @@ export type PropAccount = {
   id: string;
   user_id: string;
   firm: string;
+  label: string | null;
   account_size: number | null;
   phase: PropPhase;
   status: PropStatus;
