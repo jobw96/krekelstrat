@@ -50,6 +50,7 @@ export function SessionCard({
   compact = false,
   zone = NY_ZONE,
   zoneLabel = "NY",
+  showOpen = true,
 }: {
   def: SessionDef;
   state: ClockState;
@@ -60,15 +61,18 @@ export function SessionCard({
   compact?: boolean;
   zone?: string;
   zoneLabel?: string;
+  /** Only recent sessions show an open price */
+  showOpen?: boolean;
 }) {
   const status = statusOf(def, state);
   const active = status === "active";
 
-  const open = sessionOpenPrice(def, now, candles);
+  const open = showOpen ? sessionOpenPrice(def, now, candles) : null;
   const diff = open != null && price != null ? price - open : null;
   const diffColor = distanceColor(diff);
   const read = detectPhase(open, price, candles);
   const upcoming = status === "next" || open == null;
+
   const isMacro = def.id === "macro";
   const todaysEvents = isMacro ? eventsToday(events, now) : [];
   const catalyst = isMacro ? currentCatalyst(events, now, candles) : null;
