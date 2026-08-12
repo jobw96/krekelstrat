@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
-import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
+import { ChevronRight, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { WIN_GREEN, LOSS_RED } from "@/lib/journal";
@@ -16,6 +16,17 @@ const STATUS_COLOR: Record<PropStatus, string> = {
   payout: WIN_GREEN,
   breached: LOSS_RED,
 };
+
+type GroupKey = "evaluation" | "funded" | "breached";
+
+const GROUPS: { key: GroupKey; label: string; color: string }[] = [
+  { key: "evaluation", label: "Evaluation", color: "#5ec8f5" },
+  { key: "funded", label: "Funded", color: WIN_GREEN },
+  { key: "breached", label: "Breached", color: LOSS_RED },
+];
+
+const groupOf = (r: PropAccount): GroupKey =>
+  r.status === "breached" ? "breached" : r.phase === "funded" ? "funded" : "evaluation";
 
 function Stat({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
@@ -46,6 +57,11 @@ export function PropFirmsView({ userId }: { userId: string }) {
   const qc = useQueryClient();
   const [dialog, setDialog] = useState<{ open: boolean; account?: PropAccount | null }>({
     open: false,
+  });
+  const [openGroups, setOpenGroups] = useState<Record<GroupKey, boolean>>({
+    evaluation: true,
+    funded: true,
+    breached: false,
   });
 
   const q = useQuery({
