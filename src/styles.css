@@ -210,6 +210,24 @@
   animation: glow-ring 3.6s ease-in-out infinite;
 }
 
+/* Lightbox control button. */
+@utility lb-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #d7dbe0;
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+  }
+}
+
 /* Subtle interactive feedback for buttons and rail links. */
 @utility hover-lift {
   transition:
