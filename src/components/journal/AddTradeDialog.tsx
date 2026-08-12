@@ -11,6 +11,8 @@ import {
   type TradeResult,
 } from "@/lib/journal";
 import { DateTimePicker } from "@/components/journal/DateTimePicker";
+import { TagPicker, RIGHT_TAGS, WRONG_TAGS } from "@/components/journal/TagPicker";
+
 
 
 const inputCls =
