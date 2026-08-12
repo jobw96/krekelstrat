@@ -38,18 +38,21 @@ export function JournalNav({
   collapsed,
   onToggle,
   onAddTrade,
+  readOnly = false,
 }: {
   view: JournalView;
   onView: (v: JournalView) => void;
   collapsed: boolean;
   onToggle: () => void;
   onAddTrade: () => void;
+  readOnly?: boolean;
 }) {
   return (
     <aside
       className="card-surface sticky top-4 hidden h-[calc(100vh-2rem)] shrink-0 flex-col gap-2 p-2.5 transition-all duration-200 md:flex"
       style={{ width: collapsed ? 62 : 208 }}
     >
+      {!readOnly && (
       <button
         onClick={onAddTrade}
         className="hover-lift inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-[13px]"
@@ -62,6 +65,7 @@ export function JournalNav({
         <Plus className="size-4 shrink-0" />
         {!collapsed && <span>Add Trade</span>}
       </button>
+      )}
 
       <nav className="mt-1 flex flex-col gap-0.5">
         {ITEMS.map((it) => {
