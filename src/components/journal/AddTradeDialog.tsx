@@ -11,6 +11,8 @@ import {
   type TradeResult,
 } from "@/lib/journal";
 import { DateTimePicker } from "@/components/journal/DateTimePicker";
+import { TagPicker, RIGHT_TAGS, WRONG_TAGS } from "@/components/journal/TagPicker";
+
 
 
 const inputCls =
@@ -101,7 +103,10 @@ export function AddTradeDialog({
   const [notes, setNotes] = useState("");
   const [wentRight, setWentRight] = useState("");
   const [wentWrong, setWentWrong] = useState("");
+  const [rightTags, setRightTags] = useState<string[]>([]);
+  const [wrongTags, setWrongTags] = useState<string[]>([]);
   const [improvement, setImprovement] = useState("");
+
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -146,8 +151,9 @@ export function AddTradeDialog({
         result,
         session,
         notes: notes || null,
-        went_right: wentRight || null,
-        went_wrong: wentWrong || null,
+        went_right: [...rightTags, wentRight.trim()].filter(Boolean).join(" • ") || null,
+        went_wrong: [...wrongTags, wentWrong.trim()].filter(Boolean).join(" • ") || null,
+
         improvement: improvement || null,
         screenshot_url: screenshot,
       });
@@ -261,29 +267,42 @@ export function AddTradeDialog({
         </label>
 
         <div className="grid gap-3 sm:grid-cols-2">
-          <label className="flex flex-col gap-1 text-[11px]" style={{ color: WIN_GREEN }}>
-            What went right
+          <div className="flex flex-col gap-2">
+            <TagPicker
+              label="What went right"
+              color={WIN_GREEN}
+              presets={RIGHT_TAGS}
+              value={rightTags}
+              onChange={setRightTags}
+            />
             <textarea
               value={wentRight}
               onChange={(e) => setWentRight(e.target.value)}
-              rows={3}
-              placeholder="Rights: what did you execute well?"
+              rows={2}
+              placeholder="Extra notes (optional)"
               className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1"
               style={{ boxShadow: `inset 0 0 0 1px ${WIN_GREEN}33` }}
             />
-          </label>
-          <label className="flex flex-col gap-1 text-[11px]" style={{ color: LOSS_RED }}>
-            What went wrong
+          </div>
+          <div className="flex flex-col gap-2">
+            <TagPicker
+              label="What went wrong"
+              color={LOSS_RED}
+              presets={WRONG_TAGS}
+              value={wrongTags}
+              onChange={setWrongTags}
+            />
             <textarea
               value={wentWrong}
               onChange={(e) => setWentWrong(e.target.value)}
-              rows={3}
-              placeholder="Wrongs: mistakes, rule breaks…"
+              rows={2}
+              placeholder="Extra notes (optional)"
               className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1"
               style={{ boxShadow: `inset 0 0 0 1px ${LOSS_RED}33` }}
             />
-          </label>
+          </div>
         </div>
+
 
         <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
           Improvement for next time
