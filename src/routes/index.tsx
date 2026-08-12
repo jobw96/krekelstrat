@@ -368,11 +368,11 @@ function Dashboard() {
                       compact={compact}
                       zone={tz === "NY" ? NY_ZONE : LOCAL_ZONE}
                       zoneLabel={tz}
+                      showOpen={recentIds.has(def.id)}
                     />
-
-
                   ))}
                 </div>
+
               </section>
             </>
           )}
