@@ -4,6 +4,7 @@ import { ChevronDown, ClipboardPaste, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   SESSION_OPTIONS,
+  sessionLabel,
   uploadScreenshot,
   WIN_GREEN,
   LOSS_RED,
