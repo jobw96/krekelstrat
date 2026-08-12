@@ -12,6 +12,7 @@ import {
   type Trade,
 } from "@/lib/journal";
 import { LOCAL_ZONE } from "@/lib/sessions";
+import { TradeComments } from "@/components/journal/TradeComments";
 
 const PAGE = 8;
 const STEP = 5;
