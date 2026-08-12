@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DateTime } from "luxon";
-import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   money,
@@ -13,6 +13,7 @@ import {
 } from "@/lib/journal";
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { TradeComments } from "@/components/journal/TradeComments";
+import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
 
 const PAGE = 8;
 const STEP = 5;
@@ -216,6 +217,7 @@ export function TradesList({
 }) {
   const [visible, setVisible] = useState(PAGE);
   const [open, setOpen] = useState<Record<string, boolean>>({});
+  const [editing, setEditing] = useState<Trade | null>(null);
 
 
   useEffect(() => {
@@ -286,6 +288,15 @@ export function TradesList({
                 </span>
                 {!readOnly && (
                   <button
+                    onClick={() => setEditing(t)}
+                    className="text-[#6a7076] transition-colors hover:text-white"
+                    aria-label="Edit trade"
+                  >
+                    <Pencil className="size-3.5" />
+                  </button>
+                )}
+                {!readOnly && (
+                  <button
                     onClick={() => remove(t.id)}
                     className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
                     aria-label="Delete trade"
@@ -332,6 +343,16 @@ export function TradesList({
             </button>
           )}
         </div>
+      )}
+
+      {editing && (
+        <AddTradeDialog
+          userId={editing.user_id}
+          strategies={strategies}
+          trade={editing}
+          onClose={() => setEditing(null)}
+          onSaved={onChanged}
+        />
       )}
     </section>
   );
