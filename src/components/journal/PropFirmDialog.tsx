@@ -75,6 +75,7 @@ export function PropFirmDialog({
     const payload = {
       user_id: userId,
       firm: parsed.data.firm,
+      label: customLabel.trim() || null,
       account_size: Number(size) || null,
       phase,
       status,
