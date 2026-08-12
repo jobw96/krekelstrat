@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { CandlestickChart, Landmark, Newspaper, NotebookPen, UserRound } from "lucide-react";
 import sjakAsset from "@/assets/sjak.png.asset.json";
 import { useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/lib/profile";
+import { useRedFolder } from "@/hooks/useRedFolder";
 
 const RAIL_ITEMS = [
   { icon: CandlestickChart, label: "Sessions", to: "/" as const, search: undefined },
@@ -17,6 +18,19 @@ export function AppRail() {
   const { user, isGuest } = useAuth();
   const { data } = useProfile(isGuest ? undefined : user?.id);
   const [imgFailed, setImgFailed] = useState(false);
+  const { data: redFolder } = useRedFolder();
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 15_000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Glow from 30 minutes before a red-folder release until the event has passed.
+  const upcoming = (redFolder?.events ?? []).find(
+    (e) => e.time - now <= 30 * 60_000 && e.time + 60_000 >= now,
+  );
+  const minutesToNews = upcoming ? Math.max(0, Math.round((upcoming.time - now) / 60_000)) : null;
 
   const displayName = data?.profile?.display_name?.trim() || "NQ/MNQ";
   const avatarSrc = !imgFailed ? (data?.avatarUrl ?? sjakAsset.url) : sjakAsset.url;
@@ -45,20 +59,30 @@ export function AppRail() {
       </div>
       {RAIL_ITEMS.map(({ icon: Icon, label, to, search }) => {
         const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
+        const alerting = label === "News" && !!upcoming;
         return (
           <Link
             key={label}
             to={to}
             search={search ?? {}}
-            title={label}
+            title={
+              alerting && upcoming
+                ? `${upcoming.title} — ${minutesToNews === 0 ? "nu" : `over ${minutesToNews}m`}`
+                : label
+            }
             aria-label={label}
-            className="group relative flex size-11 items-center justify-center rounded-2xl transition-all duration-200 hover:bg-white/[0.07]"
+            className={`group relative flex size-11 items-center justify-center rounded-2xl transition-all duration-200 hover:bg-white/[0.07] ${alerting ? "news-alert" : ""}`}
             style={active ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
           >
             <Icon
-              className={`size-[18px] transition-colors duration-200 ${active ? "text-white" : "text-[#6a7076] group-hover:text-[#d7dbe0]"}`}
+              className={`size-[18px] transition-colors duration-200 ${alerting ? "text-[#ff8b95]" : active ? "text-white" : "text-[#6a7076] group-hover:text-[#d7dbe0]"}`}
               strokeWidth={1.6}
             />
+            {alerting && (
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#e5525f] px-1 py-px font-mono text-[8px] leading-none text-white">
+                {minutesToNews}
+              </span>
+            )}
             {active && (
               <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
             )}
