@@ -151,8 +151,9 @@ export function AddTradeDialog({
         result,
         session,
         notes: notes || null,
-        went_right: wentRight || null,
-        went_wrong: wentWrong || null,
+        went_right: [...rightTags, wentRight.trim()].filter(Boolean).join(" • ") || null,
+        went_wrong: [...wrongTags, wentWrong.trim()].filter(Boolean).join(" • ") || null,
+
         improvement: improvement || null,
         screenshot_url: screenshot,
       });
