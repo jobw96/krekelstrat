@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
-import { ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
+import { ChevronRight, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { WIN_GREEN, LOSS_RED } from "@/lib/journal";
@@ -16,6 +16,17 @@ const STATUS_COLOR: Record<PropStatus, string> = {
   payout: WIN_GREEN,
   breached: LOSS_RED,
 };
+
+type GroupKey = "evaluation" | "funded" | "breached";
+
+const GROUPS: { key: GroupKey; label: string; color: string }[] = [
+  { key: "evaluation", label: "Evaluation", color: "#5ec8f5" },
+  { key: "funded", label: "Funded", color: WIN_GREEN },
+  { key: "breached", label: "Breached", color: LOSS_RED },
+];
+
+const groupOf = (r: PropAccount): GroupKey =>
+  r.status === "breached" ? "breached" : r.phase === "funded" ? "funded" : "evaluation";
 
 function Stat({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
@@ -46,6 +57,11 @@ export function PropFirmsView({ userId }: { userId: string }) {
   const qc = useQueryClient();
   const [dialog, setDialog] = useState<{ open: boolean; account?: PropAccount | null }>({
     open: false,
+  });
+  const [openGroups, setOpenGroups] = useState<Record<GroupKey, boolean>>({
+    evaluation: true,
+    funded: true,
+    breached: false,
   });
 
   const q = useQuery({
@@ -143,63 +159,107 @@ export function PropFirmsView({ userId }: { userId: string }) {
             No prop accounts logged yet — add your first evaluation.
           </p>
         )}
-        {rows.map((r) => {
-          const spend = Number(r.cost) + Number(r.activation_fee);
-          const net = Number(r.payout_total) - spend;
-          return (
-            <div
-              key={r.id}
-              className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white/4 px-3 py-2.5"
-            >
-              <span className="flex min-w-0 flex-col">
-                <span className="flex items-center gap-2 text-[12.5px] text-white">
-                  {r.firm}
-                  <span
-                    className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
-                    style={{ background: `${STATUS_COLOR[r.status]}1f`, color: STATUS_COLOR[r.status] }}
-                  >
-                    {STATUS_LABEL[r.status]}
-                  </span>
-                  <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#8b9298]">
-                    {r.phase}
-                  </span>
-                </span>
-                <span className="font-mono text-[11px] text-[#6a7076]">
-                  {r.account_size ? `$${(r.account_size / 1000).toFixed(0)}K` : "—"} ·{" "}
-                  {DateTime.fromISO(r.started_at).toFormat("dd LLL yyyy")}
-                </span>
-                {r.notes && <span className="truncate text-[11.5px] text-[#8b9298]">{r.notes}</span>}
-              </span>
-              <span className="flex items-center gap-4">
-                <span className="font-mono text-[11px] text-[#6a7076]">-{usd(spend)} cost</span>
-                <span
-                  className="font-mono text-[13px] tabular"
-                  style={{ color: net > 0 ? WIN_GREEN : net < 0 ? LOSS_RED : "#8b9298", fontWeight: 560 }}
-                >
-                  {net < 0 ? "-" : "+"}
-                  {usd(net)}
-                </span>
+        {!q.isLoading &&
+          GROUPS.map((g) => {
+            const list = rows.filter((r) => groupOf(r) === g.key);
+            const open = openGroups[g.key];
+            const spendSum = list.reduce((a, r) => a + Number(r.cost) + Number(r.activation_fee), 0);
+            const netSum = list.reduce(
+              (a, r) => a + Number(r.payout_total) - Number(r.cost) - Number(r.activation_fee),
+              0,
+            );
+            return (
+              <div key={g.key} className="flex flex-col gap-2">
                 <button
-                  onClick={() => setDialog({ open: true, account: r })}
-                  aria-label="Edit account"
-                  className="text-[#6a7076] transition-colors hover:text-white"
+                  onClick={() => setOpenGroups((s) => ({ ...s, [g.key]: !s[g.key] }))}
+                  className="hover-tint flex items-center justify-between gap-3 rounded-xl bg-white/4 px-3 py-2 text-left"
                 >
-                  <Pencil className="size-3.5" />
+                  <span className="flex items-center gap-2">
+                    <ChevronRight
+                      className="size-3.5 text-[#6a7076] transition-transform"
+                      style={{ transform: open ? "rotate(90deg)" : "none" }}
+                    />
+                    <span className="text-[12.5px]" style={{ color: g.color, fontWeight: 560 }}>
+                      {g.label}
+                    </span>
+                    <span className="rounded-full bg-white/6 px-2 py-0.5 font-mono text-[10.5px] text-[#8b9298]">
+                      {list.length}
+                    </span>
+                  </span>
+                  <span className="flex items-center gap-3 font-mono text-[11px] text-[#6a7076]">
+                    <span>-{usd(spendSum)} cost</span>
+                    <span style={{ color: netSum > 0 ? WIN_GREEN : netSum < 0 ? LOSS_RED : "#8b9298" }}>
+                      {netSum < 0 ? "-" : "+"}
+                      {usd(netSum)}
+                    </span>
+                  </span>
                 </button>
-                <button
-                  onClick={async () => {
-                    await supabase.from("prop_accounts").delete().eq("id", r.id);
-                    refresh();
-                  }}
-                  aria-label="Delete account"
-                  className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
-              </span>
-            </div>
-          );
-        })}
+
+                {open && list.length === 0 && (
+                  <p className="px-3 pb-1 text-[11.5px] text-[#6a7076]">No accounts in this category.</p>
+                )}
+
+                {open &&
+                  list.map((r) => {
+                    const spend = Number(r.cost) + Number(r.activation_fee);
+                    const net = Number(r.payout_total) - spend;
+                    return (
+                      <div
+                        key={r.id}
+                        className="ml-3 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white/4 px-3 py-2.5"
+                      >
+                        <span className="flex min-w-0 flex-col">
+                          <span className="flex items-center gap-2 text-[12.5px] text-white">
+                            {r.firm}
+                            <span
+                              className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
+                              style={{ background: `${STATUS_COLOR[r.status]}1f`, color: STATUS_COLOR[r.status] }}
+                            >
+                              {STATUS_LABEL[r.status]}
+                            </span>
+                            <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#8b9298]">
+                              {r.phase}
+                            </span>
+                          </span>
+                          <span className="font-mono text-[11px] text-[#6a7076]">
+                            {r.account_size ? `$${(r.account_size / 1000).toFixed(0)}K` : "—"} ·{" "}
+                            {DateTime.fromISO(r.started_at).toFormat("dd LLL yyyy")}
+                          </span>
+                          {r.notes && <span className="truncate text-[11.5px] text-[#8b9298]">{r.notes}</span>}
+                        </span>
+                        <span className="flex items-center gap-4">
+                          <span className="font-mono text-[11px] text-[#6a7076]">-{usd(spend)} cost</span>
+                          <span
+                            className="font-mono text-[13px] tabular"
+                            style={{ color: net > 0 ? WIN_GREEN : net < 0 ? LOSS_RED : "#8b9298", fontWeight: 560 }}
+                          >
+                            {net < 0 ? "-" : "+"}
+                            {usd(net)}
+                          </span>
+                          <button
+                            onClick={() => setDialog({ open: true, account: r })}
+                            aria-label="Edit account"
+                            className="text-[#6a7076] transition-colors hover:text-white"
+                          >
+                            <Pencil className="size-3.5" />
+                          </button>
+                          <button
+                            onClick={async () => {
+                              await supabase.from("prop_accounts").delete().eq("id", r.id);
+                              refresh();
+                            }}
+                            aria-label="Delete account"
+                            className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
+                          >
+                            <Trash2 className="size-3.5" />
+                          </button>
+                        </span>
+                      </div>
+                    );
+                  })}
+              </div>
+            );
+          })}
       </section>
 
       <section className="card-surface flex flex-col gap-3 p-4">
