@@ -306,7 +306,7 @@ function Dashboard() {
                 />
                 <ClockCell
                   label="New York"
-                  value={now ? now.setZone(NY_ZONE).toFormat("HH:mm:ss") : "--:--:--"}
+                  value={now ? now.setZone(NY_ZONE).toFormat("h:mm:ss a") : "--:--:--"}
                   zone={now ? now.setZone(NY_ZONE).toFormat("ZZZZ") : ""}
                 />
               </div>
