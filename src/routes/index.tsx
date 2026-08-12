@@ -97,7 +97,7 @@ function Dashboard() {
   const [sound, setSound] = useState(false);
   const { tz, setTz } = useTzPref();
   const compact = true;
-  const state = now ? computeState(now) : null;
+  const recentIds = now ? recentSessionIds(now) : new Set<string>();
   useBeep(sound, state?.secondsToNext ?? 9999);
   const catalyst = now
     ? currentCatalyst(news.data?.events ?? [], now, mnq.data?.candles ?? [])
