@@ -279,13 +279,15 @@ export function TradesList({
                 <span className="font-mono text-[11px] text-[#8b9298]">
                   {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
                 </span>
-                <button
-                  onClick={() => remove(t.id)}
-                  className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
-                  aria-label="Delete trade"
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
+                {!readOnly && (
+                  <button
+                    onClick={() => remove(t.id)}
+                    className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
+                    aria-label="Delete trade"
+                  >
+                    <Trash2 className="size-3.5" />
+                  </button>
+                )}
               </span>
             </div>
             <div
@@ -294,7 +296,12 @@ export function TradesList({
             >
               <div className="overflow-hidden">
                 {isOpen && (
-                  <TradeDetails trade={t} strategyName={strategyName} onChanged={onChanged} />
+                  <TradeDetails
+                    trade={t}
+                    strategyName={strategyName}
+                    onChanged={onChanged}
+                    readOnly={readOnly}
+                  />
                 )}
               </div>
             </div>
