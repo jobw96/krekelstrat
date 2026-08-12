@@ -149,6 +149,41 @@ export type Database = {
         }
         Relationships: []
       }
+      trade_comments: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          trade_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          trade_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          trade_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "trade_comments_trade_id_fkey"
+            columns: ["trade_id"]
+            isOneToOne: false
+            referencedRelation: "trades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       trades: {
         Row: {
           created_at: string
@@ -213,6 +248,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_view_trade: { Args: { _trade_id: string }; Returns: boolean }
       claim_journal_shares: { Args: never; Returns: number }
       has_journal_access: { Args: { _owner: string }; Returns: boolean }
     }
