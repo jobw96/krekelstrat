@@ -385,8 +385,6 @@ function JournalPage() {
               <TradesList trades={trades} strategies={strategies} onChanged={refresh} readOnly={readOnly} />
             )}
 
-            {view === "notebook" && <Notebook trades={trades} />}
-
             {view === "reports" && <ReportsView trades={trades} strategies={strategies} />}
 
             {view === "strategies" && (
@@ -399,7 +397,6 @@ function JournalPage() {
               />
             )}
 
-            {view === "resources" && <AnalyticsPanel trades={trades} />}
           </div>
         </div>
 
@@ -472,34 +469,6 @@ function DayView({ trades, onSelectDay }: { trades: Trade[]; onSelectDay: (d: st
           </button>
         );
       })}
-    </section>
-  );
-}
-
-function Notebook({ trades }: { trades: Trade[] }) {
-  const noted = trades.filter((t) => t.notes && t.notes.trim().length > 0);
-  return (
-    <section className="card-surface flex flex-col gap-3 p-4">
-      <h2 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-        Notebook
-      </h2>
-      {noted.length === 0 && (
-        <p className="py-6 text-center text-[12px] text-[#6a7076]">
-          No notes yet — add notes while logging a trade.
-        </p>
-      )}
-      {noted.map((t) => (
-        <article key={t.id} className="glass-inset flex flex-col gap-1.5 p-3">
-          <span className="flex items-center gap-2 font-mono text-[11px] text-[#6a7076]">
-            {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("dd LLL yyyy · HH:mm")}
-            <span style={{ color: t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298" }}>
-              {t.result}
-            </span>
-            <span>{money(Number(t.pnl))}</span>
-          </span>
-          <p className="text-[12.5px] leading-[1.6] text-[#d7dbe0]">{t.notes}</p>
-        </article>
-      ))}
     </section>
   );
 }
