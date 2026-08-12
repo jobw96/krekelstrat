@@ -101,8 +101,6 @@ export function AddTradeDialog({
   const [rr, setRr] = useState("");
   const [result, setResult] = useState<TradeResult>("WIN");
   const [notes, setNotes] = useState("");
-  const [wentRight, setWentRight] = useState("");
-  const [wentWrong, setWentWrong] = useState("");
   const [rightTags, setRightTags] = useState<string[]>([]);
   const [wrongTags, setWrongTags] = useState<string[]>([]);
   const [improvement, setImprovement] = useState("");
@@ -151,8 +149,8 @@ export function AddTradeDialog({
         result,
         session,
         notes: notes || null,
-        went_right: [...rightTags, wentRight.trim()].filter(Boolean).join(" • ") || null,
-        went_wrong: [...wrongTags, wentWrong.trim()].filter(Boolean).join(" • ") || null,
+        went_right: rightTags.filter(Boolean).join(" • ") || null,
+        went_wrong: wrongTags.filter(Boolean).join(" • ") || null,
 
         improvement: improvement || null,
         screenshot_url: screenshot,
@@ -275,14 +273,6 @@ export function AddTradeDialog({
               value={rightTags}
               onChange={setRightTags}
             />
-            <textarea
-              value={wentRight}
-              onChange={(e) => setWentRight(e.target.value)}
-              rows={2}
-              placeholder="Extra notes (optional)"
-              className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1"
-              style={{ boxShadow: `inset 0 0 0 1px ${WIN_GREEN}33` }}
-            />
           </div>
           <div className="flex flex-col gap-2">
             <TagPicker
@@ -291,14 +281,6 @@ export function AddTradeDialog({
               presets={WRONG_TAGS}
               value={wrongTags}
               onChange={setWrongTags}
-            />
-            <textarea
-              value={wentWrong}
-              onChange={(e) => setWentWrong(e.target.value)}
-              rows={2}
-              placeholder="Extra notes (optional)"
-              className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1"
-              style={{ boxShadow: `inset 0 0 0 1px ${LOSS_RED}33` }}
             />
           </div>
         </div>
@@ -349,7 +331,7 @@ export function AddTradeDialog({
           <div className="flex items-center gap-2">
             <label className="hover-lift flex flex-1 cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/8">
               <Upload className="size-4" />
-              {file ? file.name : "Upload of sleep een screenshot hierheen"}
+              {file ? file.name : "Upload or drop a screenshot here"}
               <input
                 type="file"
                 accept="image/*"

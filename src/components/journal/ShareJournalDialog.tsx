@@ -53,7 +53,7 @@ export function ShareJournalDialog({
       done();
     },
     onError: (e: { message?: string }) =>
-      setError(e?.message?.includes("duplicate") ? "Deze buddy is al uitgenodigd." : "Uitnodigen mislukt."),
+      setError(e?.message?.includes("duplicate") ? "This buddy has already been invited." : "Invite failed."),
   });
 
   const revoke = useMutation({ mutationFn: revokeShare, onSuccess: done });
@@ -128,7 +128,7 @@ export function ShareJournalDialog({
         <Section title="Shared with">
           {outgoing.length === 0 && (
             <p className="rounded-lg bg-white/4 px-3 py-3 text-[12px] text-[#6a7076]">
-              Nog geen buddies uitgenodigd.
+              No buddies invited yet.
             </p>
           )}
           {outgoing.map((s) => (

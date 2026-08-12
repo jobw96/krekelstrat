@@ -256,7 +256,7 @@ function JournalPage() {
                       ))}
                       {buddyJournals.length === 0 && (
                         <span className="px-2.5 py-2 text-[11.5px] text-[#6a7076]">
-                          Nog geen gedeelde journals.
+                          No shared journals yet.
                         </span>
                       )}
                     </div>
