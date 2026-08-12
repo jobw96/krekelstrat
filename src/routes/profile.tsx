@@ -35,8 +35,8 @@ const schema = z.object({
 const MAX_BYTES = 4 * 1024 * 1024;
 
 const TZ_OPTIONS: { value: TzPref; label: string; hint: string }[] = [
-  { value: "NY", label: "New York", hint: "12-uurs klok (AM/PM) · marktstandaard" },
-  { value: "AMS", label: "Amsterdam", hint: "24-uurs klok · lokale tijd" },
+  { value: "NY", label: "New York", hint: "12-hour clock (AM/PM) · market standard" },
+  { value: "AMS", label: "Amsterdam", hint: "24-hour clock · local time" },
 ];
 
 function ProfilePage() {
