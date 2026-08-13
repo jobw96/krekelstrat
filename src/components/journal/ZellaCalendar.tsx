@@ -35,9 +35,24 @@ export function ZellaCalendar({
 }) {
   const byDay = groupByDay(trades);
   const start = month.startOf("month");
-  const firstCell = start.minus({ days: start.weekday % 7 }); // grid starts Sunday
-  const cells = Array.from({ length: 42 }, (_, i) => firstCell.plus({ days: i }));
-  const weeks = weekSummaries(cells, byDay);
+  const firstCell = start.startOf("week"); // Monday
+  // Weekday-only grid: Monday through Friday, 6 rows.
+  const rows = Array.from({ length: 6 }, (_, w) =>
+    Array.from({ length: 5 }, (_, d) => firstCell.plus({ weeks: w, days: d })),
+  );
+  const cells = rows.flat();
+  const weeks = rows.map((row, i) => {
+    let pnl = 0;
+    let days = 0;
+    for (const c of row) {
+      const stat = byDay.get(c.toFormat("yyyy-LL-dd"));
+      if (stat) {
+        pnl += stat.pnl;
+        days += 1;
+      }
+    }
+    return { index: i + 1, pnl, days };
+  });
 
   const monthPnl = [...byDay.values()]
     .filter((d) => DateTime.fromISO(d.key).month === month.month && DateTime.fromISO(d.key).year === month.year)
