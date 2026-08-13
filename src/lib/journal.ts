@@ -24,6 +24,7 @@ export type Trade = {
   went_right: string | null;
   went_wrong: string | null;
   improvement: string | null;
+  is_practice?: boolean | null;
   created_at: string;
 };
 
