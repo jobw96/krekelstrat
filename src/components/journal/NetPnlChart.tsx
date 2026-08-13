@@ -88,12 +88,15 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
       {data.length === 0 ? (
         <p className="py-10 text-center text-[12px] text-[#6a7076]">No data in this range.</p>
       ) : (
-        <div className="h-[180px] w-full min-w-0 sm:h-[220px]">
+        <div
+          className="h-[180px] w-full min-w-0 sm:h-[220px]"
+          style={{ maxWidth: `${data.length * 64 + 80}px` }}
+        >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
               margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
-              barCategoryGap="22%"
+              barCategoryGap="18%"
             >
               <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
               <XAxis
