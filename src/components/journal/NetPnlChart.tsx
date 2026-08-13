@@ -12,6 +12,14 @@ const BUCKETS: { id: Bucket; label: string }[] = [
   { id: "month", label: "Monthly" },
 ];
 
+function axisTick(v: number) {
+  const n = Number(v);
+  const abs = Math.abs(n);
+  const short =
+    abs >= 1000 ? `${(abs / 1000).toFixed(abs >= 10000 ? 0 : 1)}k` : String(Math.round(abs));
+  return `${n < 0 ? "-" : ""}$${short}`;
+}
+
 function bucketData(trades: Trade[], bucket: Bucket) {
   const map = new Map<string, { label: string; pnl: number; sort: number }>();
   for (const t of trades) {
