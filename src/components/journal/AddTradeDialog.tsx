@@ -15,6 +15,7 @@ import {
 } from "@/lib/journal";
 import { DateTimePicker } from "@/components/journal/DateTimePicker";
 import { TagPicker, RIGHT_TAGS, WRONG_TAGS } from "@/components/journal/TagPicker";
+import { sessionShortAt } from "@/lib/sessions";
 
 
 
@@ -111,7 +112,16 @@ export function AddTradeDialog({
         : DateTime.now().toFormat("yyyy-LL-dd'T'HH:mm"),
   );
   const [strategyId, setStrategyId] = useState<string>(trade?.strategy_id ?? "");
-  const [session, setSession] = useState<string>(trade?.session ?? SESSION_OPTIONS[0]!);
+  const [session, setSession] = useState<string>(
+    trade?.session ?? sessionShortAt(DateTime.fromISO(date)),
+  );
+  // Keep following the picked date/time until the user chooses a session manually.
+  const sessionTouched = useRef(!!trade);
+  useEffect(() => {
+    if (sessionTouched.current) return;
+    const dt = DateTime.fromISO(date);
+    if (dt.isValid) setSession(sessionShortAt(dt));
+  }, [date]);
   const [pnl, setPnl] = useState(trade ? String(Math.abs(Number(trade.pnl))) : "");
   const [rr, setRr] = useState(trade?.rr != null ? String(trade.rr) : "");
   const [result, setResult] = useState<TradeResult>(trade?.result ?? "WIN");
@@ -278,7 +288,10 @@ export function AddTradeDialog({
             Session
             <SelectField
               value={session}
-              onChange={setSession}
+              onChange={(v) => {
+                sessionTouched.current = true;
+                setSession(v);
+              }}
               options={SESSION_OPTIONS.map((s) => ({ value: s, label: sessionLabel(s) }))}
             />
           </div>
