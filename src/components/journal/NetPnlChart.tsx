@@ -82,22 +82,28 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
       ) : (
         <div className="h-[180px] w-full min-w-0 sm:h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data} margin={{ top: 6, right: 4, bottom: 0, left: -18 }}>
-              <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
+            <BarChart
+              data={data}
+              margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
+              barCategoryGap="22%"
+            >
+              <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
               <XAxis
                 dataKey="label"
                 tick={{ fill: "#6a7076", fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
-                minTickGap={24}
+                minTickGap={16}
                 interval="preserveStartEnd"
+                padding={{ left: 4, right: 4 }}
               />
               <YAxis
                 tick={{ fill: "#6a7076", fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
-                width={52}
-                tickFormatter={(v: number) => money(Number(v))}
+                width={56}
+                tickMargin={6}
+                tickFormatter={axisTick}
               />
               <ReferenceLine y={0} stroke="rgba(255,255,255,0.18)" />
               <Tooltip
@@ -111,7 +117,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
                 labelStyle={{ color: "#8b9298" }}
                 formatter={(v: number) => [money(Number(v)), "Net P&L"]}
               />
-              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={18}>
+              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={40}>
                 {data.map((d) => (
                   <Cell key={d.sort} fill={d.pnl >= 0 ? WIN_GREEN : LOSS_RED} />
                 ))}
