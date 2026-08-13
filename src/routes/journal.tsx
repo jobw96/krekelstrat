@@ -289,8 +289,39 @@ function JournalPage() {
                   </>
                 )}
               </div>
+              <div
+                className="relative flex shrink-0 items-center rounded-full p-0.5"
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  boxShadow: mode === "practice" ? `inset 0 0 0 1px ${PRACTICE_BLUE}55` : "none",
+                }}
+              >
+                <span
+                  aria-hidden
+                  className="absolute top-0.5 bottom-0.5 w-[76px] rounded-full transition-all duration-200"
+                  style={{
+                    left: mode === "live" ? "2px" : "78px",
+                    background: mode === "live" ? "rgba(255,255,255,0.14)" : `${PRACTICE_BLUE}2e`,
+                  }}
+                />
+                {(["live", "practice"] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setMode(m)}
+                    className="relative z-10 w-[76px] rounded-full py-1.5 text-[11.5px] uppercase tracking-[0.06em] transition-colors"
+                    style={{
+                      color:
+                        mode === m ? (m === "practice" ? PRACTICE_BLUE : "#ffffff") : "#6a7076",
+                      fontWeight: mode === m ? 560 : 400,
+                    }}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="flex shrink-0 items-center gap-2">
+
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
                 {isGuest ? "Guest mode · no login" : user.email}
               </span>
