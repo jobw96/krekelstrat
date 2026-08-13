@@ -20,6 +20,23 @@ function axisTick(v: number) {
   return `${n < 0 ? "-" : ""}$${short}`;
 }
 
+function PnlTooltip({ active, payload }: { active?: boolean; payload?: { value: number }[] }) {
+  if (!active || !payload?.length) return null;
+  const v = Number(payload[0].value);
+  return (
+    <div
+      className="rounded-lg px-2.5 py-1.5 font-mono text-[12px] tabular"
+      style={{
+        background: "rgba(15,18,22,0.96)",
+        border: "1px solid rgba(255,255,255,0.10)",
+        color: v > 0 ? WIN_GREEN : v < 0 ? LOSS_RED : "#8b9298",
+      }}
+    >
+      {money(v)}
+    </div>
+  );
+}
+
 function bucketData(trades: Trade[], bucket: Bucket) {
   const map = new Map<string, { label: string; pnl: number; sort: number }>();
   for (const t of trades) {
