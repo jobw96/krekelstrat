@@ -31,7 +31,6 @@ import {
 } from "@/lib/sessions";
 
 import { SessionCard, redFolderImminent } from "@/components/dashboard/SessionCard";
-import { TimelineBar } from "@/components/dashboard/TimelineBar";
 
 import { Dot, toneColor } from "@/components/dashboard/primitives";
 
@@ -320,7 +319,7 @@ function Dashboard() {
 
           {now && state && (
             <>
-              <TimelineBar now={now} />
+
 
 
               <section className="pb-10">
