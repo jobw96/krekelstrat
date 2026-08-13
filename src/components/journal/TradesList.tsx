@@ -7,6 +7,7 @@ import {
   
   signedScreenshotUrl,
   WIN_GREEN,
+  PRACTICE_BLUE,
   LOSS_RED,
   type Strategy,
   type Trade,
