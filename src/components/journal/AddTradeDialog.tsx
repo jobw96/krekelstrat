@@ -205,7 +205,12 @@ export function AddTradeDialog({
         ref={formRef}
         tabIndex={-1}
         onSubmit={save}
-        className="card-surface dialog-enter flex max-h-[90vh] w-full max-w-[520px] flex-col gap-3 overflow-y-auto p-5 outline-none"
+        className="card-surface dialog-enter flex max-h-[90vh] w-full max-w-[520px] flex-col gap-3 overflow-y-auto p-5 outline-none transition-shadow"
+        style={
+          practice
+            ? { boxShadow: `inset 0 0 0 1px ${PRACTICE_BLUE}55, 0 24px 60px -30px ${PRACTICE_BLUE}66` }
+            : undefined
+        }
       >
         <header className="flex items-center justify-between">
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
@@ -215,6 +220,41 @@ export function AddTradeDialog({
             <X className="size-4" />
           </button>
         </header>
+
+        <div
+          className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5"
+          style={{
+            background: practice ? `${PRACTICE_BLUE}14` : "rgba(255,255,255,0.05)",
+            boxShadow: practice ? `inset 0 0 0 1px ${PRACTICE_BLUE}4d` : "none",
+          }}
+        >
+          <span className="flex flex-col">
+            <span
+              className="text-[12.5px]"
+              style={{ color: practice ? PRACTICE_BLUE : "#d7dbe0", fontWeight: 560 }}
+            >
+              {practice ? "Practice trade" : "Live trade"}
+            </span>
+            <span className="text-[11px] text-[#6a7076]">
+              Practice trades are tracked separately from live results.
+            </span>
+          </span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={practice}
+            aria-label="Mark as practice trade"
+            onClick={() => setPractice((p) => !p)}
+            className="relative h-6 w-11 shrink-0 rounded-full transition-colors"
+            style={{ background: practice ? PRACTICE_BLUE : "rgba(255,255,255,0.14)" }}
+          >
+            <span
+              className="absolute top-0.5 size-5 rounded-full bg-white transition-all"
+              style={{ left: practice ? "22px" : "2px" }}
+            />
+          </button>
+        </div>
+
 
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
