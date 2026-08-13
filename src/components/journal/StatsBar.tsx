@@ -6,7 +6,7 @@ function Gauge({ value, color }: { value: number; color: string }) {
   const circ = Math.PI * r;
   const pct = Math.max(0, Math.min(100, value));
   return (
-    <svg viewBox="0 0 84 48" className="h-[48px] w-[84px]">
+    <svg viewBox="0 0 84 48" className="h-[36px] w-[62px] sm:h-[48px] sm:w-[84px]">
       <path
         d="M 8 42 A 34 34 0 0 1 76 42"
         fill="none"
@@ -35,8 +35,8 @@ function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className="card-surface flex flex-col gap-2 p-4">
-      <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
+    <div className="card-surface flex min-w-0 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4">
+      <span className="truncate text-[9.5px] uppercase tracking-[0.09em] text-[#6a7076] sm:text-[10px]">{label}</span>
       {children}
     </div>
   );
@@ -60,11 +60,11 @@ export function StatsBar({
   const ratio = stats.avgLoss ? stats.avgWin / stats.avgLoss : stats.avgWin ? Infinity : 0;
 
   return (
-    <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <section className="grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-4">
       <Card label="Net P&L">
         <div className="flex items-end justify-between gap-2">
           <span
-            className="font-mono text-[30px] leading-none tabular"
+            className="truncate font-mono text-[20px] leading-none tabular sm:text-[30px]"
             style={{ color: pnlColor, fontWeight: 560 }}
           >
             {currency === "USD"
@@ -73,22 +73,22 @@ export function StatsBar({
           </span>
           <button
             onClick={onToggleCurrency}
-            className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-[#d7dbe0] hover:bg-white/12"
+            className="hover-lift shrink-0 rounded-full bg-white/6 px-2 py-0.5 text-[11px] text-[#d7dbe0] hover:bg-white/12"
           >
             {currency === "USD" ? "$" : "R"}
           </button>
         </div>
-        <span className="font-mono text-[11px] text-[#6a7076]">{metrics.count} trades</span>
+        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">{metrics.count} trades</span>
       </Card>
 
       <Card label="Trade Win %">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-mono text-[26px] leading-none tabular text-white" style={{ fontWeight: 560 }}>
+          <span className="font-mono text-[19px] leading-none tabular text-white sm:text-[26px]" style={{ fontWeight: 560 }}>
             {metrics.winRate.toFixed(1)}%
           </span>
           <Gauge value={metrics.winRate} color={WIN_GREEN} />
         </div>
-        <span className="font-mono text-[11px] text-[#6a7076]">
+        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">
           {Math.round((metrics.winRate / 100) * metrics.count)}W ·{" "}
           {metrics.count - Math.round((metrics.winRate / 100) * metrics.count)}L
         </span>
@@ -96,25 +96,25 @@ export function StatsBar({
 
       <Card label="Day Win %">
         <div className="flex items-center justify-between gap-2">
-          <span className="font-mono text-[26px] leading-none tabular text-white" style={{ fontWeight: 560 }}>
+          <span className="font-mono text-[19px] leading-none tabular text-white sm:text-[26px]" style={{ fontWeight: 560 }}>
             {stats.dayWinRate.toFixed(1)}%
           </span>
           <Gauge value={stats.dayWinRate} color="#5ec8f5" />
         </div>
-        <span className="font-mono text-[11px] text-[#6a7076]">
+        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">
           {stats.greenDays} green · {stats.redDays} red days
         </span>
       </Card>
 
       <Card label="Avg Win / Loss">
         <div className="flex items-baseline justify-between gap-2">
-          <span className="font-mono text-[15px] tabular" style={{ color: WIN_GREEN }}>
+          <span className="font-mono text-[12.5px] tabular sm:text-[15px]" style={{ color: WIN_GREEN }}>
             ${stats.avgWin.toFixed(0)}
           </span>
-          <span className="font-mono text-[18px] tabular text-white" style={{ fontWeight: 560 }}>
+          <span className="font-mono text-[15px] tabular text-white sm:text-[18px]" style={{ fontWeight: 560 }}>
             {ratio === Infinity ? "∞" : ratio.toFixed(2)}
           </span>
-          <span className="font-mono text-[15px] tabular" style={{ color: LOSS_RED }}>
+          <span className="font-mono text-[12.5px] tabular sm:text-[15px]" style={{ color: LOSS_RED }}>
             ${stats.avgLoss.toFixed(0)}
           </span>
         </div>
@@ -122,7 +122,7 @@ export function StatsBar({
           <span style={{ width: `${winShare}%`, background: WIN_GREEN }} />
           <span style={{ width: `${100 - winShare}%`, background: LOSS_RED }} />
         </div>
-        <span className="font-mono text-[11px] text-[#6a7076]">Avg win vs avg loss</span>
+        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">Avg win vs avg loss</span>
       </Card>
     </section>
   );
