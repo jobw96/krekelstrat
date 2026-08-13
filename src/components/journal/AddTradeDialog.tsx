@@ -183,6 +183,7 @@ export function AddTradeDialog({
         went_wrong: wrongTags.filter(Boolean).join(" • ") || null,
 
         improvement: improvement || null,
+        is_practice: practice,
         screenshot_url: screenshot,
       };
       const { error: err } = editing
