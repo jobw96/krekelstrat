@@ -320,7 +320,7 @@ function Dashboard() {
 
           {now && state && (
             <>
-              <TimelineBar now={now} />
+
 
 
               <section className="pb-10">
