@@ -70,6 +70,7 @@ function JournalPage() {
   const [collapsed, setCollapsed] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
+  const [mode, setMode] = useState<"live" | "practice">("live");
   const [range, setRange] = useState<RangeKey>("month");
   const [filters, setFilters] = useState<Filters>({
     strategy: "all",
