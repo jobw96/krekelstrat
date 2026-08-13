@@ -212,14 +212,17 @@ export function ControlBar({
 
       <button
         onClick={onRefresh}
-        className="hover-lift ml-auto inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 font-mono text-[11px] text-[#8b9298] hover:bg-white/12"
+        title={
+          syncedAt
+            ? `Synced ${syncedAt.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`
+            : "Refresh"
+        }
+        aria-label="Refresh"
+        className="hover-lift ml-auto inline-flex items-center justify-center rounded-full bg-white/6 p-2 text-[#8b9298] hover:bg-white/12"
       >
         <RefreshCw className="size-3.5" />
-        Synced{" "}
-        {syncedAt
-          ? syncedAt.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })
-          : "—"}
       </button>
+
     </div>
   );
 }
