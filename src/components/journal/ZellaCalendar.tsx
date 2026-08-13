@@ -111,7 +111,7 @@ export function ZellaCalendar({
       <Header month={month} monthPnl={monthPnl} onMonthChange={onMonthChange} />
 
       <div className="flex flex-col gap-1.5">
-        <div className="grid grid-cols-5 gap-1.5 lg:grid-cols-[repeat(5,minmax(0,1fr))_92px]">
+        <div className="grid grid-cols-5 gap-1.5">
           {["mon", "tue", "wed", "thu", "fri"].map((d) => (
             <span
               key={d}
@@ -120,22 +120,15 @@ export function ZellaCalendar({
               {d}
             </span>
           ))}
-          <span className="hidden pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076] lg:block">
-            week
-          </span>
         </div>
 
         {weeks.map((w, wi) => (
-          <div
-            key={w.index}
-            className="grid grid-cols-5 gap-1.5 lg:grid-cols-[repeat(5,minmax(0,1fr))_92px]"
-          >
+          <div key={w.index} className="grid grid-cols-5 gap-1.5">
             <WeekRow
               cells={rows[wi] ?? []}
               byDay={byDay}
               month={month}
               mode={mode}
-              week={w}
               onSelectDay={onSelectDay}
               onAddDay={onAddDay}
               commentsByDay={commentsByDay}
@@ -143,6 +136,41 @@ export function ZellaCalendar({
           </div>
         ))}
       </div>
+
+      <div className="flex flex-col gap-2 border-t border-white/6 pt-3">
+        <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
+          Weekly totals
+        </span>
+        <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-6">
+          {weeks.map((w) => {
+            const wColor = w.pnl > 0 ? WIN_GREEN : w.pnl < 0 ? LOSS_RED : "#6a7076";
+            return (
+              <div
+                key={w.index}
+                className="flex items-center justify-between gap-2 rounded-xl px-2.5 py-2"
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}
+              >
+                <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
+                  Week {w.index}
+                </span>
+                <span className="flex flex-col items-end">
+                  <span
+                    className="font-mono text-[12px] tabular"
+                    style={{ color: wColor, fontWeight: 560 }}
+                  >
+                    {w.days ? money(w.pnl) : "—"}
+                  </span>
+                  <span className="text-[9.5px] text-[#6a7076]">{w.days} days</span>
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
 
       <Tabs mode={mode} onMode={onMode} />
     </section>
