@@ -90,20 +90,83 @@ function parseXml(xml: string): FfItem[] {
       impact: tag(b, "impact"),
       forecast: tag(b, "forecast"),
       previous: tag(b, "previous"),
+      actual: tag(b, "actual"),
     });
   }
   return items;
+}
+
+type TvEvent = {
+  id?: string;
+  title?: string;
+  date?: string;
+  importance?: number;
+  actual?: number | null;
+  forecast?: number | null;
+  previous?: number | null;
+  unit?: string | null;
+  scale?: string | null;
+};
+
+function tvValue(v: number | null | undefined, unit?: string | null, scale?: string | null): string {
+  if (v == null || !Number.isFinite(v)) return "";
+  const abs = Math.abs(v);
+  const num = abs >= 100 ? v.toFixed(0) : abs >= 1 ? String(Number(v.toFixed(2))) : String(v);
+  const suffix = `${scale ?? ""}${unit === "%" ? "%" : unit && unit !== "USD" ? unit : ""}`;
+  const prefix = unit === "USD" ? "$" : "";
+  return `${prefix}${num}${suffix}`;
+}
+
+/** TradingView's public economic calendar — the only free feed that carries live actuals. */
+async function loadFromTradingView(): Promise<RedFolderEvent[]> {
+  const from = DateTime.now().setZone("America/New_York").startOf("week").toUTC().toISO();
+  const to = DateTime.now().setZone("America/New_York").endOf("week").toUTC().toISO();
+  const url = `https://economic-calendar.tradingview.com/events?from=${from}&to=${to}&countries=US`;
+  const res = await fetch(url, {
+    headers: { ...HEADERS, Origin: "https://www.tradingview.com" },
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error(`TradingView calendar ${res.status}`);
+  const json = (await res.json()) as { result?: TvEvent[] };
+  const events: RedFolderEvent[] = [];
+  for (const e of json.result ?? []) {
+    if (e.importance !== 1 && e.importance !== 0) continue;
+    const time = e.date ? Date.parse(e.date) : NaN;
+    if (!Number.isFinite(time)) continue;
+    events.push({
+      id: e.id ?? `${e.title}-${time}`,
+      title: e.title ?? "US event",
+      time,
+      actual: tvValue(e.actual, e.unit, e.scale),
+      forecast: tvValue(e.forecast, e.unit, e.scale),
+      previous: tvValue(e.previous, e.unit, e.scale),
+      impact: e.importance === 1 ? "high" : "medium",
+    });
+  }
+  events.sort((a, b) => a.time - b.time);
+  return events;
 }
 
 let cache: CalendarPayload | null = null;
 let lastAttempt = 0;
 
 async function loadCalendar(): Promise<CalendarPayload> {
-  const fresh = cache && Date.now() - cache.updatedAt < 60 * 60_000;
+  // Short TTL so actual/forecast numbers appear right after a release.
+  const fresh = cache && Date.now() - cache.updatedAt < 90_000;
   if (fresh) return cache!;
   // Back off failed attempts so a rate-limited feed isn't hammered every render.
-  if (Date.now() - lastAttempt < 5 * 60_000 && cache) return cache;
+  if (Date.now() - lastAttempt < 60_000 && cache) return cache;
   lastAttempt = Date.now();
+
+  try {
+    const events = await loadFromTradingView();
+    if (events.length) {
+      cache = { events, updatedAt: Date.now() };
+      return cache;
+    }
+  } catch (err) {
+    console.error("[calendar] tradingview unavailable:", err);
+  }
 
   for (const url of SOURCES) {
     try {
