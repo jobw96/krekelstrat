@@ -153,7 +153,11 @@ function JournalPage() {
   }, [commentCountsQ.data, tradesQ.data]);
 
   const strategies = strategiesQ.data ?? [];
-  const allTrades = tradesQ.data ?? [];
+  const allTradesRaw = tradesQ.data ?? [];
+  const allTrades = useMemo(
+    () => allTradesRaw.filter((t) => !!t.is_practice === (mode === "practice")),
+    [allTradesRaw, mode],
+  );
   const syncedAt = tradesQ.dataUpdatedAt ? new Date(tradesQ.dataUpdatedAt) : null;
 
   const filtered = useMemo(
