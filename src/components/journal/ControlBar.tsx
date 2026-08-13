@@ -104,7 +104,7 @@ export function ControlBar({
     (filters.result !== "all" ? 1 : 0);
 
   return (
-    <div className="card-surface flex flex-wrap items-center gap-2 p-2.5">
+    <div className="card-surface flex flex-nowrap items-center gap-2 overflow-x-auto p-2.5 md:flex-wrap md:overflow-visible">
       <Dropdown
         label={
           filters.strategy === "all"
