@@ -90,6 +90,7 @@ function parseXml(xml: string): FfItem[] {
       impact: tag(b, "impact"),
       forecast: tag(b, "forecast"),
       previous: tag(b, "previous"),
+      actual: tag(b, "actual"),
     });
   }
   return items;
@@ -99,10 +100,11 @@ let cache: CalendarPayload | null = null;
 let lastAttempt = 0;
 
 async function loadCalendar(): Promise<CalendarPayload> {
-  const fresh = cache && Date.now() - cache.updatedAt < 60 * 60_000;
+  // Short TTL so actual/forecast numbers appear right after a release.
+  const fresh = cache && Date.now() - cache.updatedAt < 90_000;
   if (fresh) return cache!;
   // Back off failed attempts so a rate-limited feed isn't hammered every render.
-  if (Date.now() - lastAttempt < 5 * 60_000 && cache) return cache;
+  if (Date.now() - lastAttempt < 60_000 && cache) return cache;
   lastAttempt = Date.now();
 
   for (const url of SOURCES) {

@@ -8,8 +8,9 @@ export function useRedFolder() {
   return useQuery({
     queryKey: ["red-folder-events"],
     queryFn: () => fetchEvents(),
-    refetchInterval: 10 * 60_000,
-    staleTime: 10 * 60_000,
+    refetchInterval: 60_000,
+    staleTime: 30_000,
+    refetchOnWindowFocus: true,
     retry: false,
   });
 }
