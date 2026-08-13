@@ -119,16 +119,9 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
               <ReferenceLine y={0} stroke="rgba(255,255,255,0.18)" />
               <Tooltip
                 cursor={{ fill: "rgba(255,255,255,0.04)" }}
-                contentStyle={{
-                  background: "#0f1216",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: 10,
-                  fontSize: 12,
-                }}
-                labelStyle={{ color: "#8b9298" }}
-                formatter={(v: number) => [money(Number(v)), "Net P&L"]}
+                content={<PnlTooltip />}
               />
-              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={40}>
+              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={34}>
                 {data.map((d) => (
                   <Cell key={d.sort} fill={d.pnl >= 0 ? WIN_GREEN : LOSS_RED} />
                 ))}
