@@ -218,7 +218,7 @@ export function ControlBar({
             : "Refresh"
         }
         aria-label="Refresh"
-        className="hover-lift ml-auto inline-flex items-center justify-center rounded-full bg-white/6 p-2 text-[#8b9298] hover:bg-white/12"
+        className="hover-lift ml-auto inline-flex shrink-0 items-center justify-center rounded-full bg-white/6 p-2 text-[#8b9298] hover:bg-white/12"
       >
         <RefreshCw className="size-3.5" />
       </button>
