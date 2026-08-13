@@ -43,7 +43,7 @@ export function JournalNav({
 }) {
   return (
     <aside
-      className="card-surface sticky top-4 hidden h-[calc(100vh-2rem)] shrink-0 flex-col gap-2 p-2.5 transition-all duration-200 md:flex"
+      className="card-surface sticky top-0 -my-4 -ml-4 hidden h-screen shrink-0 flex-col gap-2 rounded-none border-y-0 border-l-0 p-2.5 transition-all duration-200 md:flex"
       style={{ width: collapsed ? 62 : 208 }}
     >
       {!readOnly && (
