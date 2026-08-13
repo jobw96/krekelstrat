@@ -92,3 +92,25 @@ export function formatPrice(value: number) {
     maximumFractionDigits: 2,
   });
 }
+
+export type MidnightOpen = { price: number; at: number };
+
+/**
+ * Opening print of the 00:00 New York candle ("New York midnight open").
+ * Falls back to earlier days when the market was closed.
+ */
+export function nyMidnightOpen(
+  now: DateTime,
+  candles: MnqCandle[],
+): MidnightOpen | null {
+  if (!candles.length) return null;
+  const ny = now.setZone(NY_ZONE).startOf("day");
+  for (let back = 0; back < 5; back++) {
+    const startMs = ny.minus({ days: back }).toMillis();
+    const exact = candles.find((c) => c.t >= startMs && c.t < startMs + 60_000);
+    if (exact) return { price: exact.o, at: exact.t };
+    const near = candles.find((c) => c.t >= startMs && c.t <= startMs + 10 * 60_000);
+    if (near) return { price: near.o, at: near.t };
+  }
+  return null;
+}
