@@ -24,6 +24,7 @@ export type Trade = {
   went_right: string | null;
   went_wrong: string | null;
   improvement: string | null;
+  is_practice?: boolean | null;
   created_at: string;
 };
 
@@ -46,6 +47,8 @@ export function sessionLabel(s: string) {
 
 export const WIN_GREEN = "#10B981";
 export const LOSS_RED = "#e5525f";
+/** Light-blue accent used everywhere practice (demo) trades appear. */
+export const PRACTICE_BLUE = "#5ec8f5";
 
 let maskMoney = false;
 

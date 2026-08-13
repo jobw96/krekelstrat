@@ -7,6 +7,7 @@ import {
   
   signedScreenshotUrl,
   WIN_GREEN,
+  PRACTICE_BLUE,
   LOSS_RED,
   type Strategy,
   type Trade,
@@ -283,6 +284,14 @@ export function TradesList({
                 >
                   {t.result}
                 </span>
+                {t.is_practice && (
+                  <span
+                    className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
+                    style={{ background: `${PRACTICE_BLUE}1f`, color: PRACTICE_BLUE }}
+                  >
+                    Practice
+                  </span>
+                )}
                 <span className="font-mono tabular text-[#8b9298]">
                   {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("dd LLL yyyy · HH:mm")}
                 </span>

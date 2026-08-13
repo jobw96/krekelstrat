@@ -11,6 +11,7 @@ import {
   setMoneyMask,
   WIN_GREEN,
   LOSS_RED,
+  PRACTICE_BLUE,
   type Strategy,
   type Trade,
 } from "@/lib/journal";
@@ -70,6 +71,7 @@ function JournalPage() {
   const [collapsed, setCollapsed] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
+  const [mode, setMode] = useState<"live" | "practice">("live");
   const [range, setRange] = useState<RangeKey>("month");
   const [filters, setFilters] = useState<Filters>({
     strategy: "all",
@@ -153,7 +155,11 @@ function JournalPage() {
   }, [commentCountsQ.data, tradesQ.data]);
 
   const strategies = strategiesQ.data ?? [];
-  const allTrades = tradesQ.data ?? [];
+  const allTradesRaw = tradesQ.data ?? [];
+  const allTrades = useMemo(
+    () => allTradesRaw.filter((t) => !!t.is_practice === (mode === "practice")),
+    [allTradesRaw, mode],
+  );
   const syncedAt = tradesQ.dataUpdatedAt ? new Date(tradesQ.dataUpdatedAt) : null;
 
   const filtered = useMemo(
@@ -284,8 +290,39 @@ function JournalPage() {
                   </>
                 )}
               </div>
+              <div
+                className="relative flex shrink-0 items-center rounded-full p-0.5"
+                style={{
+                  background: "rgba(255,255,255,0.06)",
+                  boxShadow: mode === "practice" ? `inset 0 0 0 1px ${PRACTICE_BLUE}55` : "none",
+                }}
+              >
+                <span
+                  aria-hidden
+                  className="absolute top-0.5 bottom-0.5 w-[76px] rounded-full transition-all duration-200"
+                  style={{
+                    left: mode === "live" ? "2px" : "78px",
+                    background: mode === "live" ? "rgba(255,255,255,0.14)" : `${PRACTICE_BLUE}2e`,
+                  }}
+                />
+                {(["live", "practice"] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setMode(m)}
+                    className="relative z-10 w-[76px] rounded-full py-1.5 text-[11.5px] uppercase tracking-[0.06em] transition-colors"
+                    style={{
+                      color:
+                        mode === m ? (m === "practice" ? PRACTICE_BLUE : "#ffffff") : "#6a7076",
+                      fontWeight: mode === m ? 560 : 400,
+                    }}
+                  >
+                    {m}
+                  </button>
+                ))}
+              </div>
             </div>
             <div className="flex shrink-0 items-center gap-2">
+
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
                 {isGuest ? "Guest mode · no login" : user.email}
               </span>
@@ -413,6 +450,7 @@ function JournalPage() {
           userId={user.id}
           strategies={strategies}
           defaultDate={addDate}
+          defaultPractice={mode === "practice"}
           onClose={() => {
             setAdding(false);
             setAddDate(null);
