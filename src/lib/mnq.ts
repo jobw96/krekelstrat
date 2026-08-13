@@ -107,10 +107,20 @@ export function nyMidnightOpen(
   const ny = now.setZone(NY_ZONE).startOf("day");
   for (let back = 0; back < 5; back++) {
     const startMs = ny.minus({ days: back }).toMillis();
+    // 1. The real 00:00 candle open, when the feed has it.
     const exact = candles.find((c) => c.t >= startMs && c.t < startMs + 60_000);
-    if (exact) return { price: exact.o, at: exact.t };
-    const near = candles.find((c) => c.t >= startMs && c.t <= startMs + 10 * 60_000);
-    if (near) return { price: near.o, at: near.t };
+    if (exact) return { price: exact.o, at: startMs };
+    // 2. Otherwise the last traded price before midnight (= the 00:00 open).
+    let prev: MnqCandle | null = null;
+    for (const c of candles) {
+      if (c.t >= startMs) break;
+      if (c.t >= startMs - 30 * 60_000) prev = c;
+    }
+    if (prev) return { price: prev.c, at: startMs };
+    // 3. Last resort: first print shortly after midnight.
+    const near = candles.find((c) => c.t >= startMs && c.t <= startMs + 15 * 60_000);
+    if (near) return { price: near.o, at: startMs };
   }
+
   return null;
 }
