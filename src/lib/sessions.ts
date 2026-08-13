@@ -171,3 +171,13 @@ export function recentSessionIds(now: DateTime, count = 3): Set<string> {
   return ids;
 }
 
+
+/** Short code (ASIA, LO, …) of the session covering `now`, else the last started one. */
+export function sessionShortAt(now: DateTime): string {
+  const ms = now.toMillis();
+  const windows = windowsAround(now);
+  const active = windows.find((w) => w.start.toMillis() <= ms && ms < w.end.toMillis());
+  if (active) return active.def.short;
+  const started = windows.filter((w) => w.start.toMillis() <= ms);
+  return started[started.length - 1]?.def.short ?? windows[0]!.def.short;
+}
