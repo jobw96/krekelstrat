@@ -29,7 +29,7 @@ function Dropdown({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="relative">
+    <div className="relative shrink-0">
       <button
         onClick={() => setOpen((o) => !o)}
         className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/12"
@@ -104,7 +104,7 @@ export function ControlBar({
     (filters.result !== "all" ? 1 : 0);
 
   return (
-    <div className="card-surface flex flex-wrap items-center gap-2 p-2.5">
+    <div className="card-surface flex flex-nowrap items-center gap-2 overflow-x-auto p-2.5 md:flex-wrap md:overflow-visible">
       <Dropdown
         label={
           filters.strategy === "all"
@@ -218,7 +218,7 @@ export function ControlBar({
             : "Refresh"
         }
         aria-label="Refresh"
-        className="hover-lift ml-auto inline-flex items-center justify-center rounded-full bg-white/6 p-2 text-[#8b9298] hover:bg-white/12"
+        className="hover-lift ml-auto inline-flex shrink-0 items-center justify-center rounded-full bg-white/6 p-2 text-[#8b9298] hover:bg-white/12"
       >
         <RefreshCw className="size-3.5" />
       </button>
