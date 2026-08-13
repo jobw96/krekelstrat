@@ -258,36 +258,35 @@ function WeekRow({
           >
             <button
               onClick={() => stat && onSelectDay(key)}
-              className="hover-tint flex min-h-[68px] w-full flex-col justify-between rounded-xl p-1.5 text-left transition-colors sm:min-h-[86px] sm:p-2"
+              className="hover-tint flex min-h-[62px] w-full flex-col justify-between gap-0.5 overflow-hidden rounded-lg p-1 text-left transition-colors sm:min-h-[82px] sm:rounded-xl sm:p-1.5"
               style={{
                 background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
                 border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
                 cursor: stat ? "pointer" : "default",
               }}
             >
-              <span className="font-mono text-[11px] text-[#8b9298]">{c.day}</span>
+              <span className="font-mono text-[10px] leading-none text-[#8b9298] sm:text-[11px]">{c.day}</span>
               {stat && (
                 <span className="flex min-w-0 flex-col gap-0.5">
                   {mode === "pnl" && (
-                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[10.5px] leading-tight tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {money(stat.pnl)}
                     </span>
                   )}
                   {mode === "winrate" && (
-                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[10.5px] leading-tight tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {stat.winRate.toFixed(1)}%
                     </span>
                   )}
                   {mode === "trades" && (
-                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[10.5px] leading-tight tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {stat.count}
                     </span>
                   )}
-                  <span className="truncate text-[9px] text-[#8b9298] sm:text-[10px]">
-                    {stat.count} trade{stat.count > 1 ? "s" : ""}
+                  <span className="truncate text-[8.5px] leading-tight text-[#8b9298] sm:text-[10px]">
+                    {stat.count}t · {stat.winRate.toFixed(0)}%
                   </span>
-                  <span className="text-[9px] text-[#6a7076] sm:text-[10px]">{stat.winRate.toFixed(1)}%</span>
-                </span>
+                                  </span>
               )}
             </button>
             <button
@@ -297,7 +296,7 @@ function WeekRow({
                 onAddDay(key);
               }}
               aria-label={`Add trade on ${key}`}
-              className="absolute right-1.5 top-1.5 grid size-5 place-items-center rounded-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100"
+              className="absolute right-1 top-1 grid size-5 place-items-center rounded-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100"
               style={{
                 background: "rgba(255,255,255,0.08)",
                 border: "1px solid rgba(255,255,255,0.14)",
@@ -314,7 +313,7 @@ function WeekRow({
                   onSelectDay(key);
                 }}
                 aria-label={`${commentsByDay[key]} comments on ${key}`}
-                className="hover-lift absolute bottom-1.5 right-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9.5px]"
+                className="hover-lift absolute bottom-1 right-1 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9.5px]"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: "1px solid rgba(255,255,255,0.14)",
