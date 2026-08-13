@@ -109,7 +109,7 @@ export function AppRail() {
     </aside>
 
     {/* Mobile bottom navigation */}
-    <nav className="card-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-around gap-1 rounded-none border-x-0 border-b-0 px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2 lg:hidden">
+    <nav className="card-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-around gap-1 rounded-none border-x-0 border-b-0 px-2 pb-[calc(env(safe-area-inset-bottom)+18px)] pt-2 lg:hidden">
       {[...RAIL_ITEMS, { icon: UserRound, label: "Profile", to: "/profile" as const, search: undefined }].map(
         ({ icon: Icon, label, to, search }) => {
           const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
