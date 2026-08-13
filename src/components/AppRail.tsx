@@ -107,5 +107,37 @@ export function AppRail() {
         )}
       </Link>
     </aside>
+    </aside>
+
+    {/* Mobile bottom navigation */}
+    <nav className="card-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-around gap-1 rounded-none border-x-0 border-b-0 px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2 lg:hidden">
+      {[...RAIL_ITEMS, { icon: UserRound, label: "Profile", to: "/profile" as const, search: undefined }].map(
+        ({ icon: Icon, label, to, search }) => {
+          const active = to === "/" ? pathname === "/" : pathname.startsWith(to);
+          const alerting = label === "News" && !!upcoming;
+          return (
+            <Link
+              key={label}
+              to={to}
+              search={search ?? {}}
+              aria-label={label}
+              className="relative flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-1 py-1.5"
+              style={active ? { background: "rgba(255,255,255,0.07)" } : undefined}
+            >
+              <Icon
+                className={`size-[18px] shrink-0 ${alerting ? "text-[#ff8b95]" : active ? "text-white" : "text-[#6a7076]"}`}
+                strokeWidth={1.6}
+              />
+              <span
+                className={`max-w-full truncate text-[9px] tracking-[0.05em] ${active ? "text-[#d7dbe0]" : "text-[#6a7076]"}`}
+              >
+                {label}
+              </span>
+            </Link>
+          );
+        },
+      )}
+    </nav>
+    </>
   );
 }
