@@ -231,7 +231,6 @@ function WeekRow({
   byDay,
   month,
   mode,
-  week,
   onSelectDay,
   onAddDay,
   commentsByDay,
@@ -240,12 +239,10 @@ function WeekRow({
   byDay: ReturnType<typeof groupByDay>;
   month: DateTime;
   mode: CalendarMode;
-  week: { index: number; pnl: number; days: number };
   onSelectDay: (day: string) => void;
   onAddDay: (day: string) => void;
   commentsByDay: Record<string, number>;
 }) {
-  const wColor = week.pnl > 0 ? WIN_GREEN : week.pnl < 0 ? LOSS_RED : "#6a7076";
   return (
     <>
       {cells.map((c) => {
@@ -338,7 +335,7 @@ function WeekRow({
 
 function Tabs({ mode, onMode }: { mode: CalendarMode; onMode: (m: CalendarMode) => void }) {
   return (
-    <div className="flex flex-wrap gap-1.5 border-t border-white/6 pt-3">
+    <div className="grid grid-cols-2 gap-1.5 border-t border-white/6 pt-3 sm:grid-cols-4">
       {MODES.map((m) => (
         <button
           key={m.id}
