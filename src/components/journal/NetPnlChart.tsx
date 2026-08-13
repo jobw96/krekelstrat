@@ -22,7 +22,7 @@ function axisTick(v: number) {
 
 function PnlTooltip({ active, payload }: { active?: boolean; payload?: { value: number }[] }) {
   if (!active || !payload?.length) return null;
-  const v = Number(payload[0].value);
+  const v = Number(payload[0]?.value ?? 0);
   return (
     <div
       className="rounded-lg px-2.5 py-1.5 font-mono text-[12px] tabular"
