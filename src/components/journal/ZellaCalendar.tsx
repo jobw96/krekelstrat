@@ -108,34 +108,40 @@ export function ZellaCalendar({
   }
 
   return (
-    <section className="card-surface flex flex-col gap-4 p-5">
+    <section className="card-surface flex flex-col gap-4 p-3 sm:p-5">
       <Header month={month} monthPnl={monthPnl} onMonthChange={onMonthChange} />
 
-      <div className="grid grid-cols-[repeat(7,minmax(0,1fr))_92px] gap-1.5">
-        {["sun", "mon", "tue", "wed", "thu", "fri", "sat"].map((d) => (
-          <span
-            key={d}
-            className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076]"
-          >
-            {d}
+      <div className="flex flex-col gap-1.5">
+        <div className="grid grid-cols-5 gap-1.5 lg:grid-cols-[repeat(5,minmax(0,1fr))_92px]">
+          {["mon", "tue", "wed", "thu", "fri"].map((d) => (
+            <span
+              key={d}
+              className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076]"
+            >
+              {d}
+            </span>
+          ))}
+          <span className="hidden pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076] lg:block">
+            week
           </span>
-        ))}
-        <span className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
-          week
-        </span>
+        </div>
 
         {weeks.map((w, wi) => (
-          <WeekRow
+          <div
             key={w.index}
-            cells={cells.slice(wi * 7, wi * 7 + 7)}
-            byDay={byDay}
-            month={month}
-            mode={mode}
-            week={w}
-            onSelectDay={onSelectDay}
-            onAddDay={onAddDay}
-            commentsByDay={commentsByDay}
-          />
+            className="grid grid-cols-5 gap-1.5 lg:grid-cols-[repeat(5,minmax(0,1fr))_92px]"
+          >
+            <WeekRow
+              cells={rows[wi]}
+              byDay={byDay}
+              month={month}
+              mode={mode}
+              week={w}
+              onSelectDay={onSelectDay}
+              onAddDay={onAddDay}
+              commentsByDay={commentsByDay}
+            />
+          </div>
         ))}
       </div>
 
