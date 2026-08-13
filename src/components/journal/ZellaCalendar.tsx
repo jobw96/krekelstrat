@@ -40,7 +40,6 @@ export function ZellaCalendar({
   const rows = Array.from({ length: 6 }, (_, w) =>
     Array.from({ length: 5 }, (_, d) => firstCell.plus({ weeks: w, days: d })),
   );
-  const cells = rows.flat();
   const weeks = rows.map((row, i) => {
     let pnl = 0;
     let days = 0;
@@ -243,26 +242,26 @@ function WeekRow({
             >
               <span className="font-mono text-[11px] text-[#8b9298]">{c.day}</span>
               {stat && (
-                <span className="flex flex-col gap-0.5">
+                <span className="flex min-w-0 flex-col gap-0.5">
                   {mode === "pnl" && (
-                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {money(stat.pnl)}
                     </span>
                   )}
                   {mode === "winrate" && (
-                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {stat.winRate.toFixed(1)}%
                     </span>
                   )}
                   {mode === "trades" && (
-                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {stat.count}
                     </span>
                   )}
-                  <span className="text-[10px] text-[#8b9298]">
+                  <span className="truncate text-[9px] text-[#8b9298] sm:text-[10px]">
                     {stat.count} trade{stat.count > 1 ? "s" : ""}
                   </span>
-                  <span className="text-[10px] text-[#6a7076]">{stat.winRate.toFixed(1)}%</span>
+                  <span className="text-[9px] text-[#6a7076] sm:text-[10px]">{stat.winRate.toFixed(1)}%</span>
                 </span>
               )}
             </button>
