@@ -82,6 +82,7 @@ export function AddTradeDialog({
   onClose,
   onSaved,
   defaultDate,
+  defaultPractice,
   trade,
 }: {
   userId: string;
@@ -89,10 +90,15 @@ export function AddTradeDialog({
   onClose: () => void;
   onSaved: () => void;
   defaultDate?: string | null;
+  /** Pre-select practice mode (e.g. when the journal is in practice mode). */
+  defaultPractice?: boolean;
   /** When provided, the dialog edits this trade instead of creating a new one. */
   trade?: Trade | null;
 }) {
   const editing = !!trade;
+  const [practice, setPractice] = useState<boolean>(
+    trade ? !!trade.is_practice : !!defaultPractice,
+  );
   const [date, setDate] = useState(
     trade
       ? DateTime.fromISO(trade.date).toFormat("yyyy-LL-dd'T'HH:mm")
