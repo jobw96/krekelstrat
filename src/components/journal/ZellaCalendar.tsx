@@ -284,8 +284,9 @@ function WeekRow({
                     </span>
                   )}
                   <span className="truncate text-[8.5px] leading-tight text-[#8b9298] sm:text-[10px]">
-                    {stat.count}t · {stat.winRate.toFixed(0)}%
+                    {stat.count}t<span className="hidden sm:inline"> · {stat.winRate.toFixed(0)}%</span>
                   </span>
+
                                   </span>
               )}
             </button>
