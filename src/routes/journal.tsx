@@ -10,6 +10,7 @@ import {
   money,
   setMoneyMask,
   WIN_GREEN,
+  setPracticeAccent,
   LOSS_RED,
   PRACTICE_BLUE,
   type Strategy,
@@ -72,6 +73,9 @@ function JournalPage() {
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
   const [mode, setMode] = useState<"live" | "practice">("live");
+  // Swap green win accents for the practice blue so both tracks are easy to tell apart.
+  setPracticeAccent(mode === "practice");
+  useEffect(() => () => setPracticeAccent(false), []);
   const [range, setRange] = useState<RangeKey>("month");
   const [filters, setFilters] = useState<Filters>({
     strategy: "all",
