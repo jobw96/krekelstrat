@@ -288,7 +288,10 @@ export function AddTradeDialog({
             Session
             <SelectField
               value={session}
-              onChange={setSession}
+              onChange={(v) => {
+                sessionTouched.current = true;
+                setSession(v);
+              }}
               options={SESSION_OPTIONS.map((s) => ({ value: s, label: sessionLabel(s) }))}
             />
           </div>
