@@ -450,6 +450,7 @@ function JournalPage() {
           userId={user.id}
           strategies={strategies}
           defaultDate={addDate}
+          defaultPractice={mode === "practice"}
           onClose={() => {
             setAdding(false);
             setAddDate(null);
