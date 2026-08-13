@@ -19,11 +19,13 @@ export function groupByDay(trades: Trade[]): Map<string, DayStat> {
   const out = new Map<string, DayStat>();
   for (const [key, list] of map) {
     const wins = list.filter((t) => t.result === "WIN").length;
+    // Break-even trades are neutral: excluded from the win-rate denominator.
+    const decided = list.filter((t) => t.result !== "BE").length;
     out.set(key, {
       key,
       pnl: list.reduce((a, t) => a + Number(t.pnl), 0),
       count: list.length,
-      winRate: list.length ? (wins / list.length) * 100 : 0,
+      winRate: decided ? (wins / decided) * 100 : 0,
     });
   }
   return out;
@@ -74,9 +76,10 @@ export function performanceCurve(trades: Trade[]): CurvePoint[] {
     const key = DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd");
     const stats = advancedStats(seen);
     const wins = seen.filter((s) => s.result === "WIN").length;
+    const decided = seen.filter((s) => s.result !== "BE").length;
     const point: CurvePoint = {
       label: DateTime.fromISO(key).toFormat("dd LLL"),
-      winRate: seen.length ? (wins / seen.length) * 100 : 0,
+      winRate: decided ? (wins / decided) * 100 : 0,
       avgWin: Math.round(stats.avgWin),
       avgLoss: Math.round(stats.avgLoss),
     };

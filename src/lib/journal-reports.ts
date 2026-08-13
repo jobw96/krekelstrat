@@ -25,6 +25,8 @@ export function bucketBy(trades: Trade[], key: (t: Trade) => string): Bucket[] {
 export function summarize(key: string, list: Trade[]): Bucket {
   const pnl = list.reduce((a, t) => a + Number(t.pnl), 0);
   const wins = list.filter((t) => t.result === "WIN").length;
+  // BE trades are neutral, so they don't count as losses in the win rate.
+  const decided = list.filter((t) => t.result !== "BE").length;
   const profits = list.filter((t) => Number(t.pnl) > 0).reduce((a, t) => a + Number(t.pnl), 0);
   const losses = Math.abs(
     list.filter((t) => Number(t.pnl) < 0).reduce((a, t) => a + Number(t.pnl), 0),
@@ -34,7 +36,7 @@ export function summarize(key: string, list: Trade[]): Bucket {
     key,
     count: list.length,
     pnl,
-    winRate: list.length ? (wins / list.length) * 100 : 0,
+    winRate: decided ? (wins / decided) * 100 : 0,
     expectancy: list.length ? pnl / list.length : 0,
     avgRr: rrs.length ? rrs.reduce((a, b) => a + b, 0) / rrs.length : null,
     profitFactor: losses > 0 ? profits / losses : profits > 0 ? Infinity : null,
@@ -65,11 +67,12 @@ export function tagStats(trades: Trade[], field: "went_right" | "went_wrong"): T
     .map(([tag, list]) => {
       const pnl = list.reduce((a, t) => a + Number(t.pnl), 0);
       const wins = list.filter((t) => t.result === "WIN").length;
+      const decided = list.filter((t) => t.result !== "BE").length;
       return {
         tag,
         count: list.length,
         pnl,
-        winRate: (wins / list.length) * 100,
+        winRate: decided ? (wins / decided) * 100 : 0,
         avgPnl: pnl / list.length,
       };
     })
