@@ -20,6 +20,23 @@ function axisTick(v: number) {
   return `${n < 0 ? "-" : ""}$${short}`;
 }
 
+function PnlTooltip({ active, payload }: { active?: boolean; payload?: { value: number }[] }) {
+  if (!active || !payload?.length) return null;
+  const v = Number(payload[0]?.value ?? 0);
+  return (
+    <div
+      className="rounded-lg px-2.5 py-1.5 font-mono text-[12px] tabular"
+      style={{
+        background: "rgba(15,18,22,0.96)",
+        border: "1px solid rgba(255,255,255,0.10)",
+        color: v > 0 ? WIN_GREEN : v < 0 ? LOSS_RED : "#8b9298",
+      }}
+    >
+      {money(v)}
+    </div>
+  );
+}
+
 function bucketData(trades: Trade[], bucket: Bucket) {
   const map = new Map<string, { label: string; pnl: number; sort: number }>();
   for (const t of trades) {
@@ -88,12 +105,15 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
       {data.length === 0 ? (
         <p className="py-10 text-center text-[12px] text-[#6a7076]">No data in this range.</p>
       ) : (
-        <div className="h-[180px] w-full min-w-0 sm:h-[220px]">
+        <div
+          className="h-[180px] w-full min-w-0 sm:h-[220px]"
+          style={{ maxWidth: `${data.length * 64 + 80}px` }}
+        >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={data}
               margin={{ top: 8, right: 8, bottom: 0, left: 0 }}
-              barCategoryGap="22%"
+              barCategoryGap="18%"
             >
               <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
               <XAxis
@@ -116,16 +136,9 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
               <ReferenceLine y={0} stroke="rgba(255,255,255,0.18)" />
               <Tooltip
                 cursor={{ fill: "rgba(255,255,255,0.04)" }}
-                contentStyle={{
-                  background: "#0f1216",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: 10,
-                  fontSize: 12,
-                }}
-                labelStyle={{ color: "#8b9298" }}
-                formatter={(v: number) => [money(Number(v)), "Net P&L"]}
+                content={<PnlTooltip />}
               />
-              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={40}>
+              <Bar dataKey="pnl" radius={[3, 3, 0, 0]} maxBarSize={34}>
                 {data.map((d) => (
                   <Cell key={d.sort} fill={d.pnl >= 0 ? WIN_GREEN : LOSS_RED} />
                 ))}
