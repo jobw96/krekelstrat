@@ -314,7 +314,7 @@ function WeekRow({
                   onSelectDay(key);
                 }}
                 aria-label={`${commentsByDay[key]} comments on ${key}`}
-                className="hover-lift absolute bottom-1 right-1 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9.5px]"
+                className="hover-lift absolute bottom-1 right-1 hidden items-center gap-1 rounded-md px-1.5 py-0.5 text-[9.5px] sm:inline-flex"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: "1px solid rgba(255,255,255,0.14)",
