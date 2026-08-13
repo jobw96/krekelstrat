@@ -48,21 +48,21 @@ export function ActiveSessionBar({
     : 0;
 
   return (
-    <div className="sticky top-4 z-30">
-      <div className="card-surface flex flex-wrap items-center gap-x-5 gap-y-3 px-5 py-3">
-        <div className="flex min-w-[190px] items-center gap-2.5">
+    <div className="sticky top-0 z-30 sm:top-4">
+      <div className="card-surface grid grid-cols-2 items-center gap-x-4 gap-y-3 px-4 py-3 sm:flex sm:flex-wrap sm:gap-x-5 sm:px-5">
+        <div className="col-span-2 flex min-w-0 items-center gap-2.5 sm:min-w-[190px]">
           <span
-            className={`inline-block size-2.5 rounded-full ${def ? "pulse-dot" : ""}`}
+            className={`inline-block size-2.5 shrink-0 rounded-full ${def ? "pulse-dot" : ""}`}
             style={{ background: color, boxShadow: `0 0 12px 2px ${color}80` }}
           />
-          <div className="flex flex-col">
+          <div className="flex min-w-0 flex-col">
             <span
               className="text-[15px] leading-tight"
               style={{ color: "#ffffff", fontWeight: 560 }}
             >
               {def ? def.name : "No session active"}
             </span>
-            <span className="font-mono text-[11px] text-[#6a7076]">
+            <span className="truncate font-mono text-[11px] text-[#6a7076]">
               {def
                 ? `${def.short} · ${formatRange(def, LOCAL_ZONE, now)} AMS · ${formatRange(def, NY_ZONE, now)} NY`
                 : `Next: ${state.next.def.name}`}
@@ -72,7 +72,7 @@ export function ActiveSessionBar({
 
         {def && (
           <span
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.08em]"
+            className="col-span-2 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.08em]"
             style={{
               background:
                 read.phase === "continuation"
@@ -159,7 +159,7 @@ function BarCell({
   color?: string;
 }) {
   return (
-    <div className="flex flex-col justify-start gap-0.5 self-start">
+    <div className="flex min-w-0 flex-col justify-start gap-0.5 self-start">
       <span className="h-[13px] text-[10px] uppercase leading-[13px] tracking-[0.08em] text-[#6a7076]">
         {label}
       </span>
@@ -169,7 +169,7 @@ function BarCell({
       >
         {value}
       </span>
-      <span className="font-mono text-[10px] leading-[13px] text-[#6a7076]">
+      <span className="truncate font-mono text-[10px] leading-[13px] text-[#6a7076]">
         {sub ?? "\u00a0"}
       </span>
     </div>
