@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, Filter, RefreshCw } from "lucide-react";
+import { ChevronDown, Filter } from "lucide-react";
 import { SESSION_OPTIONS, type Strategy, type TradeResult } from "@/lib/journal";
 import { DatePicker } from "@/components/journal/DateTimePicker";
 
