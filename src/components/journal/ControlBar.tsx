@@ -83,8 +83,6 @@ export function ControlBar({
   filters,
   onFilters,
   strategies,
-  syncedAt,
-  onRefresh,
 }: {
   range: RangeKey;
   onRange: (r: RangeKey) => void;
@@ -95,8 +93,6 @@ export function ControlBar({
   filters: Filters;
   onFilters: (f: Filters) => void;
   strategies: Strategy[];
-  syncedAt: Date | null;
-  onRefresh: () => void;
 }) {
   const activeFilters =
     (filters.strategy !== "all" ? 1 : 0) +
