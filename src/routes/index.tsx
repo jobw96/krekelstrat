@@ -157,7 +157,7 @@ function Dashboard() {
           {/* Hero bento */}
           <section className="grid gap-5 lg:grid-cols-[1.35fr_1fr]">
             <div
-              className="card-surface relative flex flex-col justify-between gap-8 overflow-hidden p-7"
+              className="card-surface relative flex flex-col justify-between gap-6 overflow-hidden p-5 sm:gap-8 sm:p-7"
               style={{
                 backgroundImage: state?.active
                   ? `linear-gradient(180deg, ${toneColor[state.active.def.tone]}12 0%, rgba(255,255,255,0.02) 20%, rgba(255,255,255,0) 55%)`
@@ -183,7 +183,7 @@ function Dashboard() {
 
               <div className="flex flex-col gap-3">
                 <h1
-                  className="text-[44px] leading-[1.02] text-white lg:text-[56px]"
+                  className="text-[30px] leading-[1.05] text-white sm:text-[44px] lg:text-[56px]"
                   style={{ letterSpacing: "-0.03em", fontWeight: 560 }}
                 >
                   {state?.active ? state.active.def.tag : "Between sessions"}
@@ -204,7 +204,7 @@ function Dashboard() {
                   const diff = open != null && last != null ? last - open : null;
                   return (
                     <div
-                      className="relative flex flex-wrap items-end gap-x-8 gap-y-3 overflow-hidden rounded-xl border p-4 pl-5"
+                      className="relative flex flex-wrap items-end gap-x-6 gap-y-3 overflow-hidden rounded-xl border p-3.5 pl-4 sm:gap-x-8 sm:p-4 sm:pl-5"
                       style={{
                         borderColor: "rgba(255,255,255,0.07)",
                         background: "rgba(255,255,255,0.022)",
@@ -226,7 +226,7 @@ function Dashboard() {
                           Fair Price · session open
                         </span>
                         <span
-                          className="font-mono text-[38px] leading-none text-white tabular"
+                          className="font-mono text-[28px] leading-none text-white tabular sm:text-[38px]"
                           style={{
                             letterSpacing: "-0.02em",
                             fontWeight: 560,
@@ -289,13 +289,13 @@ function Dashboard() {
               )}
             </div>
 
-            <div className="card-surface flex flex-col gap-5 p-7">
+            <div className="card-surface flex flex-col gap-5 p-5 sm:p-7">
               <div className="flex items-center gap-2 text-[13px] text-[#8b9298]">
                 <Timer className="size-3.5" strokeWidth={1.6} />
                 Countdown to {state?.next.def.name ?? "—"}
               </div>
               <div
-                className="font-mono text-[58px] leading-none text-white tabular lg:text-[68px]"
+                className="font-mono text-[40px] leading-none text-white tabular sm:text-[58px] lg:text-[68px]"
                 style={{
                   letterSpacing: "-0.035em",
                   fontWeight: 560,

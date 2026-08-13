@@ -27,7 +27,7 @@ export function TimelineBar({ now }: { now: DateTime }) {
   });
 
   return (
-    <section className="card-surface p-6">
+    <section className="card-surface p-4 sm:p-6">
       <div className="mb-4 flex items-baseline justify-between">
         <h2 className="text-[15px] tracking-[-0.011em] text-[#d7dbe0]">24-Hour Session Map</h2>
         <span className="rounded-full bg-white/6 px-3 py-1 font-mono text-[11px] text-[#8b9298]">
@@ -36,7 +36,7 @@ export function TimelineBar({ now }: { now: DateTime }) {
       </div>
 
       <div
-        className="relative h-12 w-full overflow-hidden rounded-xl"
+        className="relative h-10 w-full overflow-hidden rounded-xl sm:h-12"
         style={{
           background: "rgba(255,255,255,0.025)",
           boxShadow: "inset 0 1px 2px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.045)",
@@ -71,7 +71,7 @@ export function TimelineBar({ now }: { now: DateTime }) {
 
       </div>
 
-      <div className="mt-2 flex justify-between font-mono text-[10px] text-[#6a7076]">
+      <div className="mt-2 flex justify-between font-mono text-[9px] text-[#6a7076] sm:text-[10px]">
         {["00", "04", "08", "12", "16", "20", "24"].map((h) => (
           <span key={h}>{h}:00</span>
         ))}

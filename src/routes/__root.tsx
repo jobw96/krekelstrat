@@ -176,7 +176,7 @@ function RootComponent() {
         </>
       ) : (
         <main className="app-shell min-h-screen">
-          <div className="flex w-full gap-4 px-3 py-4 sm:px-5 lg:pl-[92px]">
+          <div className="flex w-full gap-4 px-3 pb-24 pt-4 sm:px-5 lg:pb-4 lg:pl-[92px]">
             {/* The rail is outside every route transition and loading layer. */}
             <AppRail />
             <div className="relative min-h-[calc(100vh-32px)] min-w-0 flex-1">
