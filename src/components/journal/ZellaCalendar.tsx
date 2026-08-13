@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { MessageSquare, Plus } from "lucide-react";
 import { money, WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
-import { groupByDay, weekSummaries } from "@/lib/journal-stats";
+import { groupByDay } from "@/lib/journal-stats";
 import { LOCAL_ZONE } from "@/lib/sessions";
 
 export type CalendarMode = "pnl" | "winrate" | "trades" | "yearly";
@@ -132,7 +132,7 @@ export function ZellaCalendar({
             className="grid grid-cols-5 gap-1.5 lg:grid-cols-[repeat(5,minmax(0,1fr))_92px]"
           >
             <WeekRow
-              cells={rows[wi]}
+              cells={rows[wi] ?? []}
               byDay={byDay}
               month={month}
               mode={mode}
@@ -234,7 +234,7 @@ function WeekRow({
           >
             <button
               onClick={() => stat && onSelectDay(key)}
-              className="hover-tint flex min-h-[86px] w-full flex-col justify-between rounded-xl p-2 text-left transition-colors"
+              className="hover-tint flex min-h-[68px] w-full flex-col justify-between rounded-xl p-1.5 text-left transition-colors sm:min-h-[86px] sm:p-2"
               style={{
                 background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
                 border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
@@ -306,13 +306,13 @@ function WeekRow({
       })}
 
       <div
-        className="flex min-h-[86px] flex-col justify-between rounded-xl p-2"
+        className="col-span-5 flex min-h-[52px] flex-row items-center justify-between gap-2 rounded-xl p-2 lg:col-span-1 lg:min-h-[86px] lg:flex-col lg:items-stretch lg:justify-between"
         style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
       >
         <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
           Week {week.index}
         </span>
-        <span className="flex flex-col">
+        <span className="flex flex-row items-baseline gap-2 lg:flex-col lg:gap-0">
           <span className="font-mono text-[12px] tabular" style={{ color: wColor, fontWeight: 560 }}>
             {week.days ? money(week.pnl) : "—"}
           </span>
