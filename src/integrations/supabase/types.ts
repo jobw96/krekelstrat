@@ -193,6 +193,7 @@ export type Database = {
           date: string
           id: string
           improvement: string | null
+          is_practice: boolean
           notes: string | null
           pnl: number
           result: string
@@ -209,6 +210,7 @@ export type Database = {
           date?: string
           id?: string
           improvement?: string | null
+          is_practice?: boolean
           notes?: string | null
           pnl?: number
           result?: string
@@ -225,6 +227,7 @@ export type Database = {
           date?: string
           id?: string
           improvement?: string | null
+          is_practice?: boolean
           notes?: string | null
           pnl?: number
           result?: string
