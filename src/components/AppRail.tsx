@@ -107,7 +107,6 @@ export function AppRail() {
         )}
       </Link>
     </aside>
-    </aside>
 
     {/* Mobile bottom navigation */}
     <nav className="card-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-around gap-1 rounded-none border-x-0 border-b-0 px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2 lg:hidden">
