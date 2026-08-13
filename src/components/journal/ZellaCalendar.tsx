@@ -331,22 +331,8 @@ function WeekRow({
           </div>
         );
       })}
-
-      <div
-        className="col-span-5 flex min-h-[52px] flex-row items-center justify-between gap-2 rounded-xl p-2 lg:col-span-1 lg:min-h-[86px] lg:flex-col lg:items-stretch lg:justify-between"
-        style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
-      >
-        <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
-          Week {week.index}
-        </span>
-        <span className="flex flex-row items-baseline gap-2 lg:flex-col lg:gap-0">
-          <span className="font-mono text-[12px] tabular" style={{ color: wColor, fontWeight: 560 }}>
-            {week.days ? money(week.pnl) : "—"}
-          </span>
-          <span className="text-[10px] text-[#6a7076]">{week.days} days</span>
-        </span>
-      </div>
     </>
+
   );
 }
 
