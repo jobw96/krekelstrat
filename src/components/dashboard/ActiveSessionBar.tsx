@@ -105,7 +105,10 @@ export function ActiveSessionBar({
           </span>
         )}
 
-        <BarCell label="Session open" value={open != null ? formatPrice(open) : "—"} />
+        <BarCell
+          label="Session open"
+          value={open != null ? formatPrice(open) : "—"}
+        />
         <BarCell
           label="From open"
           value={diff != null ? formatPoints(diff) : "—"}
@@ -156,17 +159,19 @@ function BarCell({
   color?: string;
 }) {
   return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
+    <div className="flex flex-col justify-start gap-0.5 self-start">
+      <span className="h-[13px] text-[10px] uppercase leading-[13px] tracking-[0.08em] text-[#6a7076]">
         {label}
       </span>
       <span
-        className="font-mono text-[14px] tabular"
+        className="font-mono text-[14px] leading-[18px] tabular"
         style={{ color: color ?? "#d7dbe0", fontWeight: 560 }}
       >
         {value}
       </span>
-      {sub && <span className="font-mono text-[10px] text-[#6a7076]">{sub}</span>}
+      <span className="font-mono text-[10px] leading-[13px] text-[#6a7076]">
+        {sub ?? "\u00a0"}
+      </span>
     </div>
   );
 }
