@@ -296,7 +296,7 @@ function WeekRow({
                 onAddDay(key);
               }}
               aria-label={`Add trade on ${key}`}
-              className="absolute right-1 top-1 grid size-4.5 place-items-center rounded-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100"
+              className="absolute right-1 top-1 grid size-5 place-items-center rounded-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100"
               style={{
                 background: "rgba(255,255,255,0.08)",
                 border: "1px solid rgba(255,255,255,0.14)",
