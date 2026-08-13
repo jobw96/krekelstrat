@@ -388,8 +388,6 @@ function JournalPage() {
             filters={filters}
             onFilters={setFilters}
             strategies={strategies}
-            syncedAt={syncedAt}
-            onRefresh={refresh}
           />
 
           <StatsBar

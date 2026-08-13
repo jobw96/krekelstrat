@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, Filter, RefreshCw } from "lucide-react";
+import { ChevronDown, Filter } from "lucide-react";
 import { SESSION_OPTIONS, type Strategy, type TradeResult } from "@/lib/journal";
 import { DatePicker } from "@/components/journal/DateTimePicker";
 
@@ -83,8 +83,6 @@ export function ControlBar({
   filters,
   onFilters,
   strategies,
-  syncedAt,
-  onRefresh,
 }: {
   range: RangeKey;
   onRange: (r: RangeKey) => void;
@@ -95,8 +93,6 @@ export function ControlBar({
   filters: Filters;
   onFilters: (f: Filters) => void;
   strategies: Strategy[];
-  syncedAt: Date | null;
-  onRefresh: () => void;
 }) {
   const activeFilters =
     (filters.strategy !== "all" ? 1 : 0) +
@@ -210,18 +206,8 @@ export function ControlBar({
         )}
       </Dropdown>
 
-      <button
-        onClick={onRefresh}
-        title={
-          syncedAt
-            ? `Synced ${syncedAt.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`
-            : "Refresh"
-        }
-        aria-label="Refresh"
-        className="hover-lift ml-auto inline-flex shrink-0 items-center justify-center rounded-full bg-white/6 p-2 text-[#8b9298] hover:bg-white/12"
-      >
-        <RefreshCw className="size-3.5" />
-      </button>
+
+
 
     </div>
   );
