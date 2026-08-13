@@ -31,7 +31,6 @@ import {
 } from "@/lib/sessions";
 
 import { SessionCard, redFolderImminent } from "@/components/dashboard/SessionCard";
-import { TimelineBar } from "@/components/dashboard/TimelineBar";
 
 import { Dot, toneColor } from "@/components/dashboard/primitives";
 
