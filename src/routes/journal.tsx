@@ -239,8 +239,9 @@ function JournalPage() {
         />
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:flex sm:justify-between">
-            <div className="flex min-w-0 items-center gap-2">
+          <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 flex-wrap items-center gap-2">
+
               <button
                 onClick={() => setCollapsed((c) => !c)}
                 className="hover-lift rounded-full bg-white/6 p-2 text-[#d7dbe0] md:hidden"
