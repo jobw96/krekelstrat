@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { MessageSquare, Plus } from "lucide-react";
 import { money, WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
-import { groupByDay, weekSummaries } from "@/lib/journal-stats";
+import { groupByDay } from "@/lib/journal-stats";
 import { LOCAL_ZONE } from "@/lib/sessions";
 
 export type CalendarMode = "pnl" | "winrate" | "trades" | "yearly";
@@ -35,9 +35,23 @@ export function ZellaCalendar({
 }) {
   const byDay = groupByDay(trades);
   const start = month.startOf("month");
-  const firstCell = start.minus({ days: start.weekday % 7 }); // grid starts Sunday
-  const cells = Array.from({ length: 42 }, (_, i) => firstCell.plus({ days: i }));
-  const weeks = weekSummaries(cells, byDay);
+  const firstCell = start.startOf("week"); // Monday
+  // Weekday-only grid: Monday through Friday, 6 rows.
+  const rows = Array.from({ length: 6 }, (_, w) =>
+    Array.from({ length: 5 }, (_, d) => firstCell.plus({ weeks: w, days: d })),
+  );
+  const weeks = rows.map((row, i) => {
+    let pnl = 0;
+    let days = 0;
+    for (const c of row) {
+      const stat = byDay.get(c.toFormat("yyyy-LL-dd"));
+      if (stat) {
+        pnl += stat.pnl;
+        days += 1;
+      }
+    }
+    return { index: i + 1, pnl, days };
+  });
 
   const monthPnl = [...byDay.values()]
     .filter((d) => DateTime.fromISO(d.key).month === month.month && DateTime.fromISO(d.key).year === month.year)
@@ -93,34 +107,40 @@ export function ZellaCalendar({
   }
 
   return (
-    <section className="card-surface flex flex-col gap-4 p-5">
+    <section className="card-surface flex flex-col gap-4 p-3 sm:p-5">
       <Header month={month} monthPnl={monthPnl} onMonthChange={onMonthChange} />
 
-      <div className="grid grid-cols-[repeat(7,minmax(0,1fr))_92px] gap-1.5">
-        {["sun", "mon", "tue", "wed", "thu", "fri", "sat"].map((d) => (
-          <span
-            key={d}
-            className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076]"
-          >
-            {d}
+      <div className="flex flex-col gap-1.5">
+        <div className="grid grid-cols-5 gap-1.5 lg:grid-cols-[repeat(5,minmax(0,1fr))_92px]">
+          {["mon", "tue", "wed", "thu", "fri"].map((d) => (
+            <span
+              key={d}
+              className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076]"
+            >
+              {d}
+            </span>
+          ))}
+          <span className="hidden pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076] lg:block">
+            week
           </span>
-        ))}
-        <span className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
-          week
-        </span>
+        </div>
 
         {weeks.map((w, wi) => (
-          <WeekRow
+          <div
             key={w.index}
-            cells={cells.slice(wi * 7, wi * 7 + 7)}
-            byDay={byDay}
-            month={month}
-            mode={mode}
-            week={w}
-            onSelectDay={onSelectDay}
-            onAddDay={onAddDay}
-            commentsByDay={commentsByDay}
-          />
+            className="grid grid-cols-5 gap-1.5 lg:grid-cols-[repeat(5,minmax(0,1fr))_92px]"
+          >
+            <WeekRow
+              cells={rows[wi] ?? []}
+              byDay={byDay}
+              month={month}
+              mode={mode}
+              week={w}
+              onSelectDay={onSelectDay}
+              onAddDay={onAddDay}
+              commentsByDay={commentsByDay}
+            />
+          </div>
         ))}
       </div>
 
@@ -213,7 +233,7 @@ function WeekRow({
           >
             <button
               onClick={() => stat && onSelectDay(key)}
-              className="hover-tint flex min-h-[86px] w-full flex-col justify-between rounded-xl p-2 text-left transition-colors"
+              className="hover-tint flex min-h-[68px] w-full flex-col justify-between rounded-xl p-1.5 text-left transition-colors sm:min-h-[86px] sm:p-2"
               style={{
                 background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
                 border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
@@ -222,26 +242,26 @@ function WeekRow({
             >
               <span className="font-mono text-[11px] text-[#8b9298]">{c.day}</span>
               {stat && (
-                <span className="flex flex-col gap-0.5">
+                <span className="flex min-w-0 flex-col gap-0.5">
                   {mode === "pnl" && (
-                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {money(stat.pnl)}
                     </span>
                   )}
                   {mode === "winrate" && (
-                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {stat.winRate.toFixed(1)}%
                     </span>
                   )}
                   {mode === "trades" && (
-                    <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
+                    <span className="truncate font-mono text-[11px] tabular sm:text-[13px]" style={{ color, fontWeight: 560 }}>
                       {stat.count}
                     </span>
                   )}
-                  <span className="text-[10px] text-[#8b9298]">
+                  <span className="truncate text-[9px] text-[#8b9298] sm:text-[10px]">
                     {stat.count} trade{stat.count > 1 ? "s" : ""}
                   </span>
-                  <span className="text-[10px] text-[#6a7076]">{stat.winRate.toFixed(1)}%</span>
+                  <span className="text-[9px] text-[#6a7076] sm:text-[10px]">{stat.winRate.toFixed(1)}%</span>
                 </span>
               )}
             </button>
@@ -285,13 +305,13 @@ function WeekRow({
       })}
 
       <div
-        className="flex min-h-[86px] flex-col justify-between rounded-xl p-2"
+        className="col-span-5 flex min-h-[52px] flex-row items-center justify-between gap-2 rounded-xl p-2 lg:col-span-1 lg:min-h-[86px] lg:flex-col lg:items-stretch lg:justify-between"
         style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}
       >
         <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
           Week {week.index}
         </span>
-        <span className="flex flex-col">
+        <span className="flex flex-row items-baseline gap-2 lg:flex-col lg:gap-0">
           <span className="font-mono text-[12px] tabular" style={{ color: wColor, fontWeight: 560 }}>
             {week.days ? money(week.pnl) : "—"}
           </span>
