@@ -326,7 +326,7 @@ function JournalPage() {
                 ))}
               </div>
             </div>
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex shrink-0 flex-wrap items-center gap-2">
 
               <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
                 {isGuest ? "Guest mode · no login" : user.email}
