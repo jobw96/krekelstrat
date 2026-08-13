@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { DateTime } from "luxon";
+import { DateTime } from "luxon";
 import { ArrowDownRight, ArrowUpRight, Undo2 } from "lucide-react";
 import {
   formatCountdown,
@@ -14,6 +14,7 @@ import {
   formatPrice,
   formatTicks,
   sessionOpenPrice,
+  nyMidnightOpen,
 } from "@/lib/mnq";
 import type { MnqCandle } from "@/lib/mnq.functions";
 import { toneColor } from "./primitives";
@@ -37,6 +38,10 @@ export function ActiveSessionBar({
   const diff = open != null && price != null ? price - open : null;
   const diffColor = diff == null ? "#8b9298" : diff >= 0 ? "#35d39a" : "#e5525f";
   const read = detectPhase(open, price, candles);
+  const midnight = nyMidnightOpen(now, candles);
+  const midnightTime = midnight
+    ? DateTime.fromMillis(midnight.at).setZone(NY_ZONE).toFormat("ccc dd LLL, h:mm a")
+    : null;
 
   const secondsToEnd = state.active
     ? Math.max(0, Math.floor((state.active.end.toMillis() - now.toMillis()) / 1000))
@@ -108,6 +113,11 @@ export function ActiveSessionBar({
           color={diffColor}
         />
         <BarCell label="Last" value={price != null ? formatPrice(price) : "—"} />
+        <BarCell
+          label="NY midnight open"
+          value={midnight ? formatPrice(midnight.price) : "—"}
+          sub={midnightTime ? `${midnightTime} NY` : "awaiting feed"}
+        />
         <BarCell
           label={def ? "Ends in" : `Starts in`}
           value={formatCountdown(def ? secondsToEnd : state.secondsToNext)}

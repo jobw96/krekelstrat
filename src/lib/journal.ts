@@ -71,6 +71,8 @@ export type Metrics = {
 export function computeMetrics(trades: Trade[]): Metrics {
   const count = trades.length;
   const wins = trades.filter((t) => t.result === "WIN").length;
+  // BE is neutral: it should not drag the win rate down like a loss.
+  const decided = trades.filter((t) => t.result !== "BE").length;
   const gross = trades.reduce((a, t) => a + Number(t.pnl), 0);
   const profits = trades.filter((t) => Number(t.pnl) > 0).reduce((a, t) => a + Number(t.pnl), 0);
   const losses = Math.abs(
@@ -78,7 +80,7 @@ export function computeMetrics(trades: Trade[]): Metrics {
   );
   const rrs = trades.map((t) => t.rr).filter((r): r is number => r != null);
   return {
-    winRate: count ? (wins / count) * 100 : 0,
+    winRate: decided ? (wins / decided) * 100 : 0,
     profitFactor: losses > 0 ? profits / losses : profits > 0 ? Infinity : null,
     avgRr: rrs.length ? rrs.reduce((a, b) => a + Number(b), 0) / rrs.length : null,
     totalPnl: gross,
