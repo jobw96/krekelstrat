@@ -8,6 +8,7 @@ import {
   uploadScreenshot,
   WIN_GREEN,
   LOSS_RED,
+  PRACTICE_BLUE,
   type Strategy,
   type TradeResult,
   type Trade,
