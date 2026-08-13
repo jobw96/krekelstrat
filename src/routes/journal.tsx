@@ -11,6 +11,7 @@ import {
   setMoneyMask,
   WIN_GREEN,
   LOSS_RED,
+  PRACTICE_BLUE,
   type Strategy,
   type Trade,
 } from "@/lib/journal";
