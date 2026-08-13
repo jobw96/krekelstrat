@@ -45,10 +45,17 @@ export function sessionLabel(s: string) {
   return SESSION_LABELS[s] ?? s;
 }
 
-export const WIN_GREEN = "#10B981";
+/** Positive/win accent. Turns light-blue while the journal is in practice mode. */
+export let WIN_GREEN = "#10B981";
 export const LOSS_RED = "#e5525f";
 /** Light-blue accent used everywhere practice (demo) trades appear. */
 export const PRACTICE_BLUE = "#5ec8f5";
+
+/** Swap the win accent to the practice blue (live binding, read at render time). */
+export function setPracticeAccent(on: boolean) {
+  WIN_GREEN = on ? PRACTICE_BLUE : "#10B981";
+}
+
 
 let maskMoney = false;
 
