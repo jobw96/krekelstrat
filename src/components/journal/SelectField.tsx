@@ -44,7 +44,7 @@ export function SelectField({
         aria-expanded={open}
         aria-label={label}
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-left text-[13.5px] text-white transition-colors hover:bg-white/6 focus:border-[#6E86F7]/60 focus:outline-none"
+        className="flex w-full items-center justify-between gap-2 rounded-control border border-white/10 bg-white/4 px-3 py-2.5 text-left text-[13.5px] text-white transition-colors hover:bg-white/6 focus:border-[#6E86F7]/60 focus:outline-none"
       >
         <span className="truncate">{current?.label ?? "Select…"}</span>
         <ChevronDown
@@ -56,7 +56,7 @@ export function SelectField({
       {open && (
         <div
           role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 max-h-64 overflow-y-auto rounded-xl border border-white/10 p-1 shadow-2xl"
+          className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 max-h-64 overflow-y-auto rounded-control border border-white/10 p-1 shadow-2xl"
           style={{ background: "#121317", backdropFilter: "blur(18px)" }}
         >
           {options.map((o) => {
@@ -71,7 +71,7 @@ export function SelectField({
                   onChange(o.value);
                   setOpen(false);
                 }}
-                className="flex w-full items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-left text-[13px] transition-colors hover:bg-white/8"
+                className="flex w-full items-center justify-between gap-2 rounded-control px-2.5 py-2 text-left text-[13px] transition-colors hover:bg-white/8"
                 style={{ color: active ? "#ffffff" : "#9AA1AC" }}
               >
                 <span className="truncate">{o.label}</span>

@@ -44,13 +44,13 @@ function PropFirmsPage() {
           </span>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#9AA1AC] sm:inline">
+          <span className="hidden rounded-control bg-white/6 px-3 py-1.5 text-[12px] text-[#9AA1AC] sm:inline">
             {isGuest ? "Guest mode · no login" : user.email}
           </span>
           {isGuest ? (
             <Link
               to="/auth"
-              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
             >
               <LogOut className="size-3.5" /> Sign in
             </Link>
@@ -60,7 +60,7 @@ function PropFirmsPage() {
                 await signOut();
                 navigate({ to: "/auth" });
               }}
-              className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
             >
               <LogOut className="size-3.5" /> Log out
             </button>

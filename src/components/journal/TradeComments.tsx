@@ -54,7 +54,7 @@ export function TradeComments({
       </span>
 
       {comments.map((c) => (
-        <div key={c.id} className="flex items-start gap-2 rounded-lg bg-white/4 p-2.5">
+        <div key={c.id} className="flex items-start gap-2 rounded-control bg-white/4 p-2.5">
           {c.author_avatar ? (
             <img
               src={c.author_avatar}
@@ -111,13 +111,13 @@ export function TradeComments({
             }}
             rows={2}
             placeholder="Write a comment…"
-            className="min-w-0 flex-1 resize-y rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.5] text-[#F0F2F5] outline-none placeholder:text-[#454B55] focus:bg-white/6"
+            className="min-w-0 flex-1 resize-y rounded-control bg-white/4 p-2.5 text-[12px] leading-[1.5] text-[#F0F2F5] outline-none placeholder:text-[#454B55] focus:bg-white/6"
             style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }}
           />
           <button
             type="submit"
             disabled={!draft.trim() || add.isPending}
-            className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[12px] disabled:opacity-40"
+            className="hover-lift inline-flex items-center gap-1.5 rounded-control px-3 py-2 text-[12px] disabled:opacity-40"
             style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
           >
             <Send className="size-3.5" /> Post

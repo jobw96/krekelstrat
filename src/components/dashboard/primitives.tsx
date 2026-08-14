@@ -18,7 +18,7 @@ export function Badge({
 }) {
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-normal"
+      className="inline-flex items-center gap-1.5 rounded-control px-2.5 py-1 text-[12px] font-normal"
       style={
         filled
           ? { background: color, color: "#ffffff" }

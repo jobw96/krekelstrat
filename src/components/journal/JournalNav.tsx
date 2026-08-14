@@ -49,7 +49,7 @@ export function JournalNav({
       {!readOnly && (
       <button
         onClick={onAddTrade}
-        className="hover-lift inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-[13px]"
+        className="hover-lift inline-flex items-center justify-center gap-1.5 rounded-control px-3 py-2.5 text-[13px]"
         style={{
           background: "#6E86F7",
           color: "#ffffff",
@@ -69,7 +69,7 @@ export function JournalNav({
               key={it.id}
               onClick={() => onView(it.id)}
               title={it.label}
-              className="flex items-center gap-3 rounded-xl px-3 py-3.5 text-[13.5px] transition-colors"
+              className="flex items-center gap-3 rounded-control px-3 py-3.5 text-[13.5px] transition-colors"
 
               style={{
                 background: active ? "rgba(255,255,255,0.07)" : "transparent",
@@ -87,7 +87,7 @@ export function JournalNav({
       <div className="mt-auto flex flex-col gap-0.5">
         <button
           onClick={onToggle}
-          className="flex items-center gap-2.5 rounded-lg px-2.5 py-2 text-[12.5px] text-[#7A828D] transition-colors hover:text-white"
+          className="flex items-center gap-2.5 rounded-control px-2.5 py-2 text-[12.5px] text-[#7A828D] transition-colors hover:text-white"
         >
           {collapsed ? (
             <ChevronRight className="size-4 shrink-0" />

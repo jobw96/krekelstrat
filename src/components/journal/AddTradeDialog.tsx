@@ -20,7 +20,7 @@ import { sessionShortAt } from "@/lib/sessions";
 
 
 const inputCls =
-  "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]";
+  "h-10 w-full rounded-control bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]";
 
 function SelectField({
   value,
@@ -62,7 +62,7 @@ function SelectField({
                   onChange(o.value);
                   setOpen(false);
                 }}
-                className="rounded-lg px-2.5 py-1.5 text-left text-[12.5px] transition-colors hover:bg-white/8"
+                className="rounded-control px-2.5 py-1.5 text-left text-[12.5px] transition-colors hover:bg-white/8"
                 style={{
                   color: o.value === value ? "#ffffff" : "#9AA1AC",
                   fontWeight: o.value === value ? 560 : 400,
@@ -219,7 +219,9 @@ export function AddTradeDialog({
         className="card-surface dialog-enter flex max-h-[90vh] w-full max-w-[520px] flex-col gap-3 overflow-y-auto p-5 outline-none transition-shadow"
         style={
           practice
-            ? { boxShadow: `inset 0 0 0 1px ${PRACTICE_BLUE}55, 0 24px 60px -30px ${PRACTICE_BLUE}66` }
+            ? {
+                boxShadow: `inset 0 0 0 1px ${PRACTICE_BLUE}40, inset 0 -40px 70px -40px ${PRACTICE_BLUE}80, 0 24px 60px -30px rgba(0,0,0,0.9)`,
+              }
             : undefined
         }
       >
@@ -233,7 +235,7 @@ export function AddTradeDialog({
         </header>
 
         <div
-          className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5"
+          className="flex items-center justify-between gap-3 rounded-control px-3 py-2.5"
           style={{
             background: practice ? `${PRACTICE_BLUE}14` : "rgba(255,255,255,0.05)",
             boxShadow: practice ? `inset 0 0 0 1px ${PRACTICE_BLUE}4d` : "none",
@@ -350,7 +352,7 @@ export function AddTradeDialog({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Setup, execution, mistakes…"
-            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
+            className="w-full rounded-control bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
           />
         </label>
 
@@ -383,7 +385,7 @@ export function AddTradeDialog({
             onChange={(e) => setImprovement(e.target.value)}
             rows={2}
             placeholder="One concrete adjustment…"
-            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
+            className="w-full rounded-control bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
           />
         </label>
 
@@ -399,14 +401,14 @@ export function AddTradeDialog({
             const dropped = e.dataTransfer.files?.[0];
             if (dropped?.type.startsWith("image/")) setFile(dropped);
           }}
-          className="flex flex-col gap-2 rounded-xl p-2 transition-colors"
+          className="flex flex-col gap-2 rounded-control p-2 transition-colors"
           style={{
             background: dragging ? "rgba(229,82,95,0.10)" : "rgba(255,255,255,0.06)",
             boxShadow: dragging ? "inset 0 0 0 1px rgba(229,82,95,0.6)" : "none",
           }}
         >
           {preview && (
-            <div className="relative overflow-hidden rounded-lg">
+            <div className="relative overflow-hidden rounded-control">
               <img src={preview} alt="Screenshot preview" className="max-h-[180px] w-full object-cover" />
               <button
                 type="button"
@@ -419,7 +421,7 @@ export function AddTradeDialog({
             </div>
           )}
           <div className="flex items-center gap-2">
-            <label className="hover-lift flex flex-1 cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/8">
+            <label className="hover-lift flex flex-1 cursor-pointer items-center gap-2 rounded-control px-2 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/8">
               <Upload className="size-4" />
               {file ? file.name : "Upload or drop a screenshot here"}
               <input
@@ -441,7 +443,7 @@ export function AddTradeDialog({
         <button
           type="submit"
           disabled={busy}
-          className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
+          className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-control text-[14px] disabled:opacity-60"
           style={{ background: "#1C1F27", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
         >
           {busy && <Loader2 className="size-4 animate-spin" />} {editing ? "Save changes" : "Save trade"}

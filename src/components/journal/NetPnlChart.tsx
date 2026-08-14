@@ -25,7 +25,7 @@ function PnlTooltip({ active, payload }: { active?: boolean; payload?: { value: 
   const v = Number(payload[0]?.value ?? 0);
   return (
     <div
-      className="rounded-lg px-2.5 py-1.5 font-mono text-[12px] tabular"
+      className="rounded-control px-2.5 py-1.5 font-mono text-[12px] tabular"
       style={{
         background: "rgba(15,18,22,0.96)",
         border: "1px solid rgba(255,255,255,0.10)",
@@ -82,13 +82,13 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
             {money(total)} <span className="text-[#7A828D]">· per {bucket}</span>
           </span>
         </div>
-        <div className="flex shrink-0 items-center gap-0.5 rounded-full bg-white/5 p-0.5">
+        <div className="flex shrink-0 items-center gap-0.5 rounded-control bg-white/5 p-0.5">
           {BUCKETS.map((b) => (
             <button
               key={b.id}
               type="button"
               onClick={() => setBucket(b.id)}
-              className="rounded-full px-2 py-1 text-[11px] transition-colors sm:px-2.5"
+              className="rounded-control px-2 py-1 text-[11px] transition-colors sm:px-2.5"
               style={
                 bucket === b.id
                   ? { background: "rgba(255,255,255,0.10)", color: "#ffffff" }

@@ -102,7 +102,7 @@ function AuthPage() {
           <button
             onClick={google}
             disabled={busy}
-            className="hover-lift flex h-11 items-center justify-center gap-2 rounded-2xl bg-white/8 text-[14px] text-white hover:bg-white/12 disabled:opacity-60"
+            className="hover-lift flex h-11 items-center justify-center gap-2 rounded-control bg-white/8 text-[14px] text-white hover:bg-white/12 disabled:opacity-60"
           >
             Continue with Google
           </button>
@@ -119,7 +119,7 @@ function AuthPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@email.com"
-              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
+              className="h-11 rounded-control bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
             />
             <input
               type="password"
@@ -128,12 +128,12 @@ function AuthPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
+              className="h-11 rounded-control bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
             />
             <button
               type="submit"
               disabled={busy}
-              className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
+              className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-control text-[14px] disabled:opacity-60"
               style={{ background: "#1C1F27", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
             >
               {busy && <Loader2 className="size-4 animate-spin" />}

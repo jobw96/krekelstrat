@@ -100,7 +100,7 @@ export function ActiveSessionBar({
 
         {def && (
           <span
-            className="col-span-2 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.08em]"
+            className="col-span-2 inline-flex w-fit items-center gap-1.5 rounded-control px-3 py-1.5 text-[11px] uppercase tracking-[0.08em]"
             style={{
               background:
                 read.phase === "continuation"

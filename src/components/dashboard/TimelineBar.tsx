@@ -30,7 +30,7 @@ export function TimelineBar({ now }: { now: DateTime }) {
     <section className="card-surface p-4 sm:p-6">
       <div className="mb-4 flex items-baseline justify-between">
         <h2 className="text-[15px] tracking-[-0.011em] text-[#F0F2F5]">24-Hour Session Map</h2>
-        <span className="rounded-full bg-white/6 px-3 py-1 font-mono text-[11px] text-[#9AA1AC]">
+        <span className="rounded-control bg-white/6 px-3 py-1 font-mono text-[11px] text-[#9AA1AC]">
           Europe/Amsterdam
         </span>
       </div>

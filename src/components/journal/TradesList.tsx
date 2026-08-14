@@ -73,7 +73,7 @@ function Reflection({
         }}
         rows={3}
         placeholder={placeholder}
-        className="w-full resize-y rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#F0F2F5] outline-none placeholder:text-[#454B55] focus:bg-white/6"
+        className="w-full resize-y rounded-control bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#F0F2F5] outline-none placeholder:text-[#454B55] focus:bg-white/6"
         style={{ boxShadow: `inset 0 0 0 1px ${color}2e` }}
       />
       <span className="h-3 text-[10px] text-[#7A828D]">
@@ -130,7 +130,7 @@ function TradeDetails({
                 type="button"
                 onClick={() => setZoomed(true)}
                 aria-label="Zoom screenshot"
-                className="group/img relative block overflow-hidden rounded-xl border border-white/8"
+                className="group/img relative block overflow-hidden rounded-control border border-white/8"
               >
                 <img
                   src={shot}
@@ -138,17 +138,17 @@ function TradeDetails({
                   loading="lazy"
                   className="w-full transition-transform duration-200 group-hover/img:scale-[1.02]"
                 />
-                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#F0F2F5] opacity-0 transition-opacity group-hover/img:opacity-100">
+                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-control bg-black/60 text-[#F0F2F5] opacity-0 transition-opacity group-hover/img:opacity-100">
                   <ZoomIn className="size-3.5" />
                 </span>
               </button>
               {zoomed && <ImageLightbox src={shot} onClose={() => setZoomed(false)} />}
             </>
           ) : (
-            <div className="h-48 w-full animate-pulse rounded-xl bg-white/5" />
+            <div className="h-48 w-full animate-pulse rounded-control bg-white/5" />
           )
         ) : (
-          <div className="grid h-40 place-items-center rounded-xl border border-dashed border-white/8 text-[11px] text-[#7A828D]">
+          <div className="grid h-40 place-items-center rounded-control border border-dashed border-white/8 text-[11px] text-[#7A828D]">
             No screenshot attached
           </div>
         )}
@@ -163,7 +163,7 @@ function TradeDetails({
         </div>
 
         {trade.notes && (
-          <p className="rounded-lg bg-white/4 p-3 text-[12px] leading-[1.55] text-[#9AA1AC]">
+          <p className="rounded-control bg-white/4 p-3 text-[12px] leading-[1.55] text-[#9AA1AC]">
             {trade.notes}
           </p>
         )}
@@ -178,7 +178,7 @@ function TradeDetails({
               <span className="text-[10px] uppercase tracking-[0.1em]" style={{ color: r.color }}>
                 {r.label}
               </span>
-              <p className="rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#9AA1AC]">
+              <p className="rounded-control bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#9AA1AC]">
                 {r.value || "—"}
               </p>
             </div>
@@ -279,14 +279,14 @@ export function TradesList({
                   className={`size-3.5 shrink-0 text-[#7A828D] transition-transform ${isOpen ? "rotate-90" : ""}`}
                 />
                 <span
-                  className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
+                  className="rounded-control px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
                   style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
                 >
                   {t.result}
                 </span>
                 {t.is_practice && (
                   <span
-                    className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
+                    className="rounded-control px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
                     style={{ background: `${PRACTICE_BLUE}1f`, color: PRACTICE_BLUE }}
                   >
                     Practice
@@ -352,14 +352,14 @@ export function TradesList({
         <div className="flex items-center justify-center gap-2 pt-1">
           <button
             onClick={() => setVisible((v) => v + STEP)}
-            className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+            className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/12"
           >
             <ChevronDown className="size-3.5" /> Show {Math.min(STEP, remaining)} more
           </button>
           {visible > PAGE && (
             <button
               onClick={() => setVisible(PAGE)}
-              className="hover-lift rounded-full px-3 py-1.5 text-[12px] text-[#7A828D] hover:text-white"
+              className="hover-lift rounded-control px-3 py-1.5 text-[12px] text-[#7A828D] hover:text-white"
             >
               Collapse
             </button>

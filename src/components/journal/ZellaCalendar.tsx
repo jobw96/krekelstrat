@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { MessageSquare, Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageSquare, Plus } from "lucide-react";
 import { money, WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
 import { groupByDay } from "@/lib/journal-stats";
 import { LOCAL_ZONE } from "@/lib/sessions";
@@ -84,7 +84,7 @@ export function ZellaCalendar({
               <button
                 key={m.toISO()}
                 onClick={() => onMonthChange(m)}
-                className="hover-tint flex flex-col gap-1 rounded-xl p-3 text-left"
+                className="hover-tint flex flex-col gap-1 rounded-control p-3 text-left"
                 style={{
                   background: count ? `${color}1c` : "rgba(255,255,255,0.03)",
                   border: `1px solid ${count ? `${color}4d` : "rgba(255,255,255,0.06)"}`,
@@ -147,7 +147,7 @@ export function ZellaCalendar({
             return (
               <div
                 key={w.index}
-                className="flex items-center justify-between gap-2 rounded-xl px-2.5 py-2"
+                className="flex items-center justify-between gap-2 rounded-control px-2.5 py-2"
                 style={{
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.07)",
@@ -194,30 +194,30 @@ function Header({
       <div className="flex min-w-0 items-center gap-2">
         <button
           onClick={() => onMonthChange(month.minus(yearly ? { years: 1 } : { months: 1 }))}
-          className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+          className="hover-lift grid size-7 shrink-0 place-items-center rounded-control bg-white/6 text-[#F0F2F5] hover:bg-white/12"
           aria-label="Previous"
         >
-          ←
+          <ChevronLeft className="size-4" />
         </button>
         <h2 className="truncate text-[16px] text-white" style={{ fontWeight: 560 }}>
           {month.setLocale("en").toFormat(yearly ? "yyyy" : "LLLL yyyy")}
         </h2>
         <button
           onClick={() => onMonthChange(month.plus(yearly ? { years: 1 } : { months: 1 }))}
-          className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+          className="hover-lift grid size-7 shrink-0 place-items-center rounded-control bg-white/6 text-[#F0F2F5] hover:bg-white/12"
           aria-label="Next"
         >
-          →
+          <ChevronRight className="size-4" />
         </button>
         <button
           onClick={() => onMonthChange(DateTime.now().setZone(LOCAL_ZONE).startOf("month"))}
-          className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+          className="hover-lift rounded-control bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
         >
           This Month
         </button>
       </div>
       <span
-        className="shrink-0 rounded-full px-3 py-1 font-mono text-[12px] tabular"
+        className="shrink-0 rounded-control px-3 py-1 font-mono text-[12px] tabular"
         style={{ background: `${color}1f`, color, border: `1px solid ${color}44` }}
       >
         {money(monthPnl)}
@@ -258,7 +258,7 @@ function WeekRow({
           >
             <button
               onClick={() => stat && onSelectDay(key)}
-              className="hover-tint flex min-h-[62px] w-full flex-col justify-between gap-0.5 overflow-hidden rounded-lg p-1 text-left transition-colors sm:min-h-[82px] sm:rounded-xl sm:p-1.5"
+              className="hover-tint flex min-h-[62px] w-full flex-col justify-between gap-0.5 overflow-hidden rounded-control p-1 text-left transition-colors sm:min-h-[82px] sm:rounded-control sm:p-1.5"
               style={{
                 background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
                 border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
@@ -297,7 +297,7 @@ function WeekRow({
                 onAddDay(key);
               }}
               aria-label={`Add trade on ${key}`}
-              className="absolute right-1 top-1 grid size-5 place-items-center rounded-md opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100"
+              className="absolute right-1 top-1 grid size-5 place-items-center rounded-control opacity-0 transition-opacity duration-150 group-hover:opacity-100 focus-visible:opacity-100"
               style={{
                 background: "rgba(255,255,255,0.08)",
                 border: "1px solid rgba(255,255,255,0.14)",
@@ -314,7 +314,7 @@ function WeekRow({
                   onSelectDay(key);
                 }}
                 aria-label={`${commentsByDay[key]} comments on ${key}`}
-                className="hover-lift absolute bottom-1 right-1 hidden items-center gap-1 rounded-md px-1.5 py-0.5 text-[9.5px] sm:inline-flex"
+                className="hover-lift absolute bottom-1 right-1 hidden items-center gap-1 rounded-control px-1.5 py-0.5 text-[9.5px] sm:inline-flex"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: "1px solid rgba(255,255,255,0.14)",
@@ -340,7 +340,7 @@ function Tabs({ mode, onMode }: { mode: CalendarMode; onMode: (m: CalendarMode) 
         <button
           key={m.id}
           onClick={() => onMode(m.id)}
-          className="hover-lift rounded-full px-3 py-1.5 text-[12px]"
+          className="hover-lift rounded-control px-3 py-1.5 text-[12px]"
           style={
             mode === m.id
               ? {

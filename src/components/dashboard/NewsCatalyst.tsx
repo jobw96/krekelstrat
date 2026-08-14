@@ -17,7 +17,7 @@ export function RedFolderList({ events }: { events: RedFolderEvent[] }) {
       {events.slice(0, 3).map((e) => (
         <span
           key={e.id}
-          className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px]"
+          className="inline-flex w-fit items-center gap-1.5 rounded-control px-2.5 py-1 text-[11px]"
           style={{ background: "rgba(229,82,95,0.14)", color: "#F5928F" }}
         >
           <span
@@ -38,7 +38,7 @@ export function CatalystBadge({ read }: { read: CatalystRead }) {
   return (
     <motion.span
       layout
-      className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+      className="inline-flex w-fit items-center gap-1.5 rounded-control px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
       style={{ background: `${color}22`, color }}
     >
       <Icon className="size-3.5" strokeWidth={2} />

@@ -80,7 +80,7 @@ export function AppRail() {
               strokeWidth={1.6}
             />
             {alerting && (
-              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#6E86F7] px-1 py-px font-mono text-[8px] leading-none text-white">
+              <span className="absolute -right-0.5 -top-0.5 rounded-control bg-[#6E86F7] px-1 py-px font-mono text-[8px] leading-none text-white">
                 {minutesToNews}
               </span>
             )}
@@ -120,7 +120,7 @@ export function AppRail() {
               to={to}
               search={search ?? {}}
               aria-label={label}
-              className="relative flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-1 py-1.5"
+              className="relative flex min-w-0 flex-1 flex-col items-center gap-1 rounded-control px-1 py-1.5"
               style={active ? { background: "rgba(255,255,255,0.07)" } : undefined}
             >
               <Icon

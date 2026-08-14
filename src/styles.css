@@ -5,8 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * "Deep atmosphere" — glassmorphic midnight-blue dashboard.
- * Soft translucent panels, generous radii, cool cyan accents.
+ * "Deep atmosphere" — midnight-blue trading dashboard.
+ * Layered panels, tight radii, accent blooms on the surfaces that matter.
  */
 
 @theme {
@@ -49,10 +49,14 @@
 }
 
 @theme inline {
-  --radius-sm: 8px;
-  --radius-md: 10px;
-  --radius-lg: 12px;
-  --radius-xl: 14px;
+  --radius-sm: 5px;
+  --radius-md: 7px;
+  --radius-lg: 9px;
+  --radius-xl: 11px;
+  --radius-2xl: 13px;
+  /* Interactive chrome: buttons, toggles, dropdown triggers, badges. Pill
+     shapes stay for avatars, dots and progress tracks only. */
+  --radius-control: 8px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -77,18 +81,18 @@
 :root {
   color-scheme: dark;
 
-  /* Surfaces */
-  --bg-base: #0b0c0e;
+  /* Surfaces — each step is a real jump so nesting reads without a border */
+  --bg-base: #08090c;
   --bg-ambient-a: #15171c;
   --bg-ambient-b: #0e1014;
-  --surface-1: #121317;
-  --surface-2: #171921;
-  --surface-3: #1c1f27;
+  --surface-1: #131519;
+  --surface-2: #1b1e27;
+  --surface-3: #242833;
 
-  /* Borders */
+  /* Borders — a clean hairline. Surfaces are separated by tone, not by stroke. */
   --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.1);
-  --border-top-hl: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.085);
+  --border-top-hl: rgba(255, 255, 255, 0.07);
   --grid-line: rgba(255, 255, 255, 0.04);
 
   /* Text */
@@ -113,9 +117,9 @@
   --impact-med: #e0a458;
 
   /* Radius */
-  --r-card: 14px;
-  --r-inner: 10px;
-  --r-chip: 8px;
+  --r-card: 10px;
+  --r-inner: 7px;
+  --r-chip: 6px;
   --r-pill: 999px;
 
   /* Elevation */
@@ -183,30 +187,37 @@
     outline: 2px solid var(--accent-color);
     outline-offset: 2px;
   }
+
+  /*
+   * One icon weight across the app. Lucide defaults to stroke-width 2 and the
+   * call sites had drifted between 2 and 1.6; CSS overrides the SVG attribute,
+   * so this normalises every icon including the ones that set no prop.
+   */
+  svg.lucide {
+    stroke-width: 1.6;
+  }
 }
 
 @utility hairline {
   box-shadow: var(--shadow-hairline);
 }
 
-/* Core surface: layered card with hairline border and a light top edge. */
+/*
+ * Core surface. Lit from above: a top-to-bottom gradient plus a crisp 1px
+ * highlight on the top edge, so the card reads as a physical plane catching
+ * light rather than a flat rectangle with a stroke around it.
+ */
 @utility card-surface {
   position: relative;
-  background-color: var(--surface-1);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, transparent 42%),
+    linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-card);
-  box-shadow: var(--shadow-card);
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 12px;
-    right: 12px;
-    height: 1px;
-    background: var(--border-top-hl);
-    pointer-events: none;
-  }
+  box-shadow:
+    inset 0 1px 0 0 var(--border-top-hl),
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 16px 34px -24px rgba(0, 0, 0, 0.9);
 }
 
 /* Featured panel: one step lighter, use sparingly. */
@@ -214,10 +225,46 @@
   background-color: var(--surface-2);
 }
 
+/*
+ * Headline bento. A light source sits just below the card and blooms up through
+ * it, so the metric it carries sits inside the glow instead of under a flat
+ * tint. Four stacked layers: accent bloom from the bottom edge, a cool top
+ * light, the base gradient, then a halo that spills the same hue onto the page.
+ * Set --glow to re-tint per metric (profit green, loss red, accent blue).
+ * Reserved for primary bentos — supporting panels stay on card-surface.
+ */
+@utility card-glow {
+  --glow: var(--accent-color);
+  position: relative;
+  background:
+    radial-gradient(
+      86% 58% at 50% 100%,
+      color-mix(in oklab, var(--glow) 26%, transparent) 0%,
+      color-mix(in oklab, var(--glow) 7%, transparent) 46%,
+      transparent 76%
+    ),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 32%),
+    linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-card);
+  /* Depth only — the accent never leaves the card, so the border stays a
+     single clean line instead of picking up a second coloured ring. */
+  box-shadow:
+    inset 0 1px 0 0 var(--border-top-hl),
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 18px 38px -26px rgba(0, 0, 0, 0.9);
+}
+
+/*
+ * Recessed well inside a card. Translucent black rather than a lighter surface,
+ * so it reads as cut into the parent (and keeps working on a card-glow, where a
+ * lighter fill would fight the bloom underneath).
+ */
 @utility glass-inset {
-  background-color: var(--surface-2);
-  border: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--r-inner);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* Page shell: the ambient wash lives on body, the shell stays transparent. */
@@ -258,21 +305,23 @@
   animation: pulse-dot 1.6s ease-in-out infinite;
 }
 
+/* Breathes the internal bloom of a live card. Stays inside the border: an
+   animated ring around the outside reads as a thick, cheap edge. */
 @keyframes glow-ring {
   0%,
   100% {
     box-shadow:
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-      color-mix(in srgb, var(--glow) 50%, transparent) 0 0 0 1px,
-      color-mix(in srgb, var(--glow) 14%, transparent) 0 0 24px -4px,
-      0 24px 56px -32px rgba(0, 0, 0, 0.95);
+      inset 0 1px 0 0 var(--border-top-hl),
+      inset 0 -30px 58px -34px color-mix(in oklab, var(--glow) 40%, transparent),
+      0 1px 2px rgba(0, 0, 0, 0.45),
+      0 18px 38px -26px rgba(0, 0, 0, 0.9);
   }
   50% {
     box-shadow:
-      inset 0 1px 0 0 rgba(255, 255, 255, 0.06),
-      color-mix(in srgb, var(--glow) 68%, transparent) 0 0 0 1px,
-      color-mix(in srgb, var(--glow) 26%, transparent) 0 0 34px -6px,
-      0 24px 56px -32px rgba(0, 0, 0, 0.95);
+      inset 0 1px 0 0 var(--border-top-hl),
+      inset 0 -30px 58px -34px color-mix(in oklab, var(--glow) 80%, transparent),
+      0 1px 2px rgba(0, 0, 0, 0.45),
+      0 18px 38px -26px rgba(0, 0, 0, 0.9);
   }
 }
 

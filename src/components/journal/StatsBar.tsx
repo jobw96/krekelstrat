@@ -29,13 +29,19 @@ function Gauge({ value, color }: { value: number; color: string }) {
 
 function Card({
   label,
+  glow,
   children,
 }: {
   label: string;
+  /** Bloom hue for this tile — defaults to the interface accent. */
+  glow?: string;
   children: React.ReactNode;
 }) {
   return (
-    <div className="card-surface flex min-w-0 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4">
+    <div
+      className="card-glow flex min-w-0 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4"
+      style={glow ? ({ "--glow": glow } as React.CSSProperties) : undefined}
+    >
       <span className="truncate text-[9.5px] uppercase tracking-[0.09em] text-[#7A828D] sm:text-[10px]">{label}</span>
       {children}
     </div>
@@ -61,7 +67,7 @@ export function StatsBar({
 
   return (
     <section className="grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-4">
-      <Card label="Net P&L">
+      <Card label="Net P&L" glow={pnlColor}>
         <div className="flex items-end justify-between gap-2">
           <span
             className="truncate font-mono text-[20px] leading-none tabular sm:text-[30px]"
@@ -73,7 +79,7 @@ export function StatsBar({
           </span>
           <button
             onClick={onToggleCurrency}
-            className="hover-lift shrink-0 rounded-full bg-white/6 px-2 py-0.5 text-[11px] text-[#F0F2F5] hover:bg-white/12"
+            className="hover-lift shrink-0 rounded-control bg-white/6 px-2 py-0.5 text-[11px] text-[#F0F2F5] hover:bg-white/12"
           >
             {currency === "USD" ? "$" : "R"}
           </button>
@@ -81,7 +87,7 @@ export function StatsBar({
         <span className="truncate font-mono text-[10px] text-[#7A828D] sm:text-[11px]">{metrics.count} trades</span>
       </Card>
 
-      <Card label="Trade Win %">
+      <Card label="Trade Win %" glow={WIN_GREEN}>
         <div className="flex items-center justify-between gap-2">
           <span className="font-mono text-[19px] leading-none tabular text-white sm:text-[26px]" style={{ fontWeight: 560 }}>
             {metrics.winRate.toFixed(1)}%
@@ -94,7 +100,7 @@ export function StatsBar({
         </span>
       </Card>
 
-      <Card label="Day Win %">
+      <Card label="Day Win %" glow="#6E86F7">
         <div className="flex items-center justify-between gap-2">
           <span className="font-mono text-[19px] leading-none tabular text-white sm:text-[26px]" style={{ fontWeight: 560 }}>
             {stats.dayWinRate.toFixed(1)}%

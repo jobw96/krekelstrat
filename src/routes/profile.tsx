@@ -145,7 +145,7 @@ function ProfilePage() {
                 type="button"
                 onClick={() => fileRef.current?.click()}
                 disabled={!canEdit}
-                className="hover-lift self-start rounded-full bg-white/6 px-3 py-1.5 text-[12.5px] text-[#F0F2F5] disabled:opacity-50"
+                className="hover-lift self-start rounded-control bg-white/6 px-3 py-1.5 text-[12.5px] text-[#F0F2F5] disabled:opacity-50"
               >
                 Upload photo
               </button>
@@ -171,13 +171,13 @@ function ProfilePage() {
               maxLength={40}
               disabled={!canEdit}
               placeholder="Your name"
-              className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6 disabled:opacity-60"
+              className="rounded-control border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6 disabled:opacity-60"
             />
           </label>
 
           <div className="flex flex-col gap-1.5">
             <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#7A828D]">Account</span>
-            <span className="rounded-lg border border-white/8 bg-white/3 px-3 py-2.5 text-[13px] text-[#9AA1AC]">
+            <span className="rounded-control border border-white/8 bg-white/3 px-3 py-2.5 text-[13px] text-[#9AA1AC]">
               {loading ? "…" : canEdit ? user.email : "Guest mode · not signed in"}
             </span>
           </div>
@@ -193,14 +193,14 @@ function ProfilePage() {
                   await signOut();
                   navigate({ to: "/auth" });
                 }}
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#F0F2F5]"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3.5 py-2 text-[13px] text-[#F0F2F5]"
               >
                 <LogOut className="size-3.5" /> Sign out
               </button>
             ) : (
               <Link
                 to="/auth"
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#F0F2F5]"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3.5 py-2 text-[13px] text-[#F0F2F5]"
               >
                 Sign in
               </Link>
@@ -208,7 +208,7 @@ function ProfilePage() {
             <button
               type="submit"
               disabled={busy || !canEdit}
-              className="hover-lift inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] disabled:opacity-60"
+              className="hover-lift inline-flex items-center gap-1.5 rounded-control px-4 py-2 text-[13px] disabled:opacity-60"
               style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
             >
               {busy && <Loader2 className="size-4 animate-spin" />} Save
@@ -234,7 +234,7 @@ function ProfilePage() {
                   type="button"
                   onClick={() => setTz(opt.value)}
                   aria-pressed={active}
-                  className="flex items-center justify-between gap-3 rounded-xl border px-3.5 py-3 text-left transition-colors"
+                  className="flex items-center justify-between gap-3 rounded-control border px-3.5 py-3 text-left transition-colors"
                   style={{
                     borderColor: active ? "rgba(229,82,95,0.55)" : "rgba(255,255,255,0.08)",
                     background: active ? "rgba(229,82,95,0.10)" : "rgba(255,255,255,0.03)",

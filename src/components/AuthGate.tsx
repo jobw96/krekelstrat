@@ -4,16 +4,25 @@ import { Lock } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { AppLoader } from "@/components/AppLoader";
 
-/** Only /(sessions) is public — everything else requires a real account. */
+/**
+ * Only /(sessions) is public — everything else requires a real account.
+ *
+ * DEV-ONLY BYPASS: in local `vite dev` this gate is skipped entirely so the
+ * dashboard is reachable without signing in (there's no Lovable OAuth broker
+ * route locally, see /~oauth/initiate). `import.meta.env.DEV` is replaced at
+ * build time, so this branch — and the bypass — is stripped out of
+ * production builds and never ships.
+ */
 export function AuthGate({ children }: { children: ReactNode }) {
   const { user, isGuest, loading } = useAuth();
   const navigate = useNavigate();
-  const allowed = !!user && !isGuest;
+  const allowed = import.meta.env.DEV || (!!user && !isGuest);
 
   useEffect(() => {
     if (!loading && !allowed) navigate({ to: "/auth", replace: true });
   }, [loading, allowed, navigate]);
 
+  if (import.meta.env.DEV) return <>{children}</>;
   if (loading) return <AppLoader contained overlay visible />;
   if (allowed) return <>{children}</>;
 

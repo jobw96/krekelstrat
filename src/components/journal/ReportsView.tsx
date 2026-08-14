@@ -77,7 +77,7 @@ function BucketTable({
             <span className="text-right">Net P&L</span>
           </div>
           {list.map((r) => (
-            <div key={r.key} className="relative overflow-hidden rounded-lg bg-white/4">
+            <div key={r.key} className="relative overflow-hidden rounded-control bg-white/4">
               <span
                 aria-hidden
                 className="absolute inset-y-0 left-0"
@@ -128,9 +128,9 @@ function TagTable({ title, subtitle, rows, accent }: { title: string; subtitle: 
         </p>
       ) : (
         rows.map((r) => (
-          <div key={r.tag} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2">
+          <div key={r.tag} className="flex items-center justify-between rounded-control bg-white/4 px-3 py-2">
             <span
-              className="rounded-full px-2.5 py-1 text-[11px]"
+              className="rounded-control px-2.5 py-1 text-[11px]"
               style={{ background: `${accent}1f`, color: accent, boxShadow: `inset 0 0 0 1px ${accent}40` }}
             >
               {r.tag}
@@ -248,8 +248,7 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
           return (
             <div
               key={i}
-              className="flex items-start gap-2.5 rounded-lg bg-white/4 px-3 py-2.5"
-              style={{ boxShadow: `inset 2px 0 0 ${c}` }}
+              className="flex items-start gap-2.5 rounded-control bg-white/4 px-3 py-2.5"
             >
               <span className="mt-[6px] size-1.5 shrink-0 rounded-full" style={{ background: c }} />
               <p className="text-[12.5px] leading-[1.6] text-[#F0F2F5]">{t.text}</p>

@@ -31,7 +31,7 @@ function TagRow({ label, value, color }: { label: string; value: string | null; 
       {tags.map((tag, i) => (
         <span
           key={`${tag}-${i}`}
-          className="rounded-full px-2 py-0.5 text-[10.5px]"
+          className="rounded-control px-2 py-0.5 text-[10.5px]"
           style={{ background: `${color}1f`, color, border: `1px solid ${color}3d` }}
         >
           {tag}
@@ -106,7 +106,7 @@ export function DayTradesDialog({
             <div className="flex flex-wrap items-center justify-between gap-2">
               <span className="flex min-w-0 flex-wrap items-center gap-2 text-[12px] text-[#F0F2F5]">
                 <span
-                  className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
+                  className="rounded-control px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
                   style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
                 >
                   {t.result}
@@ -155,7 +155,7 @@ export function DayTradesDialog({
               <button
                 type="button"
                 onClick={() => setZoomed(shots[t.id] ?? null)}
-                className="group/img relative block overflow-hidden rounded-xl border border-white/8"
+                className="group/img relative block overflow-hidden rounded-control border border-white/8"
                 aria-label="Zoom screenshot"
               >
                 <img
@@ -164,7 +164,7 @@ export function DayTradesDialog({
                   loading="lazy"
                   className="w-full transition-transform duration-200 group-hover/img:scale-[1.02]"
                 />
-                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#F0F2F5] opacity-0 transition-opacity group-hover/img:opacity-100">
+                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-control bg-black/60 text-[#F0F2F5] opacity-0 transition-opacity group-hover/img:opacity-100">
                   <ZoomIn className="size-3.5" />
                 </span>
               </button>

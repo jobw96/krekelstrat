@@ -22,7 +22,7 @@ const schema = z.object({
 });
 
 const field =
-  "rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6";
+  "rounded-control border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6";
 const label = "text-[11.5px] uppercase tracking-[0.08em] text-[#7A828D]";
 
 /** Create / edit a prop firm evaluation or funded account. */
@@ -116,7 +116,7 @@ export function PropFirmDialog({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="hover-lift rounded-full bg-white/6 p-1.5 text-[#9AA1AC]"
+            className="hover-lift rounded-control bg-white/6 p-1.5 text-[#9AA1AC]"
           >
             <X className="size-4" />
           </button>
@@ -264,14 +264,14 @@ export function PropFirmDialog({
           <button
             type="button"
             onClick={onClose}
-            className="hover-lift rounded-full bg-white/6 px-4 py-2 text-[13px] text-[#F0F2F5]"
+            className="hover-lift rounded-control bg-white/6 px-4 py-2 text-[13px] text-[#F0F2F5]"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={busy}
-            className="hover-lift inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px]"
+            className="hover-lift inline-flex items-center gap-1.5 rounded-control px-4 py-2 text-[13px]"
             style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
           >
             {busy && <Loader2 className="size-4 animate-spin" />} Save account

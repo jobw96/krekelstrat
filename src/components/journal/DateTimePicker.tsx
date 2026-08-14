@@ -62,7 +62,7 @@ function Calendar({
         <button
           type="button"
           onClick={() => setMonth((m) => m.minus({ months: 1 }))}
-          className="rounded-lg p-1.5 text-[#9AA1AC] transition-colors hover:bg-white/8 hover:text-white"
+          className="rounded-control p-1.5 text-[#9AA1AC] transition-colors hover:bg-white/8 hover:text-white"
           aria-label="Previous month"
         >
           <ChevronLeft className="size-4" />
@@ -73,7 +73,7 @@ function Calendar({
         <button
           type="button"
           onClick={() => setMonth((m) => m.plus({ months: 1 }))}
-          className="rounded-lg p-1.5 text-[#9AA1AC] transition-colors hover:bg-white/8 hover:text-white"
+          className="rounded-control p-1.5 text-[#9AA1AC] transition-colors hover:bg-white/8 hover:text-white"
           aria-label="Next month"
         >
           <ChevronRight className="size-4" />
@@ -98,7 +98,7 @@ function Calendar({
               key={d.toISODate()}
               type="button"
               onClick={() => onPick(d)}
-              className="h-8 rounded-lg text-[12.5px] transition-colors hover:bg-white/10"
+              className="h-8 rounded-control text-[12.5px] transition-colors hover:bg-white/10"
               style={{
                 background: isSel ? ACCENT : "transparent",
                 color: isSel ? "#ffffff" : outside ? "#454B55" : "#F0F2F5",
@@ -130,13 +130,13 @@ function Stepper({
 }) {
   const wrap = (v: number) => ((v % (max + 1)) + (max + 1)) % (max + 1);
   return (
-    <div className="flex flex-1 flex-col items-center gap-1 rounded-xl bg-white/5 py-1.5">
+    <div className="flex flex-1 flex-col items-center gap-1 rounded-control bg-white/5 py-1.5">
       <span className="text-[9px] uppercase tracking-[0.12em] text-[#7A828D]">{label}</span>
       <div className="flex items-center gap-1.5">
         <button
           type="button"
           onClick={() => onChange(wrap(value - step))}
-          className="rounded-md p-1 text-[#9AA1AC] hover:bg-white/10 hover:text-white"
+          className="rounded-control p-1 text-[#9AA1AC] hover:bg-white/10 hover:text-white"
           aria-label={`Decrease ${label}`}
         >
           <Minus className="size-3" />
@@ -147,7 +147,7 @@ function Stepper({
         <button
           type="button"
           onClick={() => onChange(wrap(value + step))}
-          className="rounded-md p-1 text-[#9AA1AC] hover:bg-white/10 hover:text-white"
+          className="rounded-control p-1 text-[#9AA1AC] hover:bg-white/10 hover:text-white"
           aria-label={`Increase ${label}`}
         >
           <Plus className="size-3" />
@@ -158,7 +158,7 @@ function Stepper({
 }
 
 const TRIGGER =
-  "flex h-10 w-full items-center justify-between gap-2 rounded-xl bg-white/6 px-3 text-left text-[13px] text-white outline-none transition-colors hover:bg-white/10";
+  "flex h-10 w-full items-center justify-between gap-2 rounded-control bg-white/6 px-3 text-left text-[13px] text-white outline-none transition-colors hover:bg-white/10";
 
 /** Date + time picker. Value/onChange use the "yyyy-LL-dd'T'HH:mm" format. */
 export function DateTimePicker({
@@ -199,7 +199,7 @@ export function DateTimePicker({
               key={p.label}
               type="button"
               onClick={() => commit(p.d)}
-              className="flex-1 rounded-lg bg-white/6 py-1.5 text-[11px] text-[#F0F2F5] transition-colors hover:bg-white/12 hover:text-white"
+              className="flex-1 rounded-control bg-white/6 py-1.5 text-[11px] text-[#F0F2F5] transition-colors hover:bg-white/12 hover:text-white"
             >
               {p.label}
             </button>
@@ -231,7 +231,7 @@ export function DateTimePicker({
         <button
           type="button"
           onClick={() => setOpen(false)}
-          className="mt-2 w-full rounded-xl py-2 text-[12.5px] text-white transition-opacity hover:opacity-90"
+          className="mt-2 w-full rounded-control py-2 text-[12.5px] text-white transition-opacity hover:opacity-90"
           style={{ background: ACCENT, fontWeight: 560 }}
         >
           Done
@@ -262,7 +262,7 @@ export function DatePicker({
         type="button"
         aria-label={label}
         onClick={() => setOpen((o) => !o)}
-        className={`inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] transition-colors hover:bg-white/12 ${
+        className={`inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-1.5 text-[12px] transition-colors hover:bg-white/12 ${
           open ? "ring-1 ring-[#6E86F7]" : ""
         }`}
         style={{ color: dt ? "#F0F2F5" : "#7A828D" }}
@@ -286,7 +286,7 @@ export function DatePicker({
               onChange(DateTime.now().toISODate() ?? "");
               setOpen(false);
             }}
-            className="flex-1 rounded-lg bg-white/6 py-1.5 text-[11px] text-[#F0F2F5] hover:bg-white/12 hover:text-white"
+            className="flex-1 rounded-control bg-white/6 py-1.5 text-[11px] text-[#F0F2F5] hover:bg-white/12 hover:text-white"
           >
             Today
           </button>
@@ -296,7 +296,7 @@ export function DatePicker({
               onChange("");
               setOpen(false);
             }}
-            className="flex-1 rounded-lg bg-white/6 py-1.5 text-[11px] text-[#9AA1AC] hover:bg-white/12 hover:text-white"
+            className="flex-1 rounded-control bg-white/6 py-1.5 text-[11px] text-[#9AA1AC] hover:bg-white/12 hover:text-white"
           >
             Clear
           </button>

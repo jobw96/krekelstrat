@@ -82,26 +82,27 @@ export function SessionCard({
 
   const ACCENT = "#6E86F7";
 
+  // Live and red-folder cards carry their state as an internal bloom (see the
+  // card-glow utility) rather than a coloured ring outside the border.
   const surfaceStyle: Record<string, string | number> = active
     ? {
         ["--glow" as never]: ACCENT,
-        borderColor: "rgba(110,134,247,0.30)",
-        background: "#1C1F27",
-        boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(110,134,247,0.22), 0 0 26px -12px ${ACCENT}, 0 12px 28px -16px rgba(0,0,0,0.7)`,
+        borderColor: "rgba(110,134,247,0.26)",
       }
     : redHot
       ? {
-          borderColor: "rgba(240,115,111,0.30)",
-          boxShadow:
-            "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(240,115,111,0.14), 0 0 22px -12px rgba(240,115,111,0.6)",
+          ["--glow" as never]: "#F0736F",
+          borderColor: "rgba(240,115,111,0.24)",
         }
       : status === "next"
         ? { opacity: 0.94 }
         : { opacity: 0.62 };
 
+  const surfaceClass = active || redHot ? "card-glow" : "card-surface";
+
   const redFolderBadge = redAlert ? (
     <span
-      className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+      className="inline-flex w-fit items-center gap-1.5 rounded-control px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
       style={{
         background: "rgba(240,115,111,0.10)",
         color: "#F0736F",
@@ -120,7 +121,7 @@ export function SessionCard({
 
   const statusChip = active ? (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+      className="inline-flex items-center gap-1.5 rounded-control px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
       style={{
         background: "rgba(110,134,247,0.12)",
         color: "#8098FF",
@@ -133,7 +134,7 @@ export function SessionCard({
     </span>
   ) : status === "next" ? (
     <span
-      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+      className="inline-flex items-center gap-1.5 rounded-control px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
       style={{
         background: "rgba(110,134,247,0.12)",
         color: "#8098FF",
@@ -157,7 +158,7 @@ export function SessionCard({
       <motion.article
         layout
         transition={{ duration: 0.3, ease: [0.2, 0, 0, 1] }}
-        className={`card-surface relative flex flex-col gap-2 overflow-hidden p-3.5 ${
+        className={`${surfaceClass} relative flex flex-col gap-2 overflow-hidden p-3.5 ${
           active ? "glow-ring" : ""
         }`}
         style={surfaceStyle}
@@ -217,7 +218,7 @@ export function SessionCard({
     <motion.article
       layout
       transition={{ duration: 0.35, ease: [0.2, 0, 0, 1] }}
-      className={`card-surface relative flex flex-col gap-3 overflow-hidden p-5 ${
+      className={`${surfaceClass} relative flex flex-col gap-3 overflow-hidden p-5 ${
         active ? "glow-ring" : ""
       }`}
       style={surfaceStyle}
@@ -240,7 +241,7 @@ export function SessionCard({
       {active && (
         <motion.div
           layout
-          className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+          className="inline-flex w-fit items-center gap-1.5 rounded-control px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
           style={{
             background:
               read.phase === "continuation"

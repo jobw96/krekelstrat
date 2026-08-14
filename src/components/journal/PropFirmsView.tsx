@@ -121,7 +121,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
           </div>
           <button
             onClick={() => setDialog({ open: true, account: null })}
-            className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px]"
+            className="hover-lift inline-flex items-center gap-1.5 rounded-control px-3.5 py-2 text-[13px]"
             style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
           >
             <Plus className="size-4" /> Add account
@@ -158,12 +158,15 @@ export function PropFirmsView({ userId }: { userId: string }) {
           Accounts
         </h3>
         {q.isLoading && <p className="py-6 text-center text-[12px] text-[#7A828D]">Loading…</p>}
+        {/* One empty state for the whole section: rendering the group rows too
+            would repeat "nothing here" four times over. */}
         {!q.isLoading && rows.length === 0 && (
           <p className="py-6 text-center text-[12px] text-[#7A828D]">
-            No prop accounts logged yet — add your first evaluation.
+            No prop accounts yet. Add an evaluation to track cost, payouts and pass rate.
           </p>
         )}
         {!q.isLoading &&
+          rows.length > 0 &&
           GROUPS.map((g) => {
             const list = rows.filter((r) => groupOf(r) === g.key);
             const open = openGroups[g.key];
@@ -176,7 +179,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
               <div key={g.key} className="flex flex-col gap-2">
                 <button
                   onClick={() => setOpenGroups((s) => ({ ...s, [g.key]: !s[g.key] }))}
-                  className="hover-tint flex items-center justify-between gap-3 rounded-xl bg-white/4 px-3 py-2 text-left"
+                  className="hover-tint flex items-center justify-between gap-3 rounded-control bg-white/4 px-3 py-2 text-left"
                 >
                   <span className="flex items-center gap-2">
                     <ChevronRight
@@ -186,7 +189,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                     <span className="text-[12.5px]" style={{ color: g.color, fontWeight: 560 }}>
                       {g.label}
                     </span>
-                    <span className="rounded-full bg-white/6 px-2 py-0.5 font-mono text-[10.5px] text-[#9AA1AC]">
+                    <span className="rounded-control bg-white/6 px-2 py-0.5 font-mono text-[10.5px] text-[#9AA1AC]">
                       {list.length}
                     </span>
                   </span>
@@ -210,7 +213,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                     return (
                       <div
                         key={r.id}
-                        className="ml-3 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-white/4 px-3 py-2.5"
+                        className="ml-3 flex flex-wrap items-center justify-between gap-3 rounded-control bg-white/4 px-3 py-2.5"
                       >
                         <span className="flex min-w-0 flex-col">
                           <span className="flex items-center gap-2 text-[12.5px] text-white">
@@ -219,13 +222,13 @@ export function PropFirmsView({ userId }: { userId: string }) {
                               <span className="text-[11px] text-[#7A828D]">{r.firm}</span>
                             )}
                             <span
-                              className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
+                              className="rounded-control px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
                               style={{ background: `${STATUS_COLOR[r.status]}1f`, color: STATUS_COLOR[r.status] }}
                             >
                               {STATUS_LABEL[r.status]}
                             </span>
                             {r.status !== "breached" && (
-                              <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#9AA1AC]">
+                              <span className="rounded-control bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#9AA1AC]">
                                 {groupOf(r)}
                               </span>
                             )}
@@ -282,7 +285,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
               href={f.url}
               target="_blank"
               rel="noreferrer"
-              className="hover-tint flex flex-col gap-1 rounded-xl bg-white/5 p-3"
+              className="hover-tint flex flex-col gap-1 rounded-control bg-white/5 p-3"
             >
               <span className="flex items-center gap-1.5 text-[12.5px] text-white">
                 {f.name} <ExternalLink className="size-3 text-[#7A828D]" />

@@ -128,7 +128,7 @@ function Dashboard() {
             <motion.div
               initial={{ opacity: 0, y: -6 }}
               animate={{ opacity: 1, y: 0 }}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border px-4 py-2.5 text-[12px]"
+              className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-control border px-4 py-2.5 text-[12px]"
               style={{
                 borderColor: "rgba(255,77,94,0.28)",
                 background: "rgba(255,77,94,0.07)",
@@ -156,12 +156,12 @@ function Dashboard() {
           {/* Hero bento */}
           <section className="grid gap-5 lg:grid-cols-[1.35fr_1fr]">
             <div
-              className="card-surface relative flex flex-col justify-between gap-6 overflow-hidden p-5 sm:gap-8 sm:p-7"
-              style={{
-                backgroundImage: state?.active
-                  ? `linear-gradient(180deg, ${toneColor[state.active.def.tone]}12 0%, rgba(255,255,255,0.02) 20%, rgba(255,255,255,0) 55%)`
-                  : undefined,
-              }}
+              className="card-glow relative flex flex-col justify-between gap-6 overflow-hidden p-5 sm:gap-8 sm:p-7"
+              style={
+                state?.active
+                  ? ({ "--glow": toneColor[state.active.def.tone] } as React.CSSProperties)
+                  : undefined
+              }
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -170,7 +170,7 @@ function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25 }}
-                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3 py-1.5 text-[13px] text-[#F0F2F5]"
+                  className="inline-flex w-fit items-center gap-2 rounded-control bg-white/8 px-3 py-1.5 text-[13px] text-[#F0F2F5]"
                 >
                   <Dot
                     color={state?.active ? toneColor[state.active.def.tone] : "#7A828D"}
@@ -203,7 +203,7 @@ function Dashboard() {
                   const diff = open != null && last != null ? last - open : null;
                   return (
                     <div
-                      className="relative flex flex-wrap items-end gap-x-6 gap-y-3 overflow-hidden rounded-xl border p-3.5 pl-4 sm:gap-x-8 sm:p-4 sm:pl-5"
+                      className="relative flex flex-wrap items-end gap-x-6 gap-y-3 overflow-hidden rounded-control border p-3.5 pl-4 sm:gap-x-8 sm:p-4 sm:pl-5"
                       style={{
                         borderColor: "rgba(255,255,255,0.07)",
                         background: "rgba(255,255,255,0.022)",
@@ -288,7 +288,7 @@ function Dashboard() {
               )}
             </div>
 
-            <div className="card-surface flex flex-col gap-5 p-5 sm:p-7">
+            <div className="card-glow flex flex-col gap-5 p-5 sm:p-7">
               <div className="flex items-center gap-2 text-[13px] text-[#9AA1AC]">
                 <Timer className="size-3.5" strokeWidth={1.6} />
                 Countdown to {state?.next.def.name ?? "—"}
@@ -331,7 +331,7 @@ function Dashboard() {
                     </h2>
                   </div>
                   <div
-                    className="flex items-center gap-0.5 rounded-full p-0.5"
+                    className="flex items-center gap-0.5 rounded-control p-0.5"
                     style={{
                       background: "rgba(255,255,255,0.04)",
                       boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.06)",
@@ -342,7 +342,7 @@ function Dashboard() {
                         key={z}
                         type="button"
                         onClick={() => setTz(z)}
-                        className="rounded-full px-3 py-1 font-mono text-[10px] tracking-[0.08em] transition-colors"
+                        className="rounded-control px-3 py-1 font-mono text-[10px] tracking-[0.08em] transition-colors"
                         style={
                           tz === z
                             ? {

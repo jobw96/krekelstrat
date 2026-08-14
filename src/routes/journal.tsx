@@ -252,7 +252,7 @@ function JournalPage() {
               <div className="relative min-w-0">
                 <button
                   onClick={() => setSwitcherOpen((o) => !o)}
-                  className="hover-tint flex min-w-0 items-center gap-1.5 rounded-lg px-1.5 py-1 text-left"
+                  className="hover-tint flex min-w-0 items-center gap-1.5 rounded-control px-1.5 py-1 text-left"
                 >
                   <h1 className="truncate text-[18px] text-white" style={{ fontWeight: 560 }}>
                     {activeShare ? buddyLabel(activeShare) : "Trading Journal"}
@@ -268,7 +268,7 @@ function JournalPage() {
                           setActiveOwner(null);
                           setSwitcherOpen(false);
                         }}
-                        className="hover-tint rounded-lg px-2.5 py-2 text-left text-[12.5px]"
+                        className="hover-tint rounded-control px-2.5 py-2 text-left text-[12.5px]"
                         style={{ color: activeShare ? "#9AA1AC" : "#ffffff" }}
                       >
                         My Journal
@@ -280,7 +280,7 @@ function JournalPage() {
                             setActiveOwner(s.owner_id);
                             setSwitcherOpen(false);
                           }}
-                          className="hover-tint truncate rounded-lg px-2.5 py-2 text-left text-[12.5px]"
+                          className="hover-tint truncate rounded-control px-2.5 py-2 text-left text-[12.5px]"
                           style={{ color: activeShare?.id === s.id ? "#ffffff" : "#9AA1AC" }}
                         >
                           {buddyLabel(s)} (Read-Only)
@@ -296,7 +296,7 @@ function JournalPage() {
                 )}
               </div>
               <div
-                className="relative flex shrink-0 items-center rounded-full p-0.5"
+                className="relative flex shrink-0 items-center rounded-control p-0.5"
                 style={{
                   background: "rgba(255,255,255,0.06)",
                   boxShadow: mode === "practice" ? `inset 0 0 0 1px ${PRACTICE_BLUE}55` : "none",
@@ -304,7 +304,7 @@ function JournalPage() {
               >
                 <span
                   aria-hidden
-                  className="absolute top-0.5 bottom-0.5 w-[76px] rounded-full transition-all duration-200"
+                  className="absolute top-0.5 bottom-0.5 w-[76px] rounded-control transition-all duration-200"
                   style={{
                     left: mode === "live" ? "2px" : "78px",
                     background: mode === "live" ? "rgba(255,255,255,0.14)" : `${PRACTICE_BLUE}2e`,
@@ -314,7 +314,7 @@ function JournalPage() {
                   <button
                     key={m}
                     onClick={() => setMode(m)}
-                    className="relative z-10 w-[76px] rounded-full py-1.5 text-[11.5px] uppercase tracking-[0.06em] transition-colors"
+                    className="relative z-10 w-[76px] rounded-control py-1.5 text-[11.5px] uppercase tracking-[0.06em] transition-colors"
                     style={{
                       color:
                         mode === m ? (m === "practice" ? PRACTICE_BLUE : "#ffffff") : "#7A828D",
@@ -328,19 +328,19 @@ function JournalPage() {
             </div>
             <div className="flex shrink-0 flex-wrap items-center gap-2">
 
-              <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#9AA1AC] sm:inline">
+              <span className="hidden rounded-control bg-white/6 px-3 py-1.5 text-[12px] text-[#9AA1AC] sm:inline">
                 {isGuest ? "Guest mode · no login" : user.email}
               </span>
               <button
                 onClick={() => setSharing(true)}
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
               >
                 <Share2 className="size-3.5" /> Share
               </button>
               {!readOnly && (
               <button
                 onClick={() => setAdding(true)}
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] md:hidden"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-control px-3.5 py-2 text-[13px] md:hidden"
                 style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
               >
                 <Plus className="size-4" /> Trade
@@ -349,7 +349,7 @@ function JournalPage() {
               {isGuest ? (
                 <Link
                   to="/auth"
-                  className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
+                  className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
                 >
                   <LogOut className="size-3.5" /> Sign in
                 </Link>
@@ -359,7 +359,7 @@ function JournalPage() {
                     await signOut();
                     navigate({ to: "/auth" });
                   }}
-                  className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
+                  className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
                 >
                   <LogOut className="size-3.5" /> Log out
                 </button>
@@ -369,7 +369,7 @@ function JournalPage() {
 
           {activeShare && (
             <div
-              className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-[12.5px]"
+              className="flex items-center gap-2 rounded-control px-3 py-2.5 text-[12.5px]"
               style={{ background: "rgba(229,82,95,0.10)", border: "1px solid rgba(229,82,95,0.35)", color: "#F5928F" }}
             >
               <Eye className="size-3.5 shrink-0" />
@@ -497,7 +497,7 @@ function DayView({ trades, onSelectDay }: { trades: Trade[]; onSelectDay: (d: st
           <button
             key={d.key}
             onClick={() => onSelectDay(d.key)}
-            className="hover-tint flex items-center justify-between rounded-xl bg-white/4 px-3 py-2.5 text-left"
+            className="hover-tint flex items-center justify-between rounded-control bg-white/4 px-3 py-2.5 text-left"
           >
             <span className="font-mono text-[12px] text-[#F0F2F5]">
               {DateTime.fromISO(d.key).toFormat("cccc dd LLL yyyy")}
@@ -540,7 +540,7 @@ function StrategiesView({
         {!readOnly && (
           <button
             onClick={onAdd}
-            className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#9AA1AC] hover:text-white"
+            className="hover-lift rounded-control border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#9AA1AC] hover:text-white"
           >
             + New strategy
           </button>
@@ -551,7 +551,7 @@ function StrategiesView({
         const pnl = list.reduce((a, t) => a + Number(t.pnl), 0);
         const color = pnl > 0 ? WIN_GREEN : pnl < 0 ? LOSS_RED : "#9AA1AC";
         return (
-          <div key={s.id} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2.5">
+          <div key={s.id} className="flex items-center justify-between rounded-control bg-white/4 px-3 py-2.5">
             <span className="flex min-w-0 flex-col">
               <span className="text-[12.5px] text-white">{s.name}</span>
               {s.description && (

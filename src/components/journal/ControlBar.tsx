@@ -32,7 +32,7 @@ function Dropdown({
     <div className="relative shrink-0">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+        className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/12"
       >
         {label} <ChevronDown className="size-3.5 text-[#7A828D]" />
       </button>
@@ -64,7 +64,7 @@ function Item({
   return (
     <button
       onClick={onClick}
-      className="rounded-lg px-2.5 py-1.5 text-left text-[12px] transition-colors hover:bg-white/8"
+      className="rounded-control px-2.5 py-1.5 text-left text-[12px] transition-colors hover:bg-white/8"
       style={{ color: active ? "#ffffff" : "#9AA1AC", fontWeight: active ? 560 : 400 }}
     >
       {children}
@@ -198,7 +198,7 @@ export function ControlBar({
             </div>
             <button
               onClick={() => onFilters({ strategy: "all", session: "all", result: "all" })}
-              className="mt-1 rounded-lg px-2 py-1 text-left text-[11px] text-[#7A828D] hover:text-white"
+              className="mt-1 rounded-control px-2 py-1 text-left text-[11px] text-[#7A828D] hover:text-white"
             >
               Reset filters
             </button>
@@ -225,7 +225,7 @@ function Chip({
   return (
     <button
       onClick={onClick}
-      className="rounded-full px-2.5 py-1 text-[11px]"
+      className="rounded-control px-2.5 py-1 text-[11px]"
       style={
         active
           ? { background: "#1C1F27", color: "#ffffff", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.14)" }

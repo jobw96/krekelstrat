@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { money, WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
 import { LOCAL_ZONE } from "@/lib/sessions";
 
@@ -33,21 +34,23 @@ export function PnlCalendar({
         <div className="flex gap-1.5">
           <button
             onClick={() => onMonthChange(month.minus({ months: 1 }))}
-            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+            className="hover-lift grid size-7 place-items-center rounded-control bg-white/6 text-[#F0F2F5] hover:bg-white/12"
+            aria-label="Previous month"
           >
-            ←
+            <ChevronLeft className="size-4" />
           </button>
           <button
             onClick={() => onMonthChange(DateTime.now().setZone(LOCAL_ZONE).startOf("month"))}
-            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+            className="hover-lift rounded-control bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
           >
             Today
           </button>
           <button
             onClick={() => onMonthChange(month.plus({ months: 1 }))}
-            className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+            className="hover-lift grid size-7 place-items-center rounded-control bg-white/6 text-[#F0F2F5] hover:bg-white/12"
+            aria-label="Next month"
           >
-            →
+            <ChevronRight className="size-4" />
           </button>
         </div>
       </header>
@@ -73,7 +76,7 @@ export function PnlCalendar({
             <button
               key={key}
               onClick={() => dayTrades.length && onSelectDay(key)}
-              className="hover-tint flex min-h-[74px] flex-col justify-between rounded-xl p-2 text-left"
+              className="hover-tint flex min-h-[74px] flex-col justify-between rounded-control p-2 text-left"
               style={{
                 background: dayTrades.length
                   ? `${color}1f`
