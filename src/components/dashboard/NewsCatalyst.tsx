@@ -18,11 +18,11 @@ export function RedFolderList({ events }: { events: RedFolderEvent[] }) {
         <span
           key={e.id}
           className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px]"
-          style={{ background: "rgba(229,82,95,0.14)", color: "#f08a93" }}
+          style={{ background: "rgba(229,82,95,0.14)", color: "#F5928F" }}
         >
           <span
             className="pulse-dot inline-block size-1.5 rounded-full"
-            style={{ background: "#e5525f" }}
+            style={{ background: "#6E86F7" }}
           />
           {e.title} · {ams(e.time)} AMS
         </span>
@@ -62,15 +62,15 @@ export function CatalystBanner({ read }: { read: CatalystRead }) {
       }}
     >
       <span className="inline-flex items-center gap-2 text-[14px] text-white" style={{ fontWeight: 560 }}>
-        <AlertTriangle className="size-4" style={{ color: "#e5525f" }} strokeWidth={2} />
+        <AlertTriangle className="size-4" style={{ color: "#F0736F" }} strokeWidth={2} />
         {read.event.title}
-        <span className="font-mono text-[12px] text-[#8b9298]">{ams(read.event.time)} AMS</span>
+        <span className="font-mono text-[12px] text-[#9AA1AC]">{ams(read.event.time)} AMS</span>
       </span>
-      <span className="font-mono text-[12px] text-[#d7dbe0] tabular">
+      <span className="font-mono text-[12px] text-[#F0F2F5] tabular">
         Actual {read.event.actual || "—"} vs Forecast {read.event.forecast || "—"}
       </span>
       <CatalystBadge read={read} />
-      <span className="text-[12px] text-[#8b9298]">Playbook: {PLAYBOOK}</span>
+      <span className="text-[12px] text-[#9AA1AC]">Playbook: {PLAYBOOK}</span>
     </motion.div>
   );
 }

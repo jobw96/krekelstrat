@@ -45,7 +45,7 @@ export function AppRail() {
             className="absolute -inset-[100%] animate-[spin_6s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0%,var(--color-primary)_15%,transparent_30%,transparent_50%,var(--color-primary)_65%,transparent_80%,transparent_100%)] opacity-60 transition-opacity duration-500 group-hover:opacity-100"
             aria-hidden="true"
           />
-          <div className="absolute inset-[2px] z-10 rounded-full bg-[#0f1216]" />
+          <div className="absolute inset-[2px] z-10 rounded-full bg-[#121317]" />
           <img
             src={avatarSrc}
             onError={() => setImgFailed(true)}
@@ -54,7 +54,7 @@ export function AppRail() {
           />
           <div className="pointer-events-none absolute inset-0 z-30 rounded-full border border-[var(--color-primary)]/20" />
         </div>
-        <span className="max-w-[68px] truncate text-center text-[10px] tracking-[0.06em] text-[#6a7076]">
+        <span className="max-w-[68px] truncate text-center text-[10px] tracking-[0.06em] text-[#7A828D]">
           {displayName}
         </span>
       </div>
@@ -76,16 +76,16 @@ export function AppRail() {
             style={active ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
           >
             <Icon
-              className={`size-[18px] transition-colors duration-200 ${alerting ? "text-[#ff8b95]" : active ? "text-white" : "text-[#6a7076] group-hover:text-[#d7dbe0]"}`}
+              className={`size-[18px] transition-colors duration-200 ${alerting ? "text-[#F5928F]" : active ? "text-white" : "text-[#7A828D] group-hover:text-[#F0F2F5]"}`}
               strokeWidth={1.6}
             />
             {alerting && (
-              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#e5525f] px-1 py-px font-mono text-[8px] leading-none text-white">
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#6E86F7] px-1 py-px font-mono text-[8px] leading-none text-white">
                 {minutesToNews}
               </span>
             )}
             {active && (
-              <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
+              <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#6E86F7]" />
             )}
           </Link>
         );
@@ -99,11 +99,11 @@ export function AppRail() {
         style={profileActive ? { background: "rgba(255,255,255,0.08)" } : { background: "transparent" }}
       >
         <UserRound
-          className={`size-[18px] transition-colors duration-200 ${profileActive ? "text-white" : "text-[#6a7076] group-hover:text-[#d7dbe0]"}`}
+          className={`size-[18px] transition-colors duration-200 ${profileActive ? "text-white" : "text-[#7A828D] group-hover:text-[#F0F2F5]"}`}
           strokeWidth={1.6}
         />
         {profileActive && (
-          <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
+          <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#6E86F7]" />
         )}
       </Link>
     </aside>
@@ -124,11 +124,11 @@ export function AppRail() {
               style={active ? { background: "rgba(255,255,255,0.07)" } : undefined}
             >
               <Icon
-                className={`size-[18px] shrink-0 ${alerting ? "text-[#ff8b95]" : active ? "text-white" : "text-[#6a7076]"}`}
+                className={`size-[18px] shrink-0 ${alerting ? "text-[#F5928F]" : active ? "text-white" : "text-[#7A828D]"}`}
                 strokeWidth={1.6}
               />
               <span
-                className={`max-w-full truncate text-[9px] tracking-[0.05em] ${active ? "text-[#d7dbe0]" : "text-[#6a7076]"}`}
+                className={`max-w-full truncate text-[9px] tracking-[0.05em] ${active ? "text-[#F0F2F5]" : "text-[#7A828D]"}`}
               >
                 {label}
               </span>

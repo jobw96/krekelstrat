@@ -20,9 +20,9 @@ export function AuthGate({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-[60vh] w-full flex-1 items-center justify-center">
       <div className="card-surface flex flex-col items-center gap-3 px-8 py-10 text-center">
-        <Lock className="size-5 text-[#e5525f]" strokeWidth={1.6} />
-        <p className="text-[15px] text-[#d7dbe0]">Sign in required</p>
-        <p className="max-w-[34ch] text-[13px] text-[#6a7076]">
+        <Lock className="size-5 text-[#F0736F]" strokeWidth={1.6} />
+        <p className="text-[15px] text-[#F0F2F5]">Sign in required</p>
+        <p className="max-w-[34ch] text-[13px] text-[#7A828D]">
           Taking you to the sign-in page…
         </p>
       </div>

@@ -36,17 +36,17 @@ export function AppLoader({
             className="absolute inset-0 animate-spin rounded-full"
             style={{
               border: "2px solid transparent",
-              borderTopColor: "#e5525f",
+              borderTopColor: "#6E86F7",
               borderRightColor: "rgba(229,82,95,0.35)",
               animationDuration: "0.9s",
             }}
           />
           <span
             className="pulse-dot absolute left-1/2 top-1/2 size-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full"
-            style={{ background: "#e5525f" }}
+            style={{ background: "#6E86F7" }}
           />
         </div>
-        <span className="text-[11px] tracking-[0.18em] text-[#6a7076] uppercase">{label}</span>
+        <span className="text-[11px] tracking-[0.18em] text-[#7A828D] uppercase">{label}</span>
       </div>
     </div>
   );

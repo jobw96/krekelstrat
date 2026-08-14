@@ -21,14 +21,14 @@ const PAGE = 8;
 const STEP = 5;
 
 function resultColor(t: Trade) {
-  return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
+  return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#9AA1AC";
 }
 
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col gap-0.5">
-      <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
-      <span className="font-mono text-[12px] tabular text-[#d7dbe0]">{value}</span>
+      <span className="text-[10px] uppercase tracking-[0.1em] text-[#7A828D]">{label}</span>
+      <span className="font-mono text-[12px] tabular text-[#F0F2F5]">{value}</span>
     </div>
   );
 }
@@ -73,10 +73,10 @@ function Reflection({
         }}
         rows={3}
         placeholder={placeholder}
-        className="w-full resize-y rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#d7dbe0] outline-none placeholder:text-[#5c6268] focus:bg-white/6"
+        className="w-full resize-y rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#F0F2F5] outline-none placeholder:text-[#454B55] focus:bg-white/6"
         style={{ boxShadow: `inset 0 0 0 1px ${color}2e` }}
       />
-      <span className="h-3 text-[10px] text-[#6a7076]">
+      <span className="h-3 text-[10px] text-[#7A828D]">
         {dirty ? "Unsaved — click outside to save" : saved ? "Saved" : ""}
       </span>
     </div>
@@ -138,7 +138,7 @@ function TradeDetails({
                   loading="lazy"
                   className="w-full transition-transform duration-200 group-hover/img:scale-[1.02]"
                 />
-                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#d7dbe0] opacity-0 transition-opacity group-hover/img:opacity-100">
+                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#F0F2F5] opacity-0 transition-opacity group-hover/img:opacity-100">
                   <ZoomIn className="size-3.5" />
                 </span>
               </button>
@@ -148,7 +148,7 @@ function TradeDetails({
             <div className="h-48 w-full animate-pulse rounded-xl bg-white/5" />
           )
         ) : (
-          <div className="grid h-40 place-items-center rounded-xl border border-dashed border-white/8 text-[11px] text-[#6a7076]">
+          <div className="grid h-40 place-items-center rounded-xl border border-dashed border-white/8 text-[11px] text-[#7A828D]">
             No screenshot attached
           </div>
         )}
@@ -163,7 +163,7 @@ function TradeDetails({
         </div>
 
         {trade.notes && (
-          <p className="rounded-lg bg-white/4 p-3 text-[12px] leading-[1.55] text-[#8b9298]">
+          <p className="rounded-lg bg-white/4 p-3 text-[12px] leading-[1.55] text-[#9AA1AC]">
             {trade.notes}
           </p>
         )}
@@ -172,13 +172,13 @@ function TradeDetails({
           [
             { label: "Rights — what went well", value: trade.went_right, color: WIN_GREEN },
             { label: "Wrongs — what went wrong", value: trade.went_wrong, color: LOSS_RED },
-            { label: "Improvement next time", value: trade.improvement, color: "#8b9298" },
+            { label: "Improvement next time", value: trade.improvement, color: "#9AA1AC" },
           ].map((r) => (
             <div key={r.label} className="flex flex-col gap-1">
               <span className="text-[10px] uppercase tracking-[0.1em]" style={{ color: r.color }}>
                 {r.label}
               </span>
-              <p className="rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#8b9298]">
+              <p className="rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.55] text-[#9AA1AC]">
                 {r.value || "—"}
               </p>
             </div>
@@ -202,7 +202,7 @@ function TradeDetails({
             <Reflection
               label="Improvement next time"
               value={trade.improvement}
-              color="#8b9298"
+              color="#9AA1AC"
               placeholder="One concrete adjustment…"
               onSave={(v) => patch("improvement", v)}
             />
@@ -252,13 +252,13 @@ export function TradesList({
         <h2 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
           Trades
         </h2>
-        <span className="font-mono text-[11px] text-[#6a7076]">
+        <span className="font-mono text-[11px] text-[#7A828D]">
           {shown.length}/{trades.length}
         </span>
       </header>
 
       {trades.length === 0 && (
-        <p className="py-6 text-center text-[12px] text-[#6a7076]">
+        <p className="py-6 text-center text-[12px] text-[#7A828D]">
           No trades in this timeframe yet.
         </p>
       )}
@@ -273,10 +273,10 @@ export function TradesList({
               <button
                 onClick={() => setOpen((o) => ({ ...o, [t.id]: !o[t.id] }))}
                 aria-expanded={isOpen}
-                className="flex flex-1 flex-wrap items-center gap-2 text-left text-[12px] text-[#d7dbe0]"
+                className="flex flex-1 flex-wrap items-center gap-2 text-left text-[12px] text-[#F0F2F5]"
               >
                 <ChevronRight
-                  className={`size-3.5 shrink-0 text-[#6a7076] transition-transform ${isOpen ? "rotate-90" : ""}`}
+                  className={`size-3.5 shrink-0 text-[#7A828D] transition-transform ${isOpen ? "rotate-90" : ""}`}
                 />
                 <span
                   className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
@@ -292,11 +292,11 @@ export function TradesList({
                     Practice
                   </span>
                 )}
-                <span className="font-mono tabular text-[#8b9298]">
+                <span className="font-mono tabular text-[#9AA1AC]">
                   {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("dd LLL yyyy · HH:mm")}
                 </span>
                 <span>{t.session ?? "—"}</span>
-                <span className="text-[#6a7076]">{strategyName}</span>
+                <span className="text-[#7A828D]">{strategyName}</span>
               </button>
               <span className="flex items-center gap-3">
                 <span
@@ -305,13 +305,13 @@ export function TradesList({
                 >
                   {money(Number(t.pnl))}
                 </span>
-                <span className="font-mono text-[11px] text-[#8b9298]">
+                <span className="font-mono text-[11px] text-[#9AA1AC]">
                   {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
                 </span>
                 {!readOnly && (
                   <button
                     onClick={() => setEditing(t)}
-                    className="text-[#6a7076] transition-colors hover:text-white"
+                    className="text-[#7A828D] transition-colors hover:text-white"
                     aria-label="Edit trade"
                   >
                     <Pencil className="size-3.5" />
@@ -320,7 +320,7 @@ export function TradesList({
                 {!readOnly && (
                   <button
                     onClick={() => remove(t.id)}
-                    className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
+                    className="text-[#7A828D] transition-colors hover:text-[#F5928F]"
                     aria-label="Delete trade"
                   >
                     <Trash2 className="size-3.5" />
@@ -352,14 +352,14 @@ export function TradesList({
         <div className="flex items-center justify-center gap-2 pt-1">
           <button
             onClick={() => setVisible((v) => v + STEP)}
-            className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/12"
+            className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/12"
           >
             <ChevronDown className="size-3.5" /> Show {Math.min(STEP, remaining)} more
           </button>
           {visible > PAGE && (
             <button
               onClick={() => setVisible(PAGE)}
-              className="hover-lift rounded-full px-3 py-1.5 text-[12px] text-[#6a7076] hover:text-white"
+              className="hover-lift rounded-full px-3 py-1.5 text-[12px] text-[#7A828D] hover:text-white"
             >
               Collapse
             </button>

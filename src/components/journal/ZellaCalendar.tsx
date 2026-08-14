@@ -79,7 +79,7 @@ export function ZellaCalendar({
               const dt = DateTime.fromISO(d.key);
               return dt.month === m.month && dt.year === m.year;
             }).length;
-            const color = pnl > 0 ? WIN_GREEN : pnl < 0 ? LOSS_RED : "#6a7076";
+            const color = pnl > 0 ? WIN_GREEN : pnl < 0 ? LOSS_RED : "#7A828D";
             return (
               <button
                 key={m.toISO()}
@@ -90,13 +90,13 @@ export function ZellaCalendar({
                   border: `1px solid ${count ? `${color}4d` : "rgba(255,255,255,0.06)"}`,
                 }}
               >
-                <span className="text-[11px] uppercase tracking-[0.08em] text-[#8b9298]">
+                <span className="text-[11px] uppercase tracking-[0.08em] text-[#9AA1AC]">
                   {m.setLocale("en").toFormat("LLLL")}
                 </span>
                 <span className="font-mono text-[16px] tabular" style={{ color, fontWeight: 560 }}>
                   {count ? money(pnl) : "—"}
                 </span>
-                <span className="text-[10px] text-[#6a7076]">{count} active days</span>
+                <span className="text-[10px] text-[#7A828D]">{count} active days</span>
               </button>
             );
           })}
@@ -115,7 +115,7 @@ export function ZellaCalendar({
           {["mon", "tue", "wed", "thu", "fri"].map((d) => (
             <span
               key={d}
-              className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#6a7076]"
+              className="pb-1 text-center text-[10px] uppercase tracking-[0.1em] text-[#7A828D]"
             >
               {d}
             </span>
@@ -138,12 +138,12 @@ export function ZellaCalendar({
       </div>
 
       <div className="flex flex-col gap-2 border-t border-white/6 pt-3">
-        <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
+        <span className="text-[10px] uppercase tracking-[0.1em] text-[#7A828D]">
           Weekly totals
         </span>
         <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-6">
           {weeks.map((w) => {
-            const wColor = w.pnl > 0 ? WIN_GREEN : w.pnl < 0 ? LOSS_RED : "#6a7076";
+            const wColor = w.pnl > 0 ? WIN_GREEN : w.pnl < 0 ? LOSS_RED : "#7A828D";
             return (
               <div
                 key={w.index}
@@ -153,7 +153,7 @@ export function ZellaCalendar({
                   border: "1px solid rgba(255,255,255,0.07)",
                 }}
               >
-                <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
+                <span className="text-[10px] uppercase tracking-[0.08em] text-[#7A828D]">
                   Week {w.index}
                 </span>
                 <span className="flex flex-col items-end">
@@ -163,7 +163,7 @@ export function ZellaCalendar({
                   >
                     {w.days ? money(w.pnl) : "—"}
                   </span>
-                  <span className="text-[9.5px] text-[#6a7076]">{w.days} days</span>
+                  <span className="text-[9.5px] text-[#7A828D]">{w.days} days</span>
                 </span>
               </div>
             );
@@ -188,13 +188,13 @@ function Header({
   onMonthChange: (m: DateTime) => void;
   yearly?: boolean;
 }) {
-  const color = monthPnl > 0 ? WIN_GREEN : monthPnl < 0 ? LOSS_RED : "#8b9298";
+  const color = monthPnl > 0 ? WIN_GREEN : monthPnl < 0 ? LOSS_RED : "#9AA1AC";
   return (
     <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:flex sm:justify-between">
       <div className="flex min-w-0 items-center gap-2">
         <button
           onClick={() => onMonthChange(month.minus(yearly ? { years: 1 } : { months: 1 }))}
-          className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[12px] text-[#d7dbe0] hover:bg-white/12"
+          className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
           aria-label="Previous"
         >
           ←
@@ -204,14 +204,14 @@ function Header({
         </h2>
         <button
           onClick={() => onMonthChange(month.plus(yearly ? { years: 1 } : { months: 1 }))}
-          className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[12px] text-[#d7dbe0] hover:bg-white/12"
+          className="hover-lift rounded-full bg-white/6 px-2.5 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
           aria-label="Next"
         >
           →
         </button>
         <button
           onClick={() => onMonthChange(DateTime.now().setZone(LOCAL_ZONE).startOf("month"))}
-          className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#d7dbe0] hover:bg-white/12"
+          className="hover-lift rounded-full bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
         >
           This Month
         </button>
@@ -249,7 +249,7 @@ function WeekRow({
         const key = c.toFormat("yyyy-LL-dd");
         const stat = byDay.get(key);
         const inMonth = c.month === month.month;
-        const color = !stat ? "#6a7076" : stat.pnl > 0 ? WIN_GREEN : stat.pnl < 0 ? LOSS_RED : "#8b9298";
+        const color = !stat ? "#7A828D" : stat.pnl > 0 ? WIN_GREEN : stat.pnl < 0 ? LOSS_RED : "#9AA1AC";
         return (
           <div
             key={key}
@@ -265,7 +265,7 @@ function WeekRow({
                 cursor: stat ? "pointer" : "default",
               }}
             >
-              <span className="font-mono text-[10px] leading-none text-[#8b9298] sm:text-[11px]">{c.day}</span>
+              <span className="font-mono text-[10px] leading-none text-[#9AA1AC] sm:text-[11px]">{c.day}</span>
               {stat && (
                 <span className="flex min-w-0 flex-col gap-0.5">
                   {mode === "pnl" && (
@@ -283,7 +283,7 @@ function WeekRow({
                       {stat.count}
                     </span>
                   )}
-                  <span className="truncate text-[8.5px] leading-tight text-[#8b9298] sm:text-[10px]">
+                  <span className="truncate text-[8.5px] leading-tight text-[#9AA1AC] sm:text-[10px]">
                     {stat.count}t<span className="hidden sm:inline"> · {stat.winRate.toFixed(0)}%</span>
                   </span>
 
@@ -301,7 +301,7 @@ function WeekRow({
               style={{
                 background: "rgba(255,255,255,0.08)",
                 border: "1px solid rgba(255,255,255,0.14)",
-                color: "#d7dbe0",
+                color: "#F0F2F5",
               }}
             >
               <Plus className="size-3" strokeWidth={2} />
@@ -318,7 +318,7 @@ function WeekRow({
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: "1px solid rgba(255,255,255,0.14)",
-                  color: "#d7dbe0",
+                  color: "#F0F2F5",
                 }}
               >
                 <MessageSquare className="size-2.5" strokeWidth={2} />
@@ -344,12 +344,12 @@ function Tabs({ mode, onMode }: { mode: CalendarMode; onMode: (m: CalendarMode) 
           style={
             mode === m.id
               ? {
-                  background: "#20242a",
+                  background: "#1C1F27",
                   color: "#ffffff",
                   fontWeight: 560,
                   boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
                 }
-              : { background: "rgba(255,255,255,0.05)", color: "#8b9298" }
+              : { background: "rgba(255,255,255,0.05)", color: "#9AA1AC" }
           }
         >
           {m.label}

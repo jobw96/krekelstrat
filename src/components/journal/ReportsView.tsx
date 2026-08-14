@@ -18,7 +18,7 @@ import {
 } from "@/lib/journal-reports";
 
 function pnlColor(n: number) {
-  return n > 0 ? WIN_GREEN : n < 0 ? LOSS_RED : "#8b9298";
+  return n > 0 ? WIN_GREEN : n < 0 ? LOSS_RED : "#9AA1AC";
 }
 
 function sessionLabel(code: string) {
@@ -28,14 +28,14 @@ function sessionLabel(code: string) {
 function Kpi({ label, value, hint, color }: { label: string; value: string; hint?: string | undefined; color?: string | undefined }) {
   return (
     <div className="glass-inset flex flex-col gap-1 p-3">
-      <span className="text-[10.5px] uppercase tracking-[0.08em] text-[#6a7076]">{label}</span>
+      <span className="text-[10.5px] uppercase tracking-[0.08em] text-[#7A828D]">{label}</span>
       <span
         className="font-mono text-[17px] tabular"
         style={{ color: color ?? "#ffffff", fontWeight: 560 }}
       >
         {value}
       </span>
-      {hint && <span className="text-[10.5px] text-[#6a7076]">{hint}</span>}
+      {hint && <span className="text-[10.5px] text-[#7A828D]">{hint}</span>}
     </div>
   );
 }
@@ -62,14 +62,14 @@ function BucketTable({
         <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
           {title}
         </h3>
-        {subtitle && <span className="text-[11px] text-[#6a7076]">{subtitle}</span>}
+        {subtitle && <span className="text-[11px] text-[#7A828D]">{subtitle}</span>}
       </header>
 
       {list.length === 0 ? (
-        <p className="py-5 text-center text-[12px] text-[#6a7076]">{empty}</p>
+        <p className="py-5 text-center text-[12px] text-[#7A828D]">{empty}</p>
       ) : (
         <div className="flex flex-col gap-1">
-          <div className="grid grid-cols-[minmax(0,1fr)_54px_58px_66px_74px] gap-2 px-2 text-[10px] uppercase tracking-[0.07em] text-[#5c6167]">
+          <div className="grid grid-cols-[minmax(0,1fr)_54px_58px_66px_74px] gap-2 px-2 text-[10px] uppercase tracking-[0.07em] text-[#454B55]">
             <span>Name</span>
             <span className="text-right">Trades</span>
             <span className="text-right">Win %</span>
@@ -87,9 +87,9 @@ function BucketTable({
                 }}
               />
               <div className="relative grid grid-cols-[minmax(0,1fr)_54px_58px_66px_74px] items-center gap-2 px-2 py-2">
-                <span className="truncate text-[12.5px] text-[#d7dbe0]">{r.key}</span>
-                <span className="text-right font-mono text-[11px] text-[#8b9298]">{r.count}</span>
-                <span className="text-right font-mono text-[11px] text-[#8b9298]">
+                <span className="truncate text-[12.5px] text-[#F0F2F5]">{r.key}</span>
+                <span className="text-right font-mono text-[11px] text-[#9AA1AC]">{r.count}</span>
+                <span className="text-right font-mono text-[11px] text-[#9AA1AC]">
                   {r.winRate.toFixed(0)}%
                 </span>
                 <span
@@ -120,10 +120,10 @@ function TagTable({ title, subtitle, rows, accent }: { title: string; subtitle: 
         <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
           {title}
         </h3>
-        <span className="text-[11px] text-[#6a7076]">{subtitle}</span>
+        <span className="text-[11px] text-[#7A828D]">{subtitle}</span>
       </header>
       {rows.length === 0 ? (
-        <p className="py-5 text-center text-[12px] text-[#6a7076]">
+        <p className="py-5 text-center text-[12px] text-[#7A828D]">
           No review tags yet — tag your trades to build this report.
         </p>
       ) : (
@@ -135,7 +135,7 @@ function TagTable({ title, subtitle, rows, accent }: { title: string; subtitle: 
             >
               {r.tag}
             </span>
-            <span className="flex items-center gap-4 font-mono text-[11px] text-[#6a7076]">
+            <span className="flex items-center gap-4 font-mono text-[11px] text-[#7A828D]">
               <span>{r.count}×</span>
               <span>{r.winRate.toFixed(0)}%</span>
               <span className="tabular" style={{ color: pnlColor(r.avgPnl) }}>
@@ -189,7 +189,7 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
   if (trades.length === 0) {
     return (
       <section className="card-surface p-8 text-center">
-        <p className="text-[13px] text-[#8b9298]">No trades in this range — log trades to build reports.</p>
+        <p className="text-[13px] text-[#9AA1AC]">No trades in this range — log trades to build reports.</p>
       </section>
     );
   }
@@ -201,7 +201,7 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
           <h2 className="text-[15px] text-white" style={{ fontWeight: 560 }}>
             Performance report
           </h2>
-          <span className="text-[11px] text-[#6a7076]">
+          <span className="text-[11px] text-[#7A828D]">
             {trades.length} trades · times in {tz === "AMS" ? "Amsterdam" : "New York"}
           </span>
         </header>
@@ -244,7 +244,7 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
           Key takeaways
         </h3>
         {data.tips.map((t, i) => {
-          const c = t.tone === "good" ? WIN_GREEN : t.tone === "bad" ? LOSS_RED : "#5ec8f5";
+          const c = t.tone === "good" ? WIN_GREEN : t.tone === "bad" ? LOSS_RED : "#6E86F7";
           return (
             <div
               key={i}
@@ -252,7 +252,7 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
               style={{ boxShadow: `inset 2px 0 0 ${c}` }}
             >
               <span className="mt-[6px] size-1.5 shrink-0 rounded-full" style={{ background: c }} />
-              <p className="text-[12.5px] leading-[1.6] text-[#d7dbe0]">{t.text}</p>
+              <p className="text-[12.5px] leading-[1.6] text-[#F0F2F5]">{t.text}</p>
             </div>
           );
         })}

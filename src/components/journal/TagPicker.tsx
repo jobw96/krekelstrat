@@ -43,7 +43,7 @@ export function TagPicker({ label, color, presets, value, onChange }: Props) {
               className="rounded-full px-2.5 py-1 text-[11px] transition-colors duration-150"
               style={{
                 background: on ? `${color}26` : "rgba(255,255,255,0.05)",
-                color: on ? color : "#8b9298",
+                color: on ? color : "#9AA1AC",
                 boxShadow: `inset 0 0 0 1px ${on ? `${color}66` : "rgba(255,255,255,0.07)"}`,
               }}
             >
@@ -86,14 +86,14 @@ export function TagPicker({ label, color, presets, value, onChange }: Props) {
               }
             }}
             placeholder="Custom tag"
-            className="w-28 rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-white outline-none placeholder:text-[#6a7076]"
+            className="w-28 rounded-full bg-white/6 px-2.5 py-1 text-[11px] text-white outline-none placeholder:text-[#7A828D]"
             style={{ boxShadow: `inset 0 0 0 1px ${color}44` }}
           />
         ) : (
           <button
             type="button"
             onClick={() => setAdding(true)}
-            className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] text-[#8b9298] transition-colors duration-150 hover:text-white"
+            className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] text-[#9AA1AC] transition-colors duration-150 hover:text-white"
             style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.07)" }}
           >
             <Plus className="size-3" />

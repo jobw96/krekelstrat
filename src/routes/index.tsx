@@ -133,10 +133,10 @@ function Dashboard() {
                 borderColor: "rgba(255,77,94,0.28)",
                 background: "rgba(255,77,94,0.07)",
                 boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.05)",
-                color: "#f0b8bd",
+                color: "#F5928F",
               }}
             >
-              <AlertTriangle className="size-3.5" style={{ color: "#ff4d5e" }} />
+              <AlertTriangle className="size-3.5" style={{ color: "#F0736F" }} />
               <span style={{ fontWeight: 560 }}>Red Folder news window</span>
               <span className="font-mono text-[11px]">
                 {nextRedFolder.title} ·{" "}
@@ -170,10 +170,10 @@ function Dashboard() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -6 }}
                   transition={{ duration: 0.25 }}
-                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3 py-1.5 text-[13px] text-[#d7dbe0]"
+                  className="inline-flex w-fit items-center gap-2 rounded-full bg-white/8 px-3 py-1.5 text-[13px] text-[#F0F2F5]"
                 >
                   <Dot
-                    color={state?.active ? toneColor[state.active.def.tone] : "#6a7076"}
+                    color={state?.active ? toneColor[state.active.def.tone] : "#7A828D"}
                     pulse={Boolean(state?.active)}
                   />
                   {state?.active ? state.active.def.name : "No session active"}
@@ -187,7 +187,7 @@ function Dashboard() {
                 >
                   {state?.active ? state.active.def.tag : "Between sessions"}
                 </h1>
-                <p className="max-w-[46ch] text-[15px] text-[#8b9298]">
+                <p className="max-w-[46ch] text-[15px] text-[#9AA1AC]">
                   {state?.active
                     ? state.active.def.focus
                     : `Next up is ${state?.next.def.name ?? "—"} — stay flat and let the model come to you.`}
@@ -216,12 +216,12 @@ function Dashboard() {
                         className="absolute inset-y-0 left-0 w-px"
                         style={{
                           background:
-                            "linear-gradient(180deg, rgba(229,82,95,0) 0%, rgba(229,82,95,0.75) 50%, rgba(229,82,95,0) 100%)",
+                            "linear-gradient(180deg, rgba(110,134,247,0) 0%, rgba(110,134,247,0.7) 50%, rgba(110,134,247,0) 100%)",
                         }}
                       />
                       <div className="flex flex-col gap-1.5">
-                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#a4747a]">
-                          <Dot color="#e5525f" pulse />
+                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#7A828D]">
+                          <Dot color="#6E86F7" pulse />
                           Fair Price · session open
                         </span>
                         <span
@@ -235,24 +235,24 @@ function Dashboard() {
                         </span>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <span className="text-[11px] tracking-[0.04em] text-[#6a7076]">
+                        <span className="text-[11px] tracking-[0.04em] text-[#7A828D]">
                           Distance
                         </span>
                         <span
                           className="font-mono text-[19px] leading-none tabular"
                           style={{
                             color:
-                              diff == null ? "#8b9298" : diff >= 0 ? "#4fd18b" : "#e5525f",
+                              diff == null ? "#9AA1AC" : diff >= 0 ? "#3ECF8E" : "#F0736F",
                           }}
                         >
                           {diff != null ? formatPoints(diff) : "—"}
                         </span>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <span className="text-[11px] tracking-[0.04em] text-[#6a7076]">
+                        <span className="text-[11px] tracking-[0.04em] text-[#7A828D]">
                           Last
                         </span>
-                        <span className="font-mono text-[19px] leading-none text-[#d7dbe0] tabular">
+                        <span className="font-mono text-[19px] leading-none text-[#F0F2F5] tabular">
                           {last != null ? formatPrice(last) : "—"}
                         </span>
                       </div>
@@ -278,7 +278,7 @@ function Dashboard() {
                       transition={{ duration: 0.5 }}
                     />
                   </div>
-                  <div className="flex justify-between font-mono text-[11px] text-[#6a7076]">
+                  <div className="flex justify-between font-mono text-[11px] text-[#7A828D]">
                     <span>Elapsed {Math.round(state.progress * 100)}%</span>
                     <span>
                       Ends {state.active.end.setZone(LOCAL_ZONE).toFormat("HH:mm")} AMS
@@ -289,7 +289,7 @@ function Dashboard() {
             </div>
 
             <div className="card-surface flex flex-col gap-5 p-5 sm:p-7">
-              <div className="flex items-center gap-2 text-[13px] text-[#8b9298]">
+              <div className="flex items-center gap-2 text-[13px] text-[#9AA1AC]">
                 <Timer className="size-3.5" strokeWidth={1.6} />
                 Countdown to {state?.next.def.name ?? "—"}
               </div>
@@ -325,8 +325,8 @@ function Dashboard() {
               <section className="pb-10">
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
-                    <Clock className="size-3.5 text-[#6a7076]" strokeWidth={1.6} />
-                    <h2 className="text-[15px] tracking-[-0.011em] text-[#d7dbe0]">
+                    <Clock className="size-3.5 text-[#7A828D]" strokeWidth={1.6} />
+                    <h2 className="text-[15px] tracking-[-0.011em] text-[#F0F2F5]">
                       Sessions &amp; Volume Windows
                     </h2>
                   </div>
@@ -347,10 +347,10 @@ function Dashboard() {
                           tz === z
                             ? {
                                 background: "rgba(255,255,255,0.09)",
-                                color: "#e8ebee",
+                                color: "#F0F2F5",
                                 boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)",
                               }
-                            : { color: "#6a7076" }
+                            : { color: "#7A828D" }
                         }
                       >
                         {z}
@@ -394,9 +394,9 @@ function ClockCell({
 }) {
   return (
     <div className="glass-inset flex flex-col gap-1 p-3">
-      <span className="text-[11px] text-[#6a7076]">{label}</span>
-      <span className="font-mono text-[19px] text-[#d7dbe0] tabular">{value}</span>
-      <span className="font-mono text-[10px] text-[#6a7076]">{zone}</span>
+      <span className="text-[11px] text-[#7A828D]">{label}</span>
+      <span className="font-mono text-[19px] text-[#F0F2F5] tabular">{value}</span>
+      <span className="font-mono text-[10px] text-[#7A828D]">{zone}</span>
     </div>
   );
 }

@@ -102,7 +102,7 @@ function ProfilePage() {
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-5 pb-10">
       <header className="flex items-center gap-2">
-        <UserRound className="size-4 text-[#5ec8f5]" strokeWidth={1.6} />
+        <UserRound className="size-4 text-[#6E86F7]" strokeWidth={1.6} />
         <h1 className="text-[18px] text-white" style={{ fontWeight: 560 }}>
           Profile &amp; Settings
         </h1>
@@ -114,7 +114,7 @@ function ProfilePage() {
             <h2 className="text-[15px] text-white" style={{ fontWeight: 560 }}>
               Trader profile
             </h2>
-            <p className="text-[12.5px] text-[#8b9298]">
+            <p className="text-[12.5px] text-[#9AA1AC]">
               Your name and photo are shown in the sidebar and on shared journals.
             </p>
           </div>
@@ -130,7 +130,7 @@ function ProfilePage() {
               {shownAvatar ? (
                 <img src={shownAvatar} alt="Profile photo" className="size-full object-cover" />
               ) : (
-                <span className="flex size-full items-center justify-center text-[20px] text-[#8b9298]">
+                <span className="flex size-full items-center justify-center text-[20px] text-[#9AA1AC]">
                   {(name.trim()[0] ?? "?").toUpperCase()}
                 </span>
               )}
@@ -145,11 +145,11 @@ function ProfilePage() {
                 type="button"
                 onClick={() => fileRef.current?.click()}
                 disabled={!canEdit}
-                className="hover-lift self-start rounded-full bg-white/6 px-3 py-1.5 text-[12.5px] text-[#d7dbe0] disabled:opacity-50"
+                className="hover-lift self-start rounded-full bg-white/6 px-3 py-1.5 text-[12.5px] text-[#F0F2F5] disabled:opacity-50"
               >
                 Upload photo
               </button>
-              <span className="text-[11px] text-[#6a7076]">PNG or JPG, max 4 MB</span>
+              <span className="text-[11px] text-[#7A828D]">PNG or JPG, max 4 MB</span>
             </div>
             <input
               ref={fileRef}
@@ -161,7 +161,7 @@ function ProfilePage() {
           </div>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]">Name</span>
+            <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#7A828D]">Name</span>
             <input
               value={name}
               onChange={(e) => {
@@ -171,19 +171,19 @@ function ProfilePage() {
               maxLength={40}
               disabled={!canEdit}
               placeholder="Your name"
-              className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#e5525f]/60 focus:bg-white/6 disabled:opacity-60"
+              className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6 disabled:opacity-60"
             />
           </label>
 
           <div className="flex flex-col gap-1.5">
-            <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]">Account</span>
-            <span className="rounded-lg border border-white/8 bg-white/3 px-3 py-2.5 text-[13px] text-[#8b9298]">
+            <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#7A828D]">Account</span>
+            <span className="rounded-lg border border-white/8 bg-white/3 px-3 py-2.5 text-[13px] text-[#9AA1AC]">
               {loading ? "…" : canEdit ? user.email : "Guest mode · not signed in"}
             </span>
           </div>
 
-          {error && <p className="text-[12px] text-[#f08a93]">{error}</p>}
-          {saved && !error && <p className="text-[12px] text-[#78d6a3]">Profile saved.</p>}
+          {error && <p className="text-[12px] text-[#F5928F]">{error}</p>}
+          {saved && !error && <p className="text-[12px] text-[#3ECF8E]">Profile saved.</p>}
 
           <div className="mt-1 flex items-center justify-between gap-2">
             {canEdit ? (
@@ -193,14 +193,14 @@ function ProfilePage() {
                   await signOut();
                   navigate({ to: "/auth" });
                 }}
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#d7dbe0]"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#F0F2F5]"
               >
                 <LogOut className="size-3.5" /> Sign out
               </button>
             ) : (
               <Link
                 to="/auth"
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#d7dbe0]"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3.5 py-2 text-[13px] text-[#F0F2F5]"
               >
                 Sign in
               </Link>
@@ -209,7 +209,7 @@ function ProfilePage() {
               type="submit"
               disabled={busy || !canEdit}
               className="hover-lift inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] disabled:opacity-60"
-              style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
+              style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
             >
               {busy && <Loader2 className="size-4 animate-spin" />} Save
             </button>
@@ -221,7 +221,7 @@ function ProfilePage() {
             <h2 className="text-[15px] text-white" style={{ fontWeight: 560 }}>
               Timezone
             </h2>
-            <p className="text-[12.5px] text-[#8b9298]">
+            <p className="text-[12.5px] text-[#9AA1AC]">
               Controls how session times are displayed on the dashboard.
             </p>
           </div>
@@ -242,9 +242,9 @@ function ProfilePage() {
                 >
                   <span className="flex flex-col gap-0.5">
                     <span className="text-[13.5px] text-white">{opt.label}</span>
-                    <span className="text-[11.5px] text-[#8b9298]">{opt.hint}</span>
+                    <span className="text-[11.5px] text-[#9AA1AC]">{opt.hint}</span>
                   </span>
-                  <span className="font-mono text-[10px] tracking-[0.08em] text-[#8b9298]">
+                  <span className="font-mono text-[10px] tracking-[0.08em] text-[#9AA1AC]">
                     {opt.value}
                   </span>
                 </button>

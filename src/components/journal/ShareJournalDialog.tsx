@@ -16,7 +16,7 @@ const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-2">
-      <h3 className="text-[10px] uppercase tracking-[0.12em] text-[#6a7076]">{title}</h3>
+      <h3 className="text-[10px] uppercase tracking-[0.12em] text-[#7A828D]">{title}</h3>
       {children}
     </section>
   );
@@ -77,7 +77,7 @@ export function ShareJournalDialog({
           <h2 className="text-[15px] text-white" style={{ fontWeight: 560 }}>
             Share journal
           </h2>
-          <button onClick={onClose} className="hover-lift rounded-full bg-white/6 p-1.5 text-[#8b9298]">
+          <button onClick={onClose} className="hover-lift rounded-full bg-white/6 p-1.5 text-[#9AA1AC]">
             <X className="size-4" />
           </button>
         </header>
@@ -86,19 +86,19 @@ export function ShareJournalDialog({
           <div className="flex flex-col gap-2">
             <div className="flex gap-2">
               <div className="glass-inset flex min-w-0 flex-1 items-center gap-2 px-3">
-                <Mail className="size-3.5 shrink-0 text-[#6a7076]" />
+                <Mail className="size-3.5 shrink-0 text-[#7A828D]" />
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="buddy@email.com"
-                  className="min-w-0 flex-1 bg-transparent py-2.5 text-[12.5px] text-white outline-none placeholder:text-[#6a7076]"
+                  className="min-w-0 flex-1 bg-transparent py-2.5 text-[12.5px] text-white outline-none placeholder:text-[#7A828D]"
                 />
               </div>
               <button
                 disabled={!isEmail(email) || invite.isPending}
                 onClick={() => invite.mutate()}
                 className="hover-lift inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12.5px] disabled:opacity-40"
-                style={{ background: "#e5525f", color: "#fff", fontWeight: 560 }}
+                style={{ background: "#6E86F7", color: "#fff", fontWeight: 560 }}
               >
                 {invite.isPending ? <Loader2 className="size-3.5 animate-spin" /> : null} Send invite
               </button>
@@ -108,12 +108,12 @@ export function ShareJournalDialog({
               className="hover-tint flex items-center justify-between rounded-lg bg-white/4 px-3 py-2.5 text-left"
             >
               <span className="flex flex-col">
-                <span className="text-[12.5px] text-[#d7dbe0]">Hide dollar amounts ($)</span>
-                <span className="text-[11px] text-[#6a7076]">Show only R-multiple & win rate %</span>
+                <span className="text-[12.5px] text-[#F0F2F5]">Hide dollar amounts ($)</span>
+                <span className="text-[11px] text-[#7A828D]">Show only R-multiple & win rate %</span>
               </span>
               <span
                 className="relative h-[20px] w-[36px] shrink-0 rounded-full transition-colors"
-                style={{ background: hide ? "#e5525f" : "rgba(255,255,255,0.14)" }}
+                style={{ background: hide ? "#F0736F" : "rgba(255,255,255,0.14)" }}
               >
                 <span
                   className="absolute top-[2px] size-[16px] rounded-full bg-white transition-all"
@@ -121,13 +121,13 @@ export function ShareJournalDialog({
                 />
               </span>
             </button>
-            {error && <p className="text-[11.5px] text-[#e5525f]">{error}</p>}
+            {error && <p className="text-[11.5px] text-[#F0736F]">{error}</p>}
           </div>
         </Section>
 
         <Section title="Shared with">
           {outgoing.length === 0 && (
-            <p className="rounded-lg bg-white/4 px-3 py-3 text-[12px] text-[#6a7076]">
+            <p className="rounded-lg bg-white/4 px-3 py-3 text-[12px] text-[#7A828D]">
               No buddies invited yet.
             </p>
           )}
@@ -135,7 +135,7 @@ export function ShareJournalDialog({
             <div key={s.id} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2.5">
               <span className="flex min-w-0 flex-col">
                 <span className="truncate text-[12.5px] text-white">{s.shared_with_email}</span>
-                <span className="text-[11px] text-[#6a7076]">
+                <span className="text-[11px] text-[#7A828D]">
                   {s.status === "accepted" ? "Accepted" : s.status === "declined" ? "Declined" : "Pending"}
                 </span>
               </span>
@@ -143,14 +143,14 @@ export function ShareJournalDialog({
                 <button
                   onClick={() => mask.mutate({ id: s.id, hide: !s.hide_dollar_amounts })}
                   title={s.hide_dollar_amounts ? "Dollar amounts hidden" : "Dollar amounts visible"}
-                  className="hover-lift rounded-full bg-white/6 p-1.5 text-[#8b9298]"
+                  className="hover-lift rounded-full bg-white/6 p-1.5 text-[#9AA1AC]"
                 >
                   {s.hide_dollar_amounts ? <EyeOff className="size-3.5" /> : <Eye className="size-3.5" />}
                 </button>
                 <button
                   onClick={() => revoke.mutate(s.id)}
                   title="Revoke access"
-                  className="hover-lift rounded-full bg-white/6 p-1.5 text-[#e5525f]"
+                  className="hover-lift rounded-full bg-white/6 p-1.5 text-[#F0736F]"
                 >
                   <Trash2 className="size-3.5" />
                 </button>
@@ -161,7 +161,7 @@ export function ShareJournalDialog({
 
         <Section title="Invitations for you">
           {incoming.length === 0 && (
-            <p className="rounded-lg bg-white/4 px-3 py-3 text-[12px] text-[#6a7076]">
+            <p className="rounded-lg bg-white/4 px-3 py-3 text-[12px] text-[#7A828D]">
               No invitations.
             </p>
           )}
@@ -169,7 +169,7 @@ export function ShareJournalDialog({
             <div key={s.id} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2.5">
               <span className="flex min-w-0 flex-col">
                 <span className="truncate text-[12.5px] text-white">{buddyLabel(s)}</span>
-                <span className="text-[11px] text-[#6a7076]">
+                <span className="text-[11px] text-[#7A828D]">
                   {s.status === "accepted" ? "Read-only access active" : s.status === "declined" ? "Declined" : "Pending invite"}
                 </span>
               </span>
@@ -177,7 +177,7 @@ export function ShareJournalDialog({
                 {s.status !== "accepted" && (
                   <button
                     onClick={() => respond.mutate({ id: s.id, status: "accepted" })}
-                    className="hover-lift inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1.5 text-[11.5px] text-[#10B981]"
+                    className="hover-lift inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1.5 text-[11.5px] text-[#3ECF8E]"
                   >
                     <Check className="size-3.5" /> Accept
                   </button>
@@ -185,7 +185,7 @@ export function ShareJournalDialog({
                 {s.status !== "declined" && (
                   <button
                     onClick={() => respond.mutate({ id: s.id, status: "declined" })}
-                    className="hover-lift inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1.5 text-[11.5px] text-[#e5525f]"
+                    className="hover-lift inline-flex items-center gap-1 rounded-full bg-white/6 px-2.5 py-1.5 text-[11.5px] text-[#F0736F]"
                   >
                     <X className="size-3.5" /> Decline
                   </button>

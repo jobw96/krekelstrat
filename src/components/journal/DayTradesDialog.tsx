@@ -16,7 +16,7 @@ import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
 import { ImageLightbox } from "@/components/journal/ImageLightbox";
 
 function resultColor(t: Trade) {
-  return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#8b9298";
+  return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#9AA1AC";
 }
 
 function TagRow({ label, value, color }: { label: string; value: string | null; color: string }) {
@@ -27,7 +27,7 @@ function TagRow({ label, value, color }: { label: string; value: string | null; 
     .filter(Boolean);
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">{label}</span>
+      <span className="text-[10px] uppercase tracking-[0.08em] text-[#7A828D]">{label}</span>
       {tags.map((tag, i) => (
         <span
           key={`${tag}-${i}`}
@@ -90,12 +90,12 @@ export function DayTradesDialog({
             </h2>
             <span
               className="font-mono text-[13px] tabular"
-              style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#8b9298" }}
+              style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#9AA1AC" }}
             >
               {money(total)} · {trades.length} trades
             </span>
           </div>
-          <button onClick={onClose} className="text-[#8b9298] hover:text-white">
+          <button onClick={onClose} className="text-[#9AA1AC] hover:text-white">
             <X className="size-4" />
           </button>
         </header>
@@ -104,7 +104,7 @@ export function DayTradesDialog({
         {trades.map((t) => (
           <article key={t.id} className="glass-inset flex min-w-0 flex-col gap-2 p-3">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="flex min-w-0 flex-wrap items-center gap-2 text-[12px] text-[#d7dbe0]">
+              <span className="flex min-w-0 flex-wrap items-center gap-2 text-[12px] text-[#F0F2F5]">
                 <span
                   className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
                   style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
@@ -113,7 +113,7 @@ export function DayTradesDialog({
                 </span>
                 {t.session ?? "—"} ·{" "}
                 {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("HH:mm")} AMS
-                <span className="text-[#6a7076]">
+                <span className="text-[#7A828D]">
                   {strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy"}
                 </span>
               </span>
@@ -124,31 +124,31 @@ export function DayTradesDialog({
                 >
                   {money(Number(t.pnl))}
                 </span>
-                <span className="font-mono text-[11px] text-[#8b9298]">
+                <span className="font-mono text-[11px] text-[#9AA1AC]">
                   {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
                 </span>
                 <button
                   onClick={() => setEditing(t)}
-                  className="text-[#6a7076] transition-colors hover:text-white"
+                  className="text-[#7A828D] transition-colors hover:text-white"
                   aria-label="Edit trade"
                 >
                   <Pencil className="size-3.5" />
                 </button>
                 <button
                   onClick={() => remove(t.id)}
-                  className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
+                  className="text-[#7A828D] transition-colors hover:text-[#F5928F]"
                   aria-label="Delete trade"
                 >
                   <Trash2 className="size-3.5" />
                 </button>
               </span>
             </div>
-            {t.notes && <p className="text-[12px] leading-[1.5] text-[#8b9298]">{t.notes}</p>}
+            {t.notes && <p className="text-[12px] leading-[1.5] text-[#9AA1AC]">{t.notes}</p>}
 
             <div className="flex flex-col gap-1.5">
               <TagRow label="Rights" value={t.went_right} color={WIN_GREEN} />
               <TagRow label="Wrongs" value={t.went_wrong} color={LOSS_RED} />
-              <TagRow label="Improvement" value={t.improvement} color="#8b9298" />
+              <TagRow label="Improvement" value={t.improvement} color="#9AA1AC" />
             </div>
 
             {shots[t.id] && (
@@ -164,7 +164,7 @@ export function DayTradesDialog({
                   loading="lazy"
                   className="w-full transition-transform duration-200 group-hover/img:scale-[1.02]"
                 />
-                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#d7dbe0] opacity-0 transition-opacity group-hover/img:opacity-100">
+                <span className="absolute right-2 top-2 grid size-6 place-items-center rounded-md bg-black/60 text-[#F0F2F5] opacity-0 transition-opacity group-hover/img:opacity-100">
                   <ZoomIn className="size-3.5" />
                 </span>
               </button>

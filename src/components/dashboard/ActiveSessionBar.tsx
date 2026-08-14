@@ -32,11 +32,11 @@ export function ActiveSessionBar({
   candles: MnqCandle[];
 }) {
   const def = state.active?.def ?? null;
-  const color = def ? toneColor[def.tone] : "#6a7076";
+  const color = def ? toneColor[def.tone] : "#7A828D";
 
   const open = def ? sessionOpenPrice(def, now, candles) : null;
   const diff = open != null && price != null ? price - open : null;
-  const diffColor = diff == null ? "#8b9298" : diff >= 0 ? "#35d39a" : "#e5525f";
+  const diffColor = diff == null ? "#9AA1AC" : diff >= 0 ? "#3ECF8E" : "#F0736F";
   const read = detectPhase(open, price, candles);
   const midnight = nyMidnightOpen(now, candles);
   const midnightTime = midnight
@@ -59,7 +59,7 @@ export function ActiveSessionBar({
           <span className="truncate text-[12px] leading-tight text-white" style={{ fontWeight: 560 }}>
             {def ? def.name : `Next: ${state.next.def.name}`}
           </span>
-          <span className="truncate font-mono text-[10px] leading-tight text-[#6a7076]">
+          <span className="truncate font-mono text-[10px] leading-tight text-[#7A828D]">
             {open != null ? formatPrice(open) : "—"} open
             {" · "}
             <span style={{ color: diffColor }}>{diff != null ? formatPoints(diff) : "—"}</span>
@@ -68,10 +68,10 @@ export function ActiveSessionBar({
           </span>
         </div>
         <div className="flex shrink-0 flex-col items-end">
-          <span className="text-[8px] uppercase tracking-[0.08em] text-[#6a7076]">
+          <span className="text-[8px] uppercase tracking-[0.08em] text-[#7A828D]">
             {def ? "Ends" : "Starts"}
           </span>
-          <span className="font-mono text-[12px] leading-tight tabular text-[#d7dbe0]">
+          <span className="font-mono text-[12px] leading-tight tabular text-[#F0F2F5]">
             {formatCountdown(def ? secondsToEnd : state.secondsToNext)}
           </span>
         </div>
@@ -90,7 +90,7 @@ export function ActiveSessionBar({
             >
               {def ? def.name : "No session active"}
             </span>
-            <span className="truncate font-mono text-[11px] text-[#6a7076]">
+            <span className="truncate font-mono text-[11px] text-[#7A828D]">
               {def
                 ? `${def.short} · ${formatRange(def, LOCAL_ZONE, now)} AMS · ${formatRange(def, NY_ZONE, now)} NY`
                 : `Next: ${state.next.def.name}`}
@@ -104,16 +104,16 @@ export function ActiveSessionBar({
             style={{
               background:
                 read.phase === "continuation"
-                  ? `${read.direction >= 0 ? "#35d39a" : "#e5525f"}22`
+                  ? `${read.direction >= 0 ? "#3ECF8E" : "#F0736F"}22`
                   : "rgba(69,211,224,0.14)",
               color:
                 read.phase === "continuation"
                   ? read.direction >= 0
-                    ? "#35d39a"
-                    : "#e5525f"
+                    ? "#3ECF8E"
+                    : "#F0736F"
                   : read.phase === "reversion"
-                    ? "#8b9298"
-                    : "#8b9298",
+                    ? "#9AA1AC"
+                    : "#9AA1AC",
             }}
           >
             {read.phase === "continuation" ? (
@@ -156,7 +156,7 @@ export function ActiveSessionBar({
 
         {def && (
           <div className="ml-auto hidden min-w-[150px] flex-col gap-1.5 sm:flex">
-            <div className="flex justify-between font-mono text-[10px] text-[#6a7076]">
+            <div className="flex justify-between font-mono text-[10px] text-[#7A828D]">
               <span>Elapsed</span>
               <span className="tabular">{Math.round(state.progress * 100)}%</span>
             </div>
@@ -188,16 +188,16 @@ function BarCell({
 }) {
   return (
     <div className="flex min-w-0 flex-col justify-start gap-0.5 self-start">
-      <span className="h-[13px] text-[10px] uppercase leading-[13px] tracking-[0.08em] text-[#6a7076]">
+      <span className="h-[13px] text-[10px] uppercase leading-[13px] tracking-[0.08em] text-[#7A828D]">
         {label}
       </span>
       <span
         className="font-mono text-[14px] leading-[18px] tabular"
-        style={{ color: color ?? "#d7dbe0", fontWeight: 560 }}
+        style={{ color: color ?? "#F0F2F5", fontWeight: 560 }}
       >
         {value}
       </span>
-      <span className="truncate font-mono text-[10px] leading-[13px] text-[#6a7076]">
+      <span className="truncate font-mono text-[10px] leading-[13px] text-[#7A828D]">
         {sub ?? "\u00a0"}
       </span>
     </div>

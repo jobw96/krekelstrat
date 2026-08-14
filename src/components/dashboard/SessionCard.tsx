@@ -23,9 +23,9 @@ import { CatalystBadge, RedFolderList } from "./NewsCatalyst";
 import { Badge, Dot } from "./primitives";
 
 /** Conditional colors for the pts / ticks distance metric. */
-export const LIVE_GREEN = "#10B981";
-export const LIVE_RED = "#e5525f";
-export const LIVE_NEUTRAL = "#8b9298";
+export const LIVE_GREEN = "#3ECF8E";
+export const LIVE_RED = "#F0736F";
+export const LIVE_NEUTRAL = "#9AA1AC";
 
 export function distanceColor(diff: number | null) {
   if (diff == null || diff === 0) return LIVE_NEUTRAL;
@@ -80,37 +80,38 @@ export function SessionCard({
   const redHot = redAlert && redFolderImminent(events, now);
 
 
+  const ACCENT = "#6E86F7";
+
   const surfaceStyle: Record<string, string | number> = active
     ? {
-        ["--glow" as never]: LIVE_GREEN,
-        borderColor: `${LIVE_GREEN}59`,
-        background: "#0c1113",
-        backgroundImage: `linear-gradient(180deg, ${LIVE_GREEN}1a 0%, rgba(255,255,255,0.028) 22%, rgba(255,255,255,0) 60%)`,
-        boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.07), 0 0 0 1px ${LIVE_GREEN}33, 0 0 26px -10px ${LIVE_GREEN}80, 0 24px 56px -32px rgba(0,0,0,0.95)`,
+        ["--glow" as never]: ACCENT,
+        borderColor: "rgba(110,134,247,0.30)",
+        background: "#1C1F27",
+        boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(110,134,247,0.22), 0 0 26px -12px ${ACCENT}, 0 12px 28px -16px rgba(0,0,0,0.7)`,
       }
     : redHot
       ? {
-          borderColor: "rgba(255,77,94,0.34)",
+          borderColor: "rgba(240,115,111,0.30)",
           boxShadow:
-            "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(255,77,94,0.16), 0 0 22px -12px rgba(255,77,94,0.7)",
-          opacity: 0.94,
+            "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(240,115,111,0.14), 0 0 22px -12px rgba(240,115,111,0.6)",
         }
       : status === "next"
-        ? { opacity: 0.82 }
-        : { opacity: 0.5 };
+        ? { opacity: 0.94 }
+        : { opacity: 0.62 };
 
   const redFolderBadge = redAlert ? (
     <span
-      className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.09em]"
+      className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
       style={{
-        background: "rgba(255,77,94,0.16)",
-        color: "#f08a93",
-        border: "1px solid rgba(255,77,94,0.4)",
+        background: "rgba(240,115,111,0.10)",
+        color: "#F0736F",
+        border: "1px solid rgba(240,115,111,0.28)",
+        fontWeight: 500,
       }}
     >
       <span
         className="pulse-dot inline-block size-1.5 rounded-full"
-        style={{ background: "#ff4d5e" }}
+        style={{ background: "#F0736F" }}
       />
       <AlertTriangle className="size-3" strokeWidth={2} />
       Red Folder News
@@ -120,24 +121,35 @@ export function SessionCard({
   const statusChip = active ? (
     <span
       className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
-      style={{ background: LIVE_GREEN, color: "#04140e", fontWeight: 560 }}
+      style={{
+        background: "rgba(110,134,247,0.12)",
+        color: "#8098FF",
+        border: "1px solid rgba(110,134,247,0.30)",
+        fontWeight: 500,
+      }}
     >
-      <span
-        className="pulse-dot inline-block size-1.5 rounded-full"
-        style={{ background: "#04140e" }}
-      />
+      <span className="pulse-dot inline-block size-1.5 rounded-full" style={{ background: ACCENT }} />
       Live now
     </span>
   ) : status === "next" ? (
-    <Badge color="#8b9298">
-      <Dot color="#8b9298" />
+    <span
+      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+      style={{
+        background: "rgba(110,134,247,0.12)",
+        color: "#8098FF",
+        border: "1px solid rgba(110,134,247,0.30)",
+        fontWeight: 500,
+      }}
+    >
+      <Dot color={ACCENT} />
       Next
-    </Badge>
+    </span>
   ) : (
-    <Badge color={LIVE_RED}>
-      <Dot color={LIVE_RED} />
+    <Badge color="#7A828D">
+      <Dot color="#7A828D" />
       Closed
     </Badge>
+
   );
 
   if (compact) {
@@ -154,11 +166,11 @@ export function SessionCard({
           <div className="flex min-w-0 flex-col">
             <h3
               className="truncate text-[14px] leading-tight"
-              style={{ color: active ? "#ffffff" : "#d7dbe0", fontWeight: 560 }}
+              style={{ color: active ? "#ffffff" : "#F0F2F5", fontWeight: 560 }}
             >
               {def.name}
             </h3>
-            <span className="font-mono text-[10px] tracking-[0.04em] text-[#6a7076]">
+            <span className="font-mono text-[10px] tracking-[0.04em] text-[#7A828D]">
               {formatRange(def, zone, now)} {zoneLabel}
             </span>
           </div>
@@ -169,16 +181,18 @@ export function SessionCard({
 
         {upcoming ? (
           <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
-            <span className="text-[9px] uppercase tracking-[0.08em] text-[#6a7076]">Open</span>
-            <span className="font-mono text-[11px] text-[#6a7076]">Awaiting session open</span>
+            <span className="text-[9px] uppercase tracking-[0.08em] text-[#7A828D]">Open</span>
+            <span className="font-mono text-[11px] text-[#7A828D]">
+              Opens {formatRange(def, zone, now).split("–")[0]?.trim()} {zoneLabel}
+            </span>
           </div>
         ) : (
         <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
           <div className="flex flex-col">
-            <span className="text-[9px] uppercase tracking-[0.08em] text-[#6a7076]">
+            <span className="text-[9px] uppercase tracking-[0.08em] text-[#7A828D]">
               Open
             </span>
-            <span className="font-mono text-[13px] text-[#d7dbe0] tabular">
+            <span className="font-mono text-[13px] text-[#F0F2F5] tabular">
               {open != null ? formatPrice(open) : "—"}
             </span>
           </div>
@@ -212,11 +226,11 @@ export function SessionCard({
         <div className="flex flex-col gap-0.5">
           <h3
             className="text-[17px] leading-tight"
-            style={{ color: active ? "#ffffff" : "#d7dbe0", fontWeight: 560 }}
+            style={{ color: active ? "#ffffff" : "#F0F2F5", fontWeight: 560 }}
           >
             {def.name}
           </h3>
-          <span className="font-mono text-[11px] tracking-[0.04em] text-[#6a7076]">
+          <span className="font-mono text-[11px] tracking-[0.04em] text-[#7A828D]">
             {def.short}
           </span>
         </div>
@@ -238,8 +252,8 @@ export function SessionCard({
                   ? LIVE_GREEN
                   : LIVE_RED
                 : read.phase === "reversion"
-                  ? "#8b9298"
-                  : "#8b9298",
+                  ? "#9AA1AC"
+                  : "#9AA1AC",
           }}
         >
           {read.phase === "continuation" ? (
@@ -265,22 +279,22 @@ export function SessionCard({
 
       <dl className="glass-inset flex flex-col gap-1 p-3 font-mono text-[12px]">
         <div className="flex justify-between">
-          <dt className="text-[#6a7076]">AMS</dt>
-          <dd className="text-[#d7dbe0] tabular">{formatRange(def, LOCAL_ZONE, now)}</dd>
+          <dt className="text-[#7A828D]">AMS</dt>
+          <dd className="text-[#F0F2F5] tabular">{formatRange(def, LOCAL_ZONE, now)}</dd>
         </div>
         <div className="flex justify-between">
-          <dt className="text-[#6a7076]">NY</dt>
-          <dd className="text-[#8b9298] tabular">{formatRange(def, NY_ZONE, now)}</dd>
+          <dt className="text-[#7A828D]">NY</dt>
+          <dd className="text-[#9AA1AC] tabular">{formatRange(def, NY_ZONE, now)}</dd>
         </div>
       </dl>
 
       {!upcoming && (
       <div className="glass-inset flex items-end justify-between p-3">
         <div className="flex flex-col gap-0.5">
-          <span className="text-[10px] uppercase tracking-[0.08em] text-[#6a7076]">
+          <span className="text-[10px] uppercase tracking-[0.08em] text-[#7A828D]">
             MNQ session open
           </span>
-          <span className="font-mono text-[15px] text-[#d7dbe0] tabular">
+          <span className="font-mono text-[15px] text-[#F0F2F5] tabular">
             {open != null ? formatPrice(open) : "—"}
           </span>
         </div>
@@ -293,7 +307,7 @@ export function SessionCard({
           </span>
           <span
             className="font-mono text-[10px] tabular"
-            style={{ color: diff != null ? diffColor : "#6a7076" }}
+            style={{ color: diff != null ? diffColor : "#7A828D" }}
           >
             {diff != null ? formatTicks(diff) : "awaiting feed"}
           </span>
@@ -301,19 +315,19 @@ export function SessionCard({
       </div>
       )}
 
-      <p className="text-[13px] leading-[1.5] text-[#8b9298]">{def.focus}</p>
+      <p className="text-[13px] leading-[1.5] text-[#9AA1AC]">{def.focus}</p>
 
       <footer className="mt-auto flex items-center justify-between pt-2">
         <span
           className="text-[11px] uppercase tracking-[0.08em]"
           style={{
-            color: active ? LIVE_GREEN : status === "next" ? "#d7dbe0" : "#6a7076",
+            color: active ? ACCENT : status === "next" ? "#F0F2F5" : "#7A828D",
           }}
         >
           {active ? "Active now" : status === "next" ? "Upcoming next" : "Closed"}
         </span>
         {active && (
-          <span className="font-mono text-[12px] text-[#8b9298] tabular">
+          <span className="font-mono text-[12px] text-[#9AA1AC] tabular">
             {Math.round(state.progress * 100)}%
           </span>
         )}
@@ -323,7 +337,7 @@ export function SessionCard({
         <div className="h-1 w-full overflow-hidden rounded-full bg-white/8">
           <motion.div
             className="h-1 rounded-full"
-            style={{ background: LIVE_GREEN }}
+            style={{ background: ACCENT }}
             animate={{ width: `${state.progress * 100}%` }}
             transition={{ duration: 0.5 }}
           />
