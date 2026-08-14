@@ -133,16 +133,32 @@
   box-shadow: var(--shadow-hairline);
 }
 
-/* Core surface: flat near-black panel with a single hairline border and a
-   very faint top edge. Depth comes from contrast, not from glow. */
+/* Core surface: near-black panel with a soft cool wash rising from the
+   bottom, like the reference. One hairline border, no glow ring. */
 @utility card-surface {
   background-color: #0b0d10;
+  background-image: radial-gradient(
+    130% 90% at 20% 118%,
+    rgba(56, 104, 190, 0.14),
+    rgba(56, 104, 190, 0.04) 45%,
+    transparent 72%
+  );
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
   box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.045),
     0 1px 2px -1px rgba(0, 0, 0, 0.7),
     0 20px 44px -34px rgba(0, 0, 0, 0.9);
+}
+
+/* Featured panel: same wash, a touch stronger. Use sparingly. */
+@utility card-feature {
+  background-image: radial-gradient(
+    120% 100% at 25% 120%,
+    rgba(62, 116, 210, 0.26),
+    rgba(56, 104, 190, 0.08) 50%,
+    transparent 78%
+  );
 }
 
 @utility glass-inset {
@@ -151,17 +167,18 @@
   border-radius: 12px;
 }
 
-/* Ambient room: near-black with one restrained cool gradient at the top. */
+/* Ambient room: pure near-black with a faint cool vignette, as in the reference. */
 @utility app-shell {
   background-color: #060708;
   background-image:
-    radial-gradient(1200px 520px at 50% -20%, rgba(60, 100, 170, 0.07), transparent 70%),
-    linear-gradient(180deg, #0a0c0f 0%, #08090b 50%, #060708 100%);
+    radial-gradient(1100px 620px at 50% 112%, rgba(48, 90, 165, 0.09), transparent 72%),
+    linear-gradient(180deg, #090b0e 0%, #07080a 55%, #050607 100%);
 
   @media (max-width: 1023px) {
-    background-image: linear-gradient(180deg, #0a0c0f 0%, #08090b 50%, #060708 100%);
+    background-image: linear-gradient(180deg, #090b0e 0%, #07080a 55%, #050607 100%);
   }
 }
+
 
 
 
