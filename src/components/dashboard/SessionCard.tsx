@@ -182,7 +182,9 @@ export function SessionCard({
         {upcoming ? (
           <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
             <span className="text-[9px] uppercase tracking-[0.08em] text-[#7A828D]">Open</span>
-            <span className="font-mono text-[11px] text-[#7A828D]">Awaiting session open</span>
+            <span className="font-mono text-[11px] text-[#7A828D]">
+              Opens {formatRange(def, zone, now).split("–")[0]?.trim()} {zoneLabel}
+            </span>
           </div>
         ) : (
         <div className="glass-inset flex items-center justify-between gap-3 p-2.5">
