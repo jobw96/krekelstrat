@@ -76,24 +76,24 @@
 
 :root {
   color-scheme: dark;
-  --background: #04070d;
+  --background: #060708;
   --foreground: #ffffff;
-  --card: #0a0f18;
+  --card: #0b0d10;
   --card-foreground: #d7dbe0;
-  --popover: #0d131d;
+  --popover: #0e1013;
   --popover-foreground: #d7dbe0;
   --primary: #e5525f;
   --primary-foreground: #ffffff;
-  --secondary: #0d131d;
+  --secondary: #0e1013;
   --secondary-foreground: #d7dbe0;
-  --muted: #1a2230;
+  --muted: #171a1f;
   --muted-foreground: #8b9298;
-  --accent: #1a2230;
+  --accent: #171a1f;
   --accent-foreground: #ffffff;
   --destructive: #e5525f;
   --destructive-foreground: #ffffff;
-  --border: rgba(140, 180, 255, 0.09);
-  --input: #1a2230;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: #171a1f;
   --ring: #e5525f;
 }
 
@@ -133,50 +133,36 @@
   box-shadow: var(--shadow-hairline);
 }
 
-/* Core surface: deep blue glass panel with a lit top edge and a soft
-   luminous border — depth from light and a cool ambient tint. */
+/* Core surface: flat near-black panel with a single hairline border and a
+   very faint top edge. Depth comes from contrast, not from glow. */
 @utility card-surface {
-  background-color: #0a0f18;
-  background-image: linear-gradient(
-      180deg,
-      rgba(120, 170, 255, 0.075) 0%,
-      rgba(90, 140, 230, 0.025) 22%,
-      rgba(255, 255, 255, 0) 58%
-    ),
-    radial-gradient(120% 80% at 0% 0%, rgba(70, 130, 220, 0.1), transparent 60%);
-  border: 1px solid rgba(130, 175, 255, 0.11);
+  background-color: #0b0d10;
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 14px;
   box-shadow:
-    inset 0 1px 0 0 rgba(190, 220, 255, 0.09),
-    inset 0 0 24px -10px rgba(90, 150, 255, 0.22),
-    0 0 0 1px rgba(80, 140, 240, 0.05),
-    0 1px 2px -1px rgba(0, 0, 0, 0.8),
-    0 26px 60px -34px rgba(0, 0, 0, 0.95);
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.04),
+    0 1px 2px -1px rgba(0, 0, 0, 0.7),
+    0 20px 44px -34px rgba(0, 0, 0, 0.9);
 }
 
 @utility glass-inset {
-  background-color: rgba(120, 170, 255, 0.028);
-  border: 1px solid rgba(140, 180, 255, 0.075);
+  background-color: rgba(255, 255, 255, 0.022);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
-  box-shadow: inset 0 1px 0 0 rgba(190, 220, 255, 0.06);
 }
 
-/* Ambient deep-blue room: cool key light from above, denser blue at the edges. */
+/* Ambient room: near-black with one restrained cool gradient at the top. */
 @utility app-shell {
-  background-color: #04070d;
+  background-color: #060708;
   background-image:
-    radial-gradient(1400px 640px at 50% -14%, rgba(70, 130, 230, 0.16), transparent 68%),
-    radial-gradient(900px 560px at 96% 106%, rgba(50, 110, 210, 0.11), transparent 70%),
-    radial-gradient(720px 520px at 0% 40%, rgba(40, 90, 190, 0.08), transparent 72%),
-    linear-gradient(180deg, #071019 0%, #050a12 45%, #03060a 100%);
+    radial-gradient(1200px 520px at 50% -20%, rgba(60, 100, 170, 0.07), transparent 70%),
+    linear-gradient(180deg, #0a0c0f 0%, #08090b 50%, #060708 100%);
 
-  /* On phones the big top glow reads as a haze over the first screenful. */
   @media (max-width: 1023px) {
-    background-image:
-      radial-gradient(900px 420px at 50% -18%, rgba(60, 120, 220, 0.1), transparent 70%),
-      linear-gradient(180deg, #071019 0%, #050a12 45%, #03060a 100%);
+    background-image: linear-gradient(180deg, #0a0c0f 0%, #08090b 50%, #060708 100%);
   }
 }
+
 
 
 @utility tabular {
