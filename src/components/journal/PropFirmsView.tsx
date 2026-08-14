@@ -12,17 +12,17 @@ const usd = (n: number) => `$${Math.abs(n).toFixed(0)}`;
 
 const STATUS_COLOR: Record<PropStatus, string> = {
   in_progress: "#6E86F7",
-  passed: WIN_GREEN,
-  payout: WIN_GREEN,
-  breached: LOSS_RED,
+  passed: "#8098FF",
+  payout: "#3ECF8E",
+  breached: "#7A828D",
 };
 
 type GroupKey = "evaluation" | "funded" | "breached";
 
 const GROUPS: { key: GroupKey; label: string; color: string }[] = [
-  { key: "evaluation", label: "Evaluation", color: "#6E86F7" },
-  { key: "funded", label: "Funded", color: WIN_GREEN },
-  { key: "breached", label: "Breached", color: LOSS_RED },
+  { key: "evaluation", label: "Evaluation", color: "#8098FF" },
+  { key: "funded", label: "Funded", color: "#F0F2F5" },
+  { key: "breached", label: "Breached", color: "#7A828D" },
 ];
 
 const groupOf = (r: PropAccount): GroupKey =>
