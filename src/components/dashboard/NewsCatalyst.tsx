@@ -22,7 +22,7 @@ export function RedFolderList({ events }: { events: RedFolderEvent[] }) {
         >
           <span
             className="pulse-dot inline-block size-1.5 rounded-full"
-            style={{ background: "#e5525f" }}
+            style={{ background: "#6E86F7" }}
           />
           {e.title} · {ams(e.time)} AMS
         </span>

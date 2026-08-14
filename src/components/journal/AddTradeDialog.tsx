@@ -20,7 +20,7 @@ import { sessionShortAt } from "@/lib/sessions";
 
 
 const inputCls =
-  "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]";
+  "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]";
 
 function SelectField({
   value,
@@ -38,7 +38,7 @@ function SelectField({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${inputCls} flex items-center justify-between text-left ${open ? "ring-1 ring-[#e5525f]" : ""}`}
+        className={`${inputCls} flex items-center justify-between text-left ${open ? "ring-1 ring-[#6E86F7]" : ""}`}
       >
         <span>{current?.label ?? "None"}</span>
         <ChevronDown
@@ -350,7 +350,7 @@ export function AddTradeDialog({
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Setup, execution, mistakes…"
-            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
+            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]"
           />
         </label>
 
@@ -383,7 +383,7 @@ export function AddTradeDialog({
             onChange={(e) => setImprovement(e.target.value)}
             rows={2}
             placeholder="One concrete adjustment…"
-            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
+            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]"
           />
         </label>
 

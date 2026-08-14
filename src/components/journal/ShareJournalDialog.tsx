@@ -98,7 +98,7 @@ export function ShareJournalDialog({
                 disabled={!isEmail(email) || invite.isPending}
                 onClick={() => invite.mutate()}
                 className="hover-lift inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12.5px] disabled:opacity-40"
-                style={{ background: "#e5525f", color: "#fff", fontWeight: 560 }}
+                style={{ background: "#6E86F7", color: "#fff", fontWeight: 560 }}
               >
                 {invite.isPending ? <Loader2 className="size-3.5 animate-spin" /> : null} Send invite
               </button>

@@ -119,7 +119,7 @@ function AuthPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@email.com"
-              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
+              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]"
             />
             <input
               type="password"
@@ -128,7 +128,7 @@ function AuthPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
-              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#e5525f]"
+              className="h-11 rounded-2xl bg-white/6 px-4 text-[14px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]"
             />
             <button
               type="submit"

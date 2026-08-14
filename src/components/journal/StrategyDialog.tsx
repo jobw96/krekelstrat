@@ -81,7 +81,7 @@ export function StrategyDialog({
             maxLength={80}
             autoFocus
             placeholder="e.g. LO Reversion"
-            className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#e5525f]/60 focus:bg-white/6"
+            className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#6E86F7]/60 focus:bg-white/6"
           />
         </label>
 
@@ -95,7 +95,7 @@ export function StrategyDialog({
             maxLength={600}
             rows={5}
             placeholder="Entry criteria, session, invalidation, target…"
-            className="resize-y rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] leading-relaxed text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#e5525f]/60 focus:bg-white/6"
+            className="resize-y rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] leading-relaxed text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#6E86F7]/60 focus:bg-white/6"
           />
           <span className="self-end text-[11px] text-[#565c62]">{description.length}/600</span>
         </label>
@@ -114,7 +114,7 @@ export function StrategyDialog({
             type="submit"
             disabled={busy}
             className="hover-lift inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px]"
-            style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
+            style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
           >
             {busy && <Loader2 className="size-4 animate-spin" />} Save strategy
           </button>

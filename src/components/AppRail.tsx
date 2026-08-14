@@ -80,12 +80,12 @@ export function AppRail() {
               strokeWidth={1.6}
             />
             {alerting && (
-              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#e5525f] px-1 py-px font-mono text-[8px] leading-none text-white">
+              <span className="absolute -right-0.5 -top-0.5 rounded-full bg-[#6E86F7] px-1 py-px font-mono text-[8px] leading-none text-white">
                 {minutesToNews}
               </span>
             )}
             {active && (
-              <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
+              <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#6E86F7]" />
             )}
           </Link>
         );
@@ -103,7 +103,7 @@ export function AppRail() {
           strokeWidth={1.6}
         />
         {profileActive && (
-          <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#e5525f]" />
+          <span className="absolute -left-[13px] h-6 w-[3px] rounded-full bg-[#6E86F7]" />
         )}
       </Link>
     </aside>

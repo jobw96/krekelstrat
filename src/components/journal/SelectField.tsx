@@ -44,7 +44,7 @@ export function SelectField({
         aria-expanded={open}
         aria-label={label}
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-left text-[13.5px] text-white transition-colors hover:bg-white/6 focus:border-[#e5525f]/60 focus:outline-none"
+        className="flex w-full items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-left text-[13.5px] text-white transition-colors hover:bg-white/6 focus:border-[#6E86F7]/60 focus:outline-none"
       >
         <span className="truncate">{current?.label ?? "Select…"}</span>
         <ChevronDown

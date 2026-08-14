@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { DateTime } from "luxon";
 import { CalendarDays, ChevronLeft, ChevronRight, Clock, Minus, Plus } from "lucide-react";
 
-const ACCENT = "#e5525f";
+const ACCENT = "#6E86F7";
 const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
 function buildGrid(month: DateTime) {
@@ -179,7 +179,7 @@ export function DateTimePicker({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className={`${TRIGGER} ${open ? "ring-1 ring-[#e5525f]" : ""}`}
+        className={`${TRIGGER} ${open ? "ring-1 ring-[#6E86F7]" : ""}`}
       >
         <span>{dt.toFormat("d LLL yyyy · HH:mm")}</span>
         <CalendarDays className="size-3.5 text-[#6a7076]" />
@@ -263,7 +263,7 @@ export function DatePicker({
         aria-label={label}
         onClick={() => setOpen((o) => !o)}
         className={`inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] transition-colors hover:bg-white/12 ${
-          open ? "ring-1 ring-[#e5525f]" : ""
+          open ? "ring-1 ring-[#6E86F7]" : ""
         }`}
         style={{ color: dt ? "#d7dbe0" : "#6a7076" }}
       >

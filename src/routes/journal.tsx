@@ -341,7 +341,7 @@ function JournalPage() {
               <button
                 onClick={() => setAdding(true)}
                 className="hover-lift inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[13px] md:hidden"
-                style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
+                style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
               >
                 <Plus className="size-4" /> Trade
               </button>

@@ -51,7 +51,7 @@ export function JournalNav({
         onClick={onAddTrade}
         className="hover-lift inline-flex items-center justify-center gap-1.5 rounded-lg px-3 py-2.5 text-[13px]"
         style={{
-          background: "#e5525f",
+          background: "#6E86F7",
           color: "#ffffff",
           fontWeight: 560,
         }}

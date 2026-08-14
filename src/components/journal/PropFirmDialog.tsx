@@ -22,7 +22,7 @@ const schema = z.object({
 });
 
 const field =
-  "rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#e5525f]/60 focus:bg-white/6";
+  "rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#6E86F7]/60 focus:bg-white/6";
 const label = "text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]";
 
 /** Create / edit a prop firm evaluation or funded account. */
@@ -272,7 +272,7 @@ export function PropFirmDialog({
             type="submit"
             disabled={busy}
             className="hover-lift inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px]"
-            style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
+            style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
           >
             {busy && <Loader2 className="size-4 animate-spin" />} Save account
           </button>

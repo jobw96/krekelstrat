@@ -171,7 +171,7 @@ function ProfilePage() {
               maxLength={40}
               disabled={!canEdit}
               placeholder="Your name"
-              className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#e5525f]/60 focus:bg-white/6 disabled:opacity-60"
+              className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#6E86F7]/60 focus:bg-white/6 disabled:opacity-60"
             />
           </label>
 
@@ -209,7 +209,7 @@ function ProfilePage() {
               type="submit"
               disabled={busy || !canEdit}
               className="hover-lift inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[13px] disabled:opacity-60"
-              style={{ background: "#e5525f", color: "#ffffff", fontWeight: 560 }}
+              style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
             >
               {busy && <Loader2 className="size-4 animate-spin" />} Save
             </button>
