@@ -319,7 +319,7 @@ export function SessionCard({
         <span
           className="text-[11px] uppercase tracking-[0.08em]"
           style={{
-            color: active ? LIVE_GREEN : status === "next" ? "#F0F2F5" : "#7A828D",
+            color: active ? ACCENT : status === "next" ? "#F0F2F5" : "#7A828D",
           }}
         >
           {active ? "Active now" : status === "next" ? "Upcoming next" : "Closed"}
@@ -335,7 +335,7 @@ export function SessionCard({
         <div className="h-1 w-full overflow-hidden rounded-full bg-white/8">
           <motion.div
             className="h-1 rounded-full"
-            style={{ background: LIVE_GREEN }}
+            style={{ background: ACCENT }}
             animate={{ width: `${state.progress * 100}%` }}
             transition={{ duration: 0.5 }}
           />
