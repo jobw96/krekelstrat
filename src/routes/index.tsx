@@ -216,12 +216,12 @@ function Dashboard() {
                         className="absolute inset-y-0 left-0 w-px"
                         style={{
                           background:
-                            "linear-gradient(180deg, rgba(229,82,95,0) 0%, rgba(229,82,95,0.75) 50%, rgba(229,82,95,0) 100%)",
+                            "linear-gradient(180deg, rgba(110,134,247,0) 0%, rgba(110,134,247,0.7) 50%, rgba(110,134,247,0) 100%)",
                         }}
                       />
                       <div className="flex flex-col gap-1.5">
-                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#F5928F]">
-                          <Dot color="#F0736F" pulse />
+                        <span className="inline-flex w-fit items-center gap-1.5 text-[11px] tracking-[0.09em] uppercase text-[#7A828D]">
+                          <Dot color="#6E86F7" pulse />
                           Fair Price · session open
                         </span>
                         <span
