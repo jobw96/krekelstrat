@@ -136,8 +136,8 @@ export function PropFirmsView({ userId }: { userId: string }) {
             value={`${s.net < 0 ? "-" : "+"}${usd(s.net)}`}
             color={s.net > 0 ? WIN_GREEN : s.net < 0 ? LOSS_RED : "#9AA1AC"}
           />
-          <Stat label="Pass rate" value={`${s.passRate.toFixed(0)}%`} sub="settled evals" color={WIN_GREEN} />
-          <Stat label="Breach rate" value={`${s.breachRate.toFixed(0)}%`} sub="settled evals" color={LOSS_RED} />
+          <Stat label="Pass rate" value={`${s.passRate.toFixed(0)}%`} sub="settled evals" />
+          <Stat label="Breach rate" value={`${s.breachRate.toFixed(0)}%`} sub="settled evals" />
           <Stat label="Cost per pass" value={s.costPerPass ? usd(s.costPerPass) : "—"} />
         </div>
 
