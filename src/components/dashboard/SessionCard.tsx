@@ -80,32 +80,33 @@ export function SessionCard({
   const redHot = redAlert && redFolderImminent(events, now);
 
 
+  const ACCENT = "#6E86F7";
+
   const surfaceStyle: Record<string, string | number> = active
     ? {
-        ["--glow" as never]: LIVE_GREEN,
-        borderColor: `${LIVE_GREEN}59`,
-        background: "#121317",
-        backgroundImage: `linear-gradient(180deg, ${LIVE_GREEN}1a 0%, rgba(255,255,255,0.028) 22%, rgba(255,255,255,0) 60%)`,
-        boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.07), 0 0 0 1px ${LIVE_GREEN}33, 0 0 26px -10px ${LIVE_GREEN}80, 0 24px 56px -32px rgba(0,0,0,0.95)`,
+        ["--glow" as never]: ACCENT,
+        borderColor: "rgba(110,134,247,0.30)",
+        background: "#1C1F27",
+        boxShadow: `inset 0 1px 0 0 rgba(255,255,255,0.06), 0 0 0 1px rgba(110,134,247,0.22), 0 0 26px -12px ${ACCENT}, 0 12px 28px -16px rgba(0,0,0,0.7)`,
       }
     : redHot
       ? {
-          borderColor: "rgba(255,77,94,0.34)",
+          borderColor: "rgba(240,115,111,0.30)",
           boxShadow:
-            "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(255,77,94,0.16), 0 0 22px -12px rgba(255,77,94,0.7)",
-          opacity: 0.94,
+            "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(240,115,111,0.14), 0 0 22px -12px rgba(240,115,111,0.6)",
         }
       : status === "next"
-        ? { opacity: 0.82 }
-        : { opacity: 0.5 };
+        ? { opacity: 0.94 }
+        : { opacity: 0.62 };
 
   const redFolderBadge = redAlert ? (
     <span
-      className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.09em]"
+      className="inline-flex w-fit items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
       style={{
-        background: "rgba(255,77,94,0.16)",
-        color: "#F5928F",
-        border: "1px solid rgba(255,77,94,0.4)",
+        background: "rgba(240,115,111,0.10)",
+        color: "#F0736F",
+        border: "1px solid rgba(240,115,111,0.28)",
+        fontWeight: 500,
       }}
     >
       <span
@@ -120,24 +121,35 @@ export function SessionCard({
   const statusChip = active ? (
     <span
       className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
-      style={{ background: LIVE_GREEN, color: "#0F1A16", fontWeight: 560 }}
+      style={{
+        background: "rgba(110,134,247,0.12)",
+        color: "#8098FF",
+        border: "1px solid rgba(110,134,247,0.30)",
+        fontWeight: 500,
+      }}
     >
-      <span
-        className="pulse-dot inline-block size-1.5 rounded-full"
-        style={{ background: "#0F1A16" }}
-      />
+      <span className="pulse-dot inline-block size-1.5 rounded-full" style={{ background: ACCENT }} />
       Live now
     </span>
   ) : status === "next" ? (
-    <Badge color="#9AA1AC">
-      <Dot color="#9AA1AC" />
+    <span
+      className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] uppercase tracking-[0.08em]"
+      style={{
+        background: "rgba(110,134,247,0.12)",
+        color: "#8098FF",
+        border: "1px solid rgba(110,134,247,0.30)",
+        fontWeight: 500,
+      }}
+    >
+      <Dot color={ACCENT} />
       Next
-    </Badge>
+    </span>
   ) : (
-    <Badge color={LIVE_RED}>
-      <Dot color={LIVE_RED} />
+    <Badge color="#7A828D">
+      <Dot color="#7A828D" />
       Closed
     </Badge>
+
   );
 
   if (compact) {
