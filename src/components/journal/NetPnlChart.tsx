@@ -29,7 +29,7 @@ function PnlTooltip({ active, payload }: { active?: boolean; payload?: { value: 
       style={{
         background: "rgba(15,18,22,0.96)",
         border: "1px solid rgba(255,255,255,0.10)",
-        color: v > 0 ? WIN_GREEN : v < 0 ? LOSS_RED : "#8b9298",
+        color: v > 0 ? WIN_GREEN : v < 0 ? LOSS_RED : "#9AA1AC",
       }}
     >
       {money(v)}
@@ -77,9 +77,9 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
           </h3>
           <span
             className="font-mono text-[11px] tabular"
-            style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#6a7076" }}
+            style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#7A828D" }}
           >
-            {money(total)} <span className="text-[#6a7076]">· per {bucket}</span>
+            {money(total)} <span className="text-[#7A828D]">· per {bucket}</span>
           </span>
         </div>
         <div className="flex shrink-0 items-center gap-0.5 rounded-full bg-white/5 p-0.5">
@@ -92,7 +92,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
               style={
                 bucket === b.id
                   ? { background: "rgba(255,255,255,0.10)", color: "#ffffff" }
-                  : { color: "#6a7076" }
+                  : { color: "#7A828D" }
               }
             >
               <span className="sm:hidden">{b.label.charAt(0)}</span>
@@ -103,7 +103,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
       </header>
 
       {data.length === 0 ? (
-        <p className="py-10 text-center text-[12px] text-[#6a7076]">No data in this range.</p>
+        <p className="py-10 text-center text-[12px] text-[#7A828D]">No data in this range.</p>
       ) : (
         <div
           className="h-[180px] w-full min-w-0 sm:h-[220px]"
@@ -118,7 +118,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
               <CartesianGrid stroke="rgba(255,255,255,0.05)" vertical={false} />
               <XAxis
                 dataKey="label"
-                tick={{ fill: "#6a7076", fontSize: 10 }}
+                tick={{ fill: "#7A828D", fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
                 minTickGap={16}
@@ -126,7 +126,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
                 padding={{ left: 4, right: 4 }}
               />
               <YAxis
-                tick={{ fill: "#6a7076", fontSize: 10 }}
+                tick={{ fill: "#7A828D", fontSize: 10 }}
                 axisLine={false}
                 tickLine={false}
                 width={56}

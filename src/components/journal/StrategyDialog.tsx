@@ -67,26 +67,26 @@ export function StrategyDialog({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="hover-lift rounded-full bg-white/6 p-1.5 text-[#8b9298]"
+            className="hover-lift rounded-full bg-white/6 p-1.5 text-[#9AA1AC]"
           >
             <X className="size-4" />
           </button>
         </header>
 
         <label className="flex flex-col gap-1.5">
-          <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]">Name</span>
+          <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#7A828D]">Name</span>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={80}
             autoFocus
             placeholder="e.g. LO Reversion"
-            className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#6E86F7]/60 focus:bg-white/6"
+            className="rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6"
           />
         </label>
 
         <label className="flex flex-col gap-1.5">
-          <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]">
+          <span className="text-[11.5px] uppercase tracking-[0.08em] text-[#7A828D]">
             Description / rules
           </span>
           <textarea
@@ -95,18 +95,18 @@ export function StrategyDialog({
             maxLength={600}
             rows={5}
             placeholder="Entry criteria, session, invalidation, target…"
-            className="resize-y rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] leading-relaxed text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#6E86F7]/60 focus:bg-white/6"
+            className="resize-y rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] leading-relaxed text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6"
           />
-          <span className="self-end text-[11px] text-[#565c62]">{description.length}/600</span>
+          <span className="self-end text-[11px] text-[#454B55]">{description.length}/600</span>
         </label>
 
-        {error && <p className="text-[12px] text-[#f08a93]">{error}</p>}
+        {error && <p className="text-[12px] text-[#F5928F]">{error}</p>}
 
         <div className="mt-1 flex justify-end gap-2">
           <button
             type="button"
             onClick={onClose}
-            className="hover-lift rounded-full bg-white/6 px-4 py-2 text-[13px] text-[#d7dbe0]"
+            className="hover-lift rounded-full bg-white/6 px-4 py-2 text-[13px] text-[#F0F2F5]"
           >
             Cancel
           </button>

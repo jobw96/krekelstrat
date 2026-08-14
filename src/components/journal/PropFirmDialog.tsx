@@ -22,8 +22,8 @@ const schema = z.object({
 });
 
 const field =
-  "rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#565c62] focus:border-[#6E86F7]/60 focus:bg-white/6";
-const label = "text-[11.5px] uppercase tracking-[0.08em] text-[#6a7076]";
+  "rounded-lg border border-white/10 bg-white/4 px-3 py-2.5 text-[13.5px] text-white outline-none transition-colors placeholder:text-[#454B55] focus:border-[#6E86F7]/60 focus:bg-white/6";
+const label = "text-[11.5px] uppercase tracking-[0.08em] text-[#7A828D]";
 
 /** Create / edit a prop firm evaluation or funded account. */
 export function PropFirmDialog({
@@ -116,7 +116,7 @@ export function PropFirmDialog({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="hover-lift rounded-full bg-white/6 p-1.5 text-[#8b9298]"
+            className="hover-lift rounded-full bg-white/6 p-1.5 text-[#9AA1AC]"
           >
             <X className="size-4" />
           </button>
@@ -258,13 +258,13 @@ export function PropFirmDialog({
           />
         </label>
 
-        {error && <p className="text-[12px] text-[#f08a93]">{error}</p>}
+        {error && <p className="text-[12px] text-[#F5928F]">{error}</p>}
 
         <div className="mt-1 flex justify-end gap-2">
           <button
             type="button"
             onClick={onClose}
-            className="hover-lift rounded-full bg-white/6 px-4 py-2 text-[13px] text-[#d7dbe0]"
+            className="hover-lift rounded-full bg-white/6 px-4 py-2 text-[13px] text-[#F0F2F5]"
           >
             Cancel
           </button>

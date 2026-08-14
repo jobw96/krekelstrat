@@ -11,7 +11,7 @@ import { PropFirmDialog } from "./PropFirmDialog";
 const usd = (n: number) => `$${Math.abs(n).toFixed(0)}`;
 
 const STATUS_COLOR: Record<PropStatus, string> = {
-  in_progress: "#5ec8f5",
+  in_progress: "#6E86F7",
   passed: WIN_GREEN,
   payout: WIN_GREEN,
   breached: LOSS_RED,
@@ -20,7 +20,7 @@ const STATUS_COLOR: Record<PropStatus, string> = {
 type GroupKey = "evaluation" | "funded" | "breached";
 
 const GROUPS: { key: GroupKey; label: string; color: string }[] = [
-  { key: "evaluation", label: "Evaluation", color: "#5ec8f5" },
+  { key: "evaluation", label: "Evaluation", color: "#6E86F7" },
   { key: "funded", label: "Funded", color: WIN_GREEN },
   { key: "breached", label: "Breached", color: LOSS_RED },
 ];
@@ -35,11 +35,11 @@ const groupOf = (r: PropAccount): GroupKey =>
 function Stat({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
     <div className="glass-inset flex flex-col gap-1 p-3">
-      <span className="text-[10.5px] uppercase tracking-[0.08em] text-[#6a7076]">{label}</span>
+      <span className="text-[10.5px] uppercase tracking-[0.08em] text-[#7A828D]">{label}</span>
       <span className="font-mono text-[19px] tabular" style={{ color: color ?? "#ffffff", fontWeight: 560 }}>
         {value}
       </span>
-      {sub && <span className="text-[10.5px] text-[#6a7076]">{sub}</span>}
+      {sub && <span className="text-[10.5px] text-[#7A828D]">{sub}</span>}
     </div>
   );
 }
@@ -47,11 +47,11 @@ function Stat({ label, value, sub, color }: { label: string; value: string; sub?
 function HeroStat({ label, value, sub, color }: { label: string; value: string; sub?: string; color: string }) {
   return (
     <div className="card-surface flex flex-col gap-1.5 p-4">
-      <span className="text-[10.5px] uppercase tracking-[0.1em] text-[#6a7076]">{label}</span>
+      <span className="text-[10.5px] uppercase tracking-[0.1em] text-[#7A828D]">{label}</span>
       <span className="font-mono text-[26px] leading-none tabular" style={{ color, fontWeight: 560 }}>
         {value}
       </span>
-      {sub && <span className="text-[11px] text-[#6a7076]">{sub}</span>}
+      {sub && <span className="text-[11px] text-[#7A828D]">{sub}</span>}
     </div>
   );
 }
@@ -98,7 +98,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
   });
 
   const roi = s.totalCost ? (s.net / s.totalCost) * 100 : 0;
-  const netColor = s.net > 0 ? WIN_GREEN : s.net < 0 ? LOSS_RED : "#8b9298";
+  const netColor = s.net > 0 ? WIN_GREEN : s.net < 0 ? LOSS_RED : "#9AA1AC";
 
   return (
     <div className="flex flex-col gap-3">
@@ -115,7 +115,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
             <h2 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
               Prop firms
             </h2>
-            <span className="text-[11px] text-[#6a7076]">
+            <span className="text-[11px] text-[#7A828D]">
               Evaluations, costs and funded account performance
             </span>
           </div>
@@ -134,7 +134,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
           <Stat
             label="Net"
             value={`${s.net < 0 ? "-" : "+"}${usd(s.net)}`}
-            color={s.net > 0 ? WIN_GREEN : s.net < 0 ? LOSS_RED : "#8b9298"}
+            color={s.net > 0 ? WIN_GREEN : s.net < 0 ? LOSS_RED : "#9AA1AC"}
           />
           <Stat label="Pass rate" value={`${s.passRate.toFixed(0)}%`} sub="settled evals" color={WIN_GREEN} />
           <Stat label="Breach rate" value={`${s.breachRate.toFixed(0)}%`} sub="settled evals" color={LOSS_RED} />
@@ -142,7 +142,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
         </div>
 
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-          <Stat label="Active" value={String(s.active)} sub="in progress" color="#5ec8f5" />
+          <Stat label="Active" value={String(s.active)} sub="in progress" color="#6E86F7" />
           <Stat label="Funded accounts" value={String(s.funded)} />
           <Stat
             label="Funded survival"
@@ -157,9 +157,9 @@ export function PropFirmsView({ userId }: { userId: string }) {
         <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
           Accounts
         </h3>
-        {q.isLoading && <p className="py-6 text-center text-[12px] text-[#6a7076]">Loading…</p>}
+        {q.isLoading && <p className="py-6 text-center text-[12px] text-[#7A828D]">Loading…</p>}
         {!q.isLoading && rows.length === 0 && (
-          <p className="py-6 text-center text-[12px] text-[#6a7076]">
+          <p className="py-6 text-center text-[12px] text-[#7A828D]">
             No prop accounts logged yet — add your first evaluation.
           </p>
         )}
@@ -180,19 +180,19 @@ export function PropFirmsView({ userId }: { userId: string }) {
                 >
                   <span className="flex items-center gap-2">
                     <ChevronRight
-                      className="size-3.5 text-[#6a7076] transition-transform"
+                      className="size-3.5 text-[#7A828D] transition-transform"
                       style={{ transform: open ? "rotate(90deg)" : "none" }}
                     />
                     <span className="text-[12.5px]" style={{ color: g.color, fontWeight: 560 }}>
                       {g.label}
                     </span>
-                    <span className="rounded-full bg-white/6 px-2 py-0.5 font-mono text-[10.5px] text-[#8b9298]">
+                    <span className="rounded-full bg-white/6 px-2 py-0.5 font-mono text-[10.5px] text-[#9AA1AC]">
                       {list.length}
                     </span>
                   </span>
-                  <span className="flex items-center gap-3 font-mono text-[11px] text-[#6a7076]">
+                  <span className="flex items-center gap-3 font-mono text-[11px] text-[#7A828D]">
                     <span>-{usd(spendSum)} cost</span>
-                    <span style={{ color: netSum > 0 ? WIN_GREEN : netSum < 0 ? LOSS_RED : "#8b9298" }}>
+                    <span style={{ color: netSum > 0 ? WIN_GREEN : netSum < 0 ? LOSS_RED : "#9AA1AC" }}>
                       {netSum < 0 ? "-" : "+"}
                       {usd(netSum)}
                     </span>
@@ -200,7 +200,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                 </button>
 
                 {open && list.length === 0 && (
-                  <p className="px-3 pb-1 text-[11.5px] text-[#6a7076]">No accounts in this category.</p>
+                  <p className="px-3 pb-1 text-[11.5px] text-[#7A828D]">No accounts in this category.</p>
                 )}
 
                 {open &&
@@ -216,7 +216,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                           <span className="flex items-center gap-2 text-[12.5px] text-white">
                             {r.label?.trim() || r.firm}
                             {r.label?.trim() && (
-                              <span className="text-[11px] text-[#6a7076]">{r.firm}</span>
+                              <span className="text-[11px] text-[#7A828D]">{r.firm}</span>
                             )}
                             <span
                               className="rounded-full px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
@@ -225,22 +225,22 @@ export function PropFirmsView({ userId }: { userId: string }) {
                               {STATUS_LABEL[r.status]}
                             </span>
                             {r.status !== "breached" && (
-                              <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#8b9298]">
+                              <span className="rounded-full bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#9AA1AC]">
                                 {groupOf(r)}
                               </span>
                             )}
                           </span>
-                          <span className="font-mono text-[11px] text-[#6a7076]">
+                          <span className="font-mono text-[11px] text-[#7A828D]">
                             {r.account_size ? `$${(r.account_size / 1000).toFixed(0)}K` : "—"} ·{" "}
                             {DateTime.fromISO(r.started_at).toFormat("dd LLL yyyy")}
                           </span>
-                          {r.notes && <span className="truncate text-[11.5px] text-[#8b9298]">{r.notes}</span>}
+                          {r.notes && <span className="truncate text-[11.5px] text-[#9AA1AC]">{r.notes}</span>}
                         </span>
                         <span className="flex items-center gap-4">
-                          <span className="font-mono text-[11px] text-[#6a7076]">-{usd(spend)} cost</span>
+                          <span className="font-mono text-[11px] text-[#7A828D]">-{usd(spend)} cost</span>
                           <span
                             className="font-mono text-[13px] tabular"
-                            style={{ color: net > 0 ? WIN_GREEN : net < 0 ? LOSS_RED : "#8b9298", fontWeight: 560 }}
+                            style={{ color: net > 0 ? WIN_GREEN : net < 0 ? LOSS_RED : "#9AA1AC", fontWeight: 560 }}
                           >
                             {net < 0 ? "-" : "+"}
                             {usd(net)}
@@ -248,7 +248,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                           <button
                             onClick={() => setDialog({ open: true, account: r })}
                             aria-label="Edit account"
-                            className="text-[#6a7076] transition-colors hover:text-white"
+                            className="text-[#7A828D] transition-colors hover:text-white"
                           >
                             <Pencil className="size-3.5" />
                           </button>
@@ -258,7 +258,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                               refresh();
                             }}
                             aria-label="Delete account"
-                            className="text-[#6a7076] transition-colors hover:text-[#f08a93]"
+                            className="text-[#7A828D] transition-colors hover:text-[#F5928F]"
                           >
                             <Trash2 className="size-3.5" />
                           </button>
@@ -285,9 +285,9 @@ export function PropFirmsView({ userId }: { userId: string }) {
               className="hover-tint flex flex-col gap-1 rounded-xl bg-white/5 p-3"
             >
               <span className="flex items-center gap-1.5 text-[12.5px] text-white">
-                {f.name} <ExternalLink className="size-3 text-[#6a7076]" />
+                {f.name} <ExternalLink className="size-3 text-[#7A828D]" />
               </span>
-              <span className="font-mono text-[11px] text-[#6a7076]">
+              <span className="font-mono text-[11px] text-[#7A828D]">
                 {f.count} accounts · -{usd(f.spend)} · +{usd(f.payout)} · {f.passRate.toFixed(0)}% pass
               </span>
             </a>

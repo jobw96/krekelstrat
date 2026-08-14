@@ -27,7 +27,7 @@ function NewsPage() {
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-5">
       <header className="flex items-center gap-2">
-        <Newspaper className="size-4 text-[#5ec8f5]" strokeWidth={1.6} />
+        <Newspaper className="size-4 text-[#6E86F7]" strokeWidth={1.6} />
         <h1 className="text-[18px] text-white" style={{ fontWeight: 560 }}>
           Macro News
         </h1>

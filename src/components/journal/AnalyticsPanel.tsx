@@ -13,11 +13,11 @@ export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
           <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
             Win % · Avg Win · Avg Loss
           </h3>
-          <span className="text-[11px] text-[#6a7076]">Cumulative curves over time</span>
+          <span className="text-[11px] text-[#7A828D]">Cumulative curves over time</span>
         </header>
 
         {data.length === 0 ? (
-          <p className="py-10 text-center text-[12px] text-[#6a7076]">No data in this range.</p>
+          <p className="py-10 text-center text-[12px] text-[#7A828D]">No data in this range.</p>
         ) : (
           <div className="h-[220px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -25,14 +25,14 @@ export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
                 <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
                 <XAxis
                   dataKey="label"
-                  tick={{ fill: "#6a7076", fontSize: 10 }}
+                  tick={{ fill: "#7A828D", fontSize: 10 }}
                   axisLine={false}
                   tickLine={false}
                   minTickGap={24}
                 />
                 <YAxis
                   yAxisId="pct"
-                  tick={{ fill: "#6a7076", fontSize: 10 }}
+                  tick={{ fill: "#7A828D", fontSize: 10 }}
                   axisLine={false}
                   tickLine={false}
                   domain={[0, 100]}
@@ -40,19 +40,19 @@ export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
                 <YAxis yAxisId="usd" orientation="right" hide />
                 <Tooltip
                   contentStyle={{
-                    background: "#0f1216",
+                    background: "#121317",
                     border: "1px solid rgba(255,255,255,0.1)",
                     borderRadius: 10,
                     fontSize: 12,
                   }}
-                  labelStyle={{ color: "#8b9298" }}
+                  labelStyle={{ color: "#9AA1AC" }}
                 />
                 <Line
                   yAxisId="pct"
                   type="monotone"
                   dataKey="winRate"
                   name="Win %"
-                  stroke="#5ec8f5"
+                  stroke="#6E86F7"
                   strokeWidth={2}
                   dot={false}
                 />

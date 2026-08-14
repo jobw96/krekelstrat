@@ -46,7 +46,7 @@ export function AppLoader({
             style={{ background: "#6E86F7" }}
           />
         </div>
-        <span className="text-[11px] tracking-[0.18em] text-[#6a7076] uppercase">{label}</span>
+        <span className="text-[11px] tracking-[0.18em] text-[#7A828D] uppercase">{label}</span>
       </div>
     </div>
   );

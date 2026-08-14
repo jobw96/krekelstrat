@@ -32,9 +32,9 @@ function Dropdown({
     <div className="relative shrink-0">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/12"
+        className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/12"
       >
-        {label} <ChevronDown className="size-3.5 text-[#6a7076]" />
+        {label} <ChevronDown className="size-3.5 text-[#7A828D]" />
       </button>
       {open && (
         <>
@@ -65,7 +65,7 @@ function Item({
     <button
       onClick={onClick}
       className="rounded-lg px-2.5 py-1.5 text-left text-[12px] transition-colors hover:bg-white/8"
-      style={{ color: active ? "#ffffff" : "#8b9298", fontWeight: active ? 560 : 400 }}
+      style={{ color: active ? "#ffffff" : "#9AA1AC", fontWeight: active ? 560 : 400 }}
     >
       {children}
     </button>
@@ -145,7 +145,7 @@ export function ControlBar({
       {range === "custom" && (
         <span className="flex items-center gap-1.5">
           <DatePicker value={from} onChange={onFrom} label="From date" placeholder="From" />
-          <span className="text-[12px] text-[#6a7076]">→</span>
+          <span className="text-[12px] text-[#7A828D]">→</span>
           <DatePicker value={to} onChange={onTo} label="To date" placeholder="To" />
         </span>
       )}
@@ -154,7 +154,7 @@ export function ControlBar({
       <Dropdown label={activeFilters ? `Filters · ${activeFilters}` : "Filters"}>
         {() => (
           <div className="flex w-[240px] flex-col gap-2 p-1">
-            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
+            <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-[#7A828D]">
               <Filter className="size-3" /> Strategy
             </span>
             <div className="flex flex-wrap gap-1">
@@ -168,7 +168,7 @@ export function ControlBar({
                 </Chip>
               ))}
             </div>
-            <span className="mt-1 text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
+            <span className="mt-1 text-[10px] uppercase tracking-[0.1em] text-[#7A828D]">
               Session
             </span>
             <div className="flex flex-wrap gap-1">
@@ -182,7 +182,7 @@ export function ControlBar({
                 </Chip>
               ))}
             </div>
-            <span className="mt-1 text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
+            <span className="mt-1 text-[10px] uppercase tracking-[0.1em] text-[#7A828D]">
               Result
             </span>
             <div className="flex flex-wrap gap-1">
@@ -198,7 +198,7 @@ export function ControlBar({
             </div>
             <button
               onClick={() => onFilters({ strategy: "all", session: "all", result: "all" })}
-              className="mt-1 rounded-lg px-2 py-1 text-left text-[11px] text-[#6a7076] hover:text-white"
+              className="mt-1 rounded-lg px-2 py-1 text-left text-[11px] text-[#7A828D] hover:text-white"
             >
               Reset filters
             </button>
@@ -228,8 +228,8 @@ function Chip({
       className="rounded-full px-2.5 py-1 text-[11px]"
       style={
         active
-          ? { background: "#20242a", color: "#ffffff", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.14)" }
-          : { background: "rgba(255,255,255,0.05)", color: "#8b9298" }
+          ? { background: "#1C1F27", color: "#ffffff", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.14)" }
+          : { background: "rgba(255,255,255,0.05)", color: "#9AA1AC" }
       }
     >
       {children}

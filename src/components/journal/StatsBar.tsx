@@ -36,7 +36,7 @@ function Card({
 }) {
   return (
     <div className="card-surface flex min-w-0 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4">
-      <span className="truncate text-[9.5px] uppercase tracking-[0.09em] text-[#6a7076] sm:text-[10px]">{label}</span>
+      <span className="truncate text-[9.5px] uppercase tracking-[0.09em] text-[#7A828D] sm:text-[10px]">{label}</span>
       {children}
     </div>
   );
@@ -54,7 +54,7 @@ export function StatsBar({
   currency: "USD" | "R";
   onToggleCurrency: () => void;
 }) {
-  const pnlColor = metrics.totalPnl > 0 ? WIN_GREEN : metrics.totalPnl < 0 ? LOSS_RED : "#8b9298";
+  const pnlColor = metrics.totalPnl > 0 ? WIN_GREEN : metrics.totalPnl < 0 ? LOSS_RED : "#9AA1AC";
   const ratioTotal = stats.avgWin + stats.avgLoss;
   const winShare = ratioTotal ? (stats.avgWin / ratioTotal) * 100 : 50;
   const ratio = stats.avgLoss ? stats.avgWin / stats.avgLoss : stats.avgWin ? Infinity : 0;
@@ -73,12 +73,12 @@ export function StatsBar({
           </span>
           <button
             onClick={onToggleCurrency}
-            className="hover-lift shrink-0 rounded-full bg-white/6 px-2 py-0.5 text-[11px] text-[#d7dbe0] hover:bg-white/12"
+            className="hover-lift shrink-0 rounded-full bg-white/6 px-2 py-0.5 text-[11px] text-[#F0F2F5] hover:bg-white/12"
           >
             {currency === "USD" ? "$" : "R"}
           </button>
         </div>
-        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">{metrics.count} trades</span>
+        <span className="truncate font-mono text-[10px] text-[#7A828D] sm:text-[11px]">{metrics.count} trades</span>
       </Card>
 
       <Card label="Trade Win %">
@@ -88,7 +88,7 @@ export function StatsBar({
           </span>
           <Gauge value={metrics.winRate} color={WIN_GREEN} />
         </div>
-        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">
+        <span className="truncate font-mono text-[10px] text-[#7A828D] sm:text-[11px]">
           {Math.round((metrics.winRate / 100) * metrics.count)}W ·{" "}
           {metrics.count - Math.round((metrics.winRate / 100) * metrics.count)}L
         </span>
@@ -99,9 +99,9 @@ export function StatsBar({
           <span className="font-mono text-[19px] leading-none tabular text-white sm:text-[26px]" style={{ fontWeight: 560 }}>
             {stats.dayWinRate.toFixed(1)}%
           </span>
-          <Gauge value={stats.dayWinRate} color="#5ec8f5" />
+          <Gauge value={stats.dayWinRate} color="#6E86F7" />
         </div>
-        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">
+        <span className="truncate font-mono text-[10px] text-[#7A828D] sm:text-[11px]">
           {stats.greenDays} green · {stats.redDays} red days
         </span>
       </Card>
@@ -122,7 +122,7 @@ export function StatsBar({
           <span style={{ width: `${winShare}%`, background: WIN_GREEN }} />
           <span style={{ width: `${100 - winShare}%`, background: LOSS_RED }} />
         </div>
-        <span className="truncate font-mono text-[10px] text-[#6a7076] sm:text-[11px]">Avg win vs avg loss</span>
+        <span className="truncate font-mono text-[10px] text-[#7A828D] sm:text-[11px]">Avg win vs avg loss</span>
       </Card>
     </section>
   );

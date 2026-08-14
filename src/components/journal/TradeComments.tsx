@@ -49,7 +49,7 @@ export function TradeComments({
 
   return (
     <div className="flex flex-col gap-2 border-t border-white/6 pt-3">
-      <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
+      <span className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.1em] text-[#7A828D]">
         <MessageSquare className="size-3" /> Comments {comments.length > 0 && `(${comments.length})`}
       </span>
 
@@ -62,16 +62,16 @@ export function TradeComments({
               className="size-6 shrink-0 rounded-full object-cover"
             />
           ) : (
-            <span className="grid size-6 shrink-0 place-items-center rounded-full bg-white/8 text-[10px] text-[#8b9298]">
+            <span className="grid size-6 shrink-0 place-items-center rounded-full bg-white/8 text-[10px] text-[#9AA1AC]">
               {c.author_name.slice(0, 1).toUpperCase()}
             </span>
           )}
           <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-            <span className="flex items-center gap-2 text-[10.5px] text-[#6a7076]">
-              <span className="text-[#d7dbe0]">{c.author_name}</span>
+            <span className="flex items-center gap-2 text-[10.5px] text-[#7A828D]">
+              <span className="text-[#F0F2F5]">{c.author_name}</span>
               {DateTime.fromISO(c.created_at).toFormat("dd LLL · HH:mm")}
             </span>
-            <p className="whitespace-pre-wrap break-words text-[12px] leading-[1.5] text-[#8b9298]">
+            <p className="whitespace-pre-wrap break-words text-[12px] leading-[1.5] text-[#9AA1AC]">
               {c.body}
             </p>
           </div>
@@ -79,7 +79,7 @@ export function TradeComments({
             <button
               onClick={() => remove.mutate(c.id)}
               aria-label="Delete comment"
-              className="shrink-0 text-[#6a7076] transition-colors hover:text-[#f08a93]"
+              className="shrink-0 text-[#7A828D] transition-colors hover:text-[#F5928F]"
             >
               <Trash2 className="size-3" />
             </button>
@@ -88,7 +88,7 @@ export function TradeComments({
       ))}
 
       {comments.length === 0 && !q.isLoading && (
-        <p className="text-[11.5px] text-[#6a7076]">No comments yet.</p>
+        <p className="text-[11.5px] text-[#7A828D]">No comments yet.</p>
       )}
 
       {user && (
@@ -111,7 +111,7 @@ export function TradeComments({
             }}
             rows={2}
             placeholder="Write a comment…"
-            className="min-w-0 flex-1 resize-y rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.5] text-[#d7dbe0] outline-none placeholder:text-[#5c6268] focus:bg-white/6"
+            className="min-w-0 flex-1 resize-y rounded-lg bg-white/4 p-2.5 text-[12px] leading-[1.5] text-[#F0F2F5] outline-none placeholder:text-[#454B55] focus:bg-white/6"
             style={{ boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }}
           />
           <button

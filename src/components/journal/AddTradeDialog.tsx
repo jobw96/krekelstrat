@@ -20,7 +20,7 @@ import { sessionShortAt } from "@/lib/sessions";
 
 
 const inputCls =
-  "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]";
+  "h-10 w-full rounded-xl bg-white/6 px-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]";
 
 function SelectField({
   value,
@@ -42,7 +42,7 @@ function SelectField({
       >
         <span>{current?.label ?? "None"}</span>
         <ChevronDown
-          className={`size-3.5 text-[#6a7076] transition-transform ${open ? "rotate-180" : ""}`}
+          className={`size-3.5 text-[#7A828D] transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
       {open && (
@@ -64,7 +64,7 @@ function SelectField({
                 }}
                 className="rounded-lg px-2.5 py-1.5 text-left text-[12.5px] transition-colors hover:bg-white/8"
                 style={{
-                  color: o.value === value ? "#ffffff" : "#8b9298",
+                  color: o.value === value ? "#ffffff" : "#9AA1AC",
                   fontWeight: o.value === value ? 560 : 400,
                 }}
               >
@@ -227,7 +227,7 @@ export function AddTradeDialog({
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
             {editing ? "Edit trade" : "Add trade"}
           </h2>
-          <button type="button" onClick={onClose} className="text-[#8b9298] hover:text-white">
+          <button type="button" onClick={onClose} className="text-[#9AA1AC] hover:text-white">
             <X className="size-4" />
           </button>
         </header>
@@ -242,11 +242,11 @@ export function AddTradeDialog({
           <span className="flex flex-col">
             <span
               className="text-[12.5px]"
-              style={{ color: practice ? PRACTICE_BLUE : "#d7dbe0", fontWeight: 560 }}
+              style={{ color: practice ? PRACTICE_BLUE : "#F0F2F5", fontWeight: 560 }}
             >
               {practice ? "Practice trade" : "Live trade"}
             </span>
-            <span className="text-[11px] text-[#6a7076]">
+            <span className="text-[11px] text-[#7A828D]">
               Practice trades are tracked separately from live results.
             </span>
           </span>
@@ -268,12 +268,12 @@ export function AddTradeDialog({
 
 
         <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
             Date &amp; time
             <DateTimePicker value={date} onChange={setDate} />
           </div>
 
-          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
             Strategy
             <SelectField
               value={strategyId}
@@ -284,7 +284,7 @@ export function AddTradeDialog({
               ]}
             />
           </div>
-          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
             Session
             <SelectField
               value={session}
@@ -295,7 +295,7 @@ export function AddTradeDialog({
               options={SESSION_OPTIONS.map((s) => ({ value: s, label: sessionLabel(s) }))}
             />
           </div>
-          <div className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
             Result
             <SelectField
               value={result}
@@ -307,12 +307,12 @@ export function AddTradeDialog({
               ]}
             />
           </div>
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
             P&L ($)
             <span className="relative">
               <span
                 className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 font-mono text-[13px]"
-                style={{ color: sign > 0 ? "#3ecf8e" : sign < 0 ? "#e5525f" : "#6a7076" }}
+                style={{ color: sign > 0 ? "#3ECF8E" : sign < 0 ? "#F0736F" : "#7A828D" }}
               >
                 {sign > 0 ? "+" : sign < 0 ? "−" : "±"}
               </span>
@@ -324,13 +324,13 @@ export function AddTradeDialog({
                 onChange={(e) => setPnl(e.target.value.replace("-", ""))}
                 placeholder="450.00"
                 className={`${inputCls} pl-7`}
-                style={{ color: sign > 0 ? "#3ecf8e" : sign < 0 ? "#e5525f" : "#ffffff" }}
+                style={{ color: sign > 0 ? "#3ECF8E" : sign < 0 ? "#F0736F" : "#ffffff" }}
                 required
               />
             </span>
           </label>
 
-          <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+          <label className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
             R:R
             <input
               type="number"
@@ -343,14 +343,14 @@ export function AddTradeDialog({
           </label>
         </div>
 
-        <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+        <label className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
           Notes
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={3}
             placeholder="Setup, execution, mistakes…"
-            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]"
+            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
           />
         </label>
 
@@ -376,14 +376,14 @@ export function AddTradeDialog({
         </div>
 
 
-        <label className="flex flex-col gap-1 text-[11px] text-[#8b9298]">
+        <label className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
           Improvement for next time
           <textarea
             value={improvement}
             onChange={(e) => setImprovement(e.target.value)}
             rows={2}
             placeholder="One concrete adjustment…"
-            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#6a7076] focus:ring-1 focus:ring-[#6E86F7]"
+            className="w-full rounded-xl bg-white/6 p-3 text-[13px] text-white outline-none placeholder:text-[#7A828D] focus:ring-1 focus:ring-[#6E86F7]"
           />
         </label>
 
@@ -419,7 +419,7 @@ export function AddTradeDialog({
             </div>
           )}
           <div className="flex items-center gap-2">
-            <label className="hover-lift flex flex-1 cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-[#d7dbe0] hover:bg-white/8">
+            <label className="hover-lift flex flex-1 cursor-pointer items-center gap-2 rounded-lg px-2 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/8">
               <Upload className="size-4" />
               {file ? file.name : "Upload or drop a screenshot here"}
               <input
@@ -429,20 +429,20 @@ export function AddTradeDialog({
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
               />
             </label>
-            <span className="flex items-center gap-1.5 whitespace-nowrap text-[11px] text-[#6a7076]">
+            <span className="flex items-center gap-1.5 whitespace-nowrap text-[11px] text-[#7A828D]">
               <ClipboardPaste className="size-3.5" />
               or paste with Ctrl/Cmd + V
             </span>
           </div>
         </div>
 
-        {error && <p className="text-[12px] text-[#f08a93]">{error}</p>}
+        {error && <p className="text-[12px] text-[#F5928F]">{error}</p>}
 
         <button
           type="submit"
           disabled={busy}
           className="hover-lift inline-flex h-11 items-center justify-center gap-2 rounded-2xl text-[14px] disabled:opacity-60"
-          style={{ background: "#20242a", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
+          style={{ background: "#1C1F27", color: "#ffffff", fontWeight: 560, boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)" }}
         >
           {busy && <Loader2 className="size-4 animate-spin" />} {editing ? "Save changes" : "Save trade"}
         </button>

@@ -71,7 +71,7 @@ export function ImageLightbox({ src, onClose }: { src: string; onClose: () => vo
         <button onClick={() => centerZoom(1 / 1.4)} aria-label="Zoom out" className="lb-btn">
           <Minus className="size-4" />
         </button>
-        <span className="font-mono text-[12px] tabular text-[#8b9298]">
+        <span className="font-mono text-[12px] tabular text-[#9AA1AC]">
           {Math.round(zoom * 100)}%
         </span>
         <button onClick={() => centerZoom(1.4)} aria-label="Zoom in" className="lb-btn">
@@ -119,7 +119,7 @@ export function ImageLightbox({ src, onClose }: { src: string; onClose: () => vo
           }}
         />
       </div>
-      <p className="pb-3 text-center text-[11px] text-[#6a7076]">
+      <p className="pb-3 text-center text-[11px] text-[#7A828D]">
         Scroll to zoom · drag to pan · double-click to toggle · Esc to close
       </p>
     </div>

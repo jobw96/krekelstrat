@@ -5,9 +5,9 @@ import { useCalendar } from "@/hooks/useCalendar";
 import type { RedFolderEvent } from "@/lib/news.functions";
 import { LOCAL_ZONE, NY_ZONE } from "@/lib/sessions";
 
-const RED = "#e5525f";
-const ORANGE = "#e79a3c";
-const GREEN = "#3fbf87";
+const RED = "#F0736F";
+const ORANGE = "#E0A458";
+const GREEN = "#3ECF8E";
 
 function dayKey(ms: number) {
   return DateTime.fromMillis(ms).setZone(NY_ZONE).toFormat("yyyy-LL-dd");
@@ -36,7 +36,7 @@ function biasOf(e: RedFolderEvent): Bias | null {
   if (ref === null) return null;
   const diff = actual - ref;
   const scale = Math.max(Math.abs(ref), 0.0001);
-  if (Math.abs(diff) / scale < 0.005) return { label: "NEUTRAL", color: "#6a7076" };
+  if (Math.abs(diff) / scale < 0.005) return { label: "NEUTRAL", color: "#7A828D" };
   const higherIsBullish = !INVERTED.test(e.title);
   const bullish = diff > 0 ? higherIsBullish : !higherIsBullish;
   return bullish
@@ -81,11 +81,11 @@ export function NewsPanel() {
           <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
             News
           </h3>
-          <span className="text-[11px] text-[#6a7076]">
+          <span className="text-[11px] text-[#7A828D]">
             USD red &amp; orange folder events · this week
           </span>
         </div>
-        <span className="flex items-center gap-1.5 text-[10.5px] text-[#6a7076]">
+        <span className="flex items-center gap-1.5 text-[10.5px] text-[#7A828D]">
           <RefreshCw
             className={`size-3 ${isFetching ? "animate-spin" : ""}`}
             strokeWidth={2}
@@ -102,19 +102,19 @@ export function NewsPanel() {
           onClick={() => step(-1)}
           disabled={index <= 0}
           aria-label="Previous day"
-          className="hover-lift grid size-7 place-items-center rounded-lg bg-white/[0.04] text-[#9aa1a8] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+          className="hover-lift grid size-7 place-items-center rounded-lg bg-white/[0.04] text-[#9AA1AC] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
         >
           <ChevronLeft className="size-4" strokeWidth={2} />
         </button>
         <div className="flex min-w-0 flex-col items-center">
           <span
             className="text-[12px] text-white"
-            style={{ fontWeight: 560, color: active === todayKey ? "#5ec8f5" : undefined }}
+            style={{ fontWeight: 560, color: active === todayKey ? "#6E86F7" : undefined }}
           >
             {day ? day.toFormat("cccc d LLL") : "—"}
             {active === todayKey ? " · today" : ""}
           </span>
-          <span className="text-[10px] uppercase tracking-[0.1em] text-[#6a7076]">
+          <span className="text-[10px] uppercase tracking-[0.1em] text-[#7A828D]">
             {list.length} event{list.length === 1 ? "" : "s"}
             {days.length > 0 ? ` · day ${index + 1}/${days.length}` : ""}
           </span>
@@ -124,13 +124,13 @@ export function NewsPanel() {
           onClick={() => step(1)}
           disabled={index < 0 || index >= days.length - 1}
           aria-label="Next day"
-          className="hover-lift grid size-7 place-items-center rounded-lg bg-white/[0.04] text-[#9aa1a8] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
+          className="hover-lift grid size-7 place-items-center rounded-lg bg-white/[0.04] text-[#9AA1AC] transition-colors hover:bg-white/10 hover:text-white disabled:opacity-30 disabled:hover:bg-transparent"
         >
           <ChevronRight className="size-4" strokeWidth={2} />
         </button>
       </div>
 
-      <div className="flex items-center gap-3 text-[10.5px] text-[#6a7076]">
+      <div className="flex items-center gap-3 text-[10.5px] text-[#7A828D]">
         <span className="inline-flex items-center gap-1.5">
           <span className="size-1.5 rounded-full" style={{ background: RED }} /> High impact
         </span>
@@ -140,9 +140,9 @@ export function NewsPanel() {
       </div>
 
       {isLoading ? (
-        <p className="py-8 text-center text-[12px] text-[#6a7076]">Loading calendar…</p>
+        <p className="py-8 text-center text-[12px] text-[#7A828D]">Loading calendar…</p>
       ) : list.length === 0 ? (
-        <p className="py-8 text-center text-[12px] text-[#6a7076]">
+        <p className="py-8 text-center text-[12px] text-[#7A828D]">
           No high or medium impact USD events on this day.
         </p>
       ) : (
@@ -161,7 +161,7 @@ export function NewsPanel() {
                   className="h-6 w-[2px] shrink-0 rounded-full"
                   style={{ background: color }}
                 />
-                <span className="font-mono text-[11.5px] text-[#d7dbe0] tabular">
+                <span className="font-mono text-[11.5px] text-[#F0F2F5] tabular">
                   {DateTime.fromMillis(e.time).setZone(LOCAL_ZONE).toFormat("HH:mm")}
                 </span>
                 <span className="min-w-0 flex-1 truncate text-[12.5px] text-white">
@@ -179,7 +179,7 @@ export function NewsPanel() {
                     {bias.label}
                   </span>
                 ) : null}
-                <span className="hidden shrink-0 font-mono text-[10.5px] text-[#6a7076] sm:inline">
+                <span className="hidden shrink-0 font-mono text-[10.5px] text-[#7A828D] sm:inline">
                   {e.actual
                     ? `A ${e.actual}${e.forecast ? ` / F ${e.forecast}` : ""}`
                     : e.forecast

@@ -244,7 +244,7 @@ function JournalPage() {
 
               <button
                 onClick={() => setCollapsed((c) => !c)}
-                className="hover-lift rounded-full bg-white/6 p-2 text-[#d7dbe0] md:hidden"
+                className="hover-lift rounded-full bg-white/6 p-2 text-[#F0F2F5] md:hidden"
                 aria-label="Toggle navigation"
               >
                 <Menu className="size-4" />
@@ -257,7 +257,7 @@ function JournalPage() {
                   <h1 className="truncate text-[18px] text-white" style={{ fontWeight: 560 }}>
                     {activeShare ? buddyLabel(activeShare) : "Trading Journal"}
                   </h1>
-                  <ChevronDown className="size-4 shrink-0 text-[#6a7076]" />
+                  <ChevronDown className="size-4 shrink-0 text-[#7A828D]" />
                 </button>
                 {switcherOpen && (
                   <>
@@ -269,7 +269,7 @@ function JournalPage() {
                           setSwitcherOpen(false);
                         }}
                         className="hover-tint rounded-lg px-2.5 py-2 text-left text-[12.5px]"
-                        style={{ color: activeShare ? "#8b9298" : "#ffffff" }}
+                        style={{ color: activeShare ? "#9AA1AC" : "#ffffff" }}
                       >
                         My Journal
                       </button>
@@ -281,13 +281,13 @@ function JournalPage() {
                             setSwitcherOpen(false);
                           }}
                           className="hover-tint truncate rounded-lg px-2.5 py-2 text-left text-[12.5px]"
-                          style={{ color: activeShare?.id === s.id ? "#ffffff" : "#8b9298" }}
+                          style={{ color: activeShare?.id === s.id ? "#ffffff" : "#9AA1AC" }}
                         >
                           {buddyLabel(s)} (Read-Only)
                         </button>
                       ))}
                       {buddyJournals.length === 0 && (
-                        <span className="px-2.5 py-2 text-[11.5px] text-[#6a7076]">
+                        <span className="px-2.5 py-2 text-[11.5px] text-[#7A828D]">
                           No shared journals yet.
                         </span>
                       )}
@@ -317,7 +317,7 @@ function JournalPage() {
                     className="relative z-10 w-[76px] rounded-full py-1.5 text-[11.5px] uppercase tracking-[0.06em] transition-colors"
                     style={{
                       color:
-                        mode === m ? (m === "practice" ? PRACTICE_BLUE : "#ffffff") : "#6a7076",
+                        mode === m ? (m === "practice" ? PRACTICE_BLUE : "#ffffff") : "#7A828D",
                       fontWeight: mode === m ? 560 : 400,
                     }}
                   >
@@ -328,12 +328,12 @@ function JournalPage() {
             </div>
             <div className="flex shrink-0 flex-wrap items-center gap-2">
 
-              <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#8b9298] sm:inline">
+              <span className="hidden rounded-full bg-white/6 px-3 py-1.5 text-[12px] text-[#9AA1AC] sm:inline">
                 {isGuest ? "Guest mode · no login" : user.email}
               </span>
               <button
                 onClick={() => setSharing(true)}
-                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
               >
                 <Share2 className="size-3.5" /> Share
               </button>
@@ -349,7 +349,7 @@ function JournalPage() {
               {isGuest ? (
                 <Link
                   to="/auth"
-                  className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+                  className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
                 >
                   <LogOut className="size-3.5" /> Sign in
                 </Link>
@@ -359,7 +359,7 @@ function JournalPage() {
                     await signOut();
                     navigate({ to: "/auth" });
                   }}
-                  className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#d7dbe0] hover:bg-white/12"
+                  className="hover-lift inline-flex items-center gap-1.5 rounded-full bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
                 >
                   <LogOut className="size-3.5" /> Log out
                 </button>
@@ -370,11 +370,11 @@ function JournalPage() {
           {activeShare && (
             <div
               className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-[12.5px]"
-              style={{ background: "rgba(229,82,95,0.10)", border: "1px solid rgba(229,82,95,0.35)", color: "#f0b7bc" }}
+              style={{ background: "rgba(229,82,95,0.10)", border: "1px solid rgba(229,82,95,0.35)", color: "#F5928F" }}
             >
               <Eye className="size-3.5 shrink-0" />
               Viewing {buddyLabel(activeShare)} (Read-Only)
-              {activeShare.hide_dollar_amounts && <span className="text-[#8b9298]">· dollar amounts hidden</span>}
+              {activeShare.hide_dollar_amounts && <span className="text-[#9AA1AC]">· dollar amounts hidden</span>}
             </div>
           )}
 
@@ -489,22 +489,22 @@ function DayView({ trades, onSelectDay }: { trades: Trade[]; onSelectDay: (d: st
         Day View
       </h2>
       {days.length === 0 && (
-        <p className="py-6 text-center text-[12px] text-[#6a7076]">No trading days yet.</p>
+        <p className="py-6 text-center text-[12px] text-[#7A828D]">No trading days yet.</p>
       )}
       {days.map((d) => {
-        const color = d.pnl > 0 ? WIN_GREEN : d.pnl < 0 ? LOSS_RED : "#8b9298";
+        const color = d.pnl > 0 ? WIN_GREEN : d.pnl < 0 ? LOSS_RED : "#9AA1AC";
         return (
           <button
             key={d.key}
             onClick={() => onSelectDay(d.key)}
             className="hover-tint flex items-center justify-between rounded-xl bg-white/4 px-3 py-2.5 text-left"
           >
-            <span className="font-mono text-[12px] text-[#d7dbe0]">
+            <span className="font-mono text-[12px] text-[#F0F2F5]">
               {DateTime.fromISO(d.key).toFormat("cccc dd LLL yyyy")}
             </span>
             <span className="flex items-center gap-4">
-              <span className="font-mono text-[11px] text-[#6a7076]">{d.count} trades</span>
-              <span className="font-mono text-[11px] text-[#8b9298]">
+              <span className="font-mono text-[11px] text-[#7A828D]">{d.count} trades</span>
+              <span className="font-mono text-[11px] text-[#9AA1AC]">
                 {d.winRate.toFixed(1)}%
               </span>
               <span className="font-mono text-[14px] tabular" style={{ color, fontWeight: 560 }}>
@@ -540,7 +540,7 @@ function StrategiesView({
         {!readOnly && (
           <button
             onClick={onAdd}
-            className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#8b9298] hover:text-white"
+            className="hover-lift rounded-full border border-dashed border-white/20 px-3 py-1.5 text-[12px] text-[#9AA1AC] hover:text-white"
           >
             + New strategy
           </button>
@@ -549,15 +549,15 @@ function StrategiesView({
       {strategies.map((s) => {
         const list = trades.filter((t) => t.strategy_id === s.id);
         const pnl = list.reduce((a, t) => a + Number(t.pnl), 0);
-        const color = pnl > 0 ? WIN_GREEN : pnl < 0 ? LOSS_RED : "#8b9298";
+        const color = pnl > 0 ? WIN_GREEN : pnl < 0 ? LOSS_RED : "#9AA1AC";
         return (
           <div key={s.id} className="flex items-center justify-between rounded-lg bg-white/4 px-3 py-2.5">
             <span className="flex min-w-0 flex-col">
               <span className="text-[12.5px] text-white">{s.name}</span>
               {s.description && (
-                <span className="truncate text-[11.5px] text-[#8b9298]">{s.description}</span>
+                <span className="truncate text-[11.5px] text-[#9AA1AC]">{s.description}</span>
               )}
-              <span className="text-[11px] text-[#6a7076]">{list.length} trades</span>
+              <span className="text-[11px] text-[#7A828D]">{list.length} trades</span>
             </span>
             <span className="flex items-center gap-3">
               <span className="font-mono text-[13px] tabular" style={{ color, fontWeight: 560 }}>
@@ -569,7 +569,7 @@ function StrategiesView({
                     await supabase.from("strategies").delete().eq("id", s.id);
                     onChanged();
                   }}
-                  className="text-[11px] text-[#6a7076] hover:text-[#f08a93]"
+                  className="text-[11px] text-[#7A828D] hover:text-[#F5928F]"
                 >
                   Delete
                 </button>
@@ -579,7 +579,7 @@ function StrategiesView({
         );
       })}
       {strategies.length === 0 && (
-        <p className="py-6 text-center text-[12px] text-[#6a7076]">No strategies yet.</p>
+        <p className="py-6 text-center text-[12px] text-[#7A828D]">No strategies yet.</p>
       )}
     </section>
   );
