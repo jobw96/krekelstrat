@@ -81,18 +81,37 @@
 :root {
   color-scheme: dark;
 
-  /* Surfaces — each step is a real jump so nesting reads without a border */
-  --bg-base: #08090c;
-  --bg-ambient-a: #15171c;
-  --bg-ambient-b: #0e1014;
-  --surface-1: #131519;
-  --surface-2: #1b1e27;
-  --surface-3: #242833;
+  /*
+   * Near-black page, panels lifted just enough to float on it. Tints lean only
+   * a hair blue: strongly tinted darks read as a colour cast rather than as
+   * black, and mid-grey panels wash out. The accent bloom does the rest.
+   */
+  /* Ambient wash stays a whisper: at any real strength it lifts the whole
+     content area and undoes the near-black the cards need to read against. */
+  --bg-base: #09090c;
+  --bg-ambient-a: #0d0d12;
+  --bg-ambient-b: #0a0a0e;
+  /*
+   * Cards share one fill with the tile containers below (card-sunken), so a
+   * bento and the calendar read as the same material. The border carries the
+   * card edge, since the fill no longer separates it from the page.
+   */
+  --surface-1: #08080b;
+  --surface-2: #08080b;
+  --surface-3: #15161b;
 
-  /* Borders — a clean hairline. Surfaces are separated by tone, not by stroke. */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-strong: rgba(255, 255, 255, 0.085);
-  --border-top-hl: rgba(255, 255, 255, 0.07);
+  /*
+   * Navigation chrome (rails, side nav, top bar) is the darkest layer, below
+   * the page rather than above it. Treating it as a card floats the frame of
+   * the app on top of its own content and lightens the whole screen.
+   */
+  --bg-chrome: #08080b;
+
+  /* Hairlines, carrying slightly more of the load now that the fill sits closer
+     to the page: the edge defines the card where the tone no longer does. */
+  --border-subtle: rgba(255, 255, 255, 0.075);
+  --border-strong: rgba(255, 255, 255, 0.1);
+  --border-top-hl: rgba(255, 255, 255, 0.085);
   --grid-line: rgba(255, 255, 255, 0.04);
 
   /* Text */
@@ -121,10 +140,6 @@
   --r-inner: 7px;
   --r-chip: 6px;
   --r-pill: 999px;
-
-  /* Elevation */
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.7);
-  --shadow-pop: 0 2px 6px rgba(0, 0, 0, 0.45), 0 20px 44px -20px rgba(0, 0, 0, 0.8);
 
   /* shadcn bindings */
   --background: var(--bg-base);
@@ -203,21 +218,18 @@
 }
 
 /*
- * Core surface. Lit from above: a top-to-bottom gradient plus a crisp 1px
- * highlight on the top edge, so the card reads as a physical plane catching
- * light rather than a flat rectangle with a stroke around it.
+ * Core surface. Flat fill with a faint sheen along the top edge: enough to stop
+ * it reading as a bare rectangle, not enough to look moulded. A full-height
+ * gradient plus a cast shadow made every panel on the page feel embossed.
  */
 @utility card-surface {
   position: relative;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035) 0%, transparent 42%),
-    linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.014) 0%, transparent 38%),
+    var(--surface-2);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-card);
-  box-shadow:
-    inset 0 1px 0 0 var(--border-top-hl),
-    0 1px 2px rgba(0, 0, 0, 0.45),
-    0 16px 34px -24px rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0 1px 0 0 var(--border-top-hl);
 }
 
 /* Featured panel: one step lighter, use sparingly. */
@@ -226,10 +238,33 @@
 }
 
 /*
- * Headline bento. A light source sits just below the card and blooms up through
- * it, so the metric it carries sits inside the glow instead of under a flat
- * tint. Four stacked layers: accent bloom from the bottom edge, a cool top
- * light, the base gradient, then a halo that spills the same hue onto the page.
+ * Navigation chrome: rails, side nav, top bars. Flat and darker than the page,
+ * with only a hairline separating it from the content, so the app frame recedes
+ * instead of reading as another card stacked on top.
+ */
+@utility chrome-surface {
+  background: var(--bg-chrome);
+  border: 1px solid var(--border-subtle);
+}
+
+/*
+ * Card that holds a grid of tiles (calendar, heatmaps). Its fill drops below the
+ * page so the tiles inside can sit lighter than their own container and read as
+ * raised, which a normal card-surface cannot do without lifting the whole block.
+ */
+@utility card-sunken {
+  position: relative;
+  background: var(--bg-chrome);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-card);
+  box-shadow: inset 0 1px 0 0 var(--border-top-hl);
+}
+
+/*
+ * Headline bento: the same flat fill as card-surface with an accent bloom
+ * rising from the bottom edge, so the metric sits inside the glow. The bloom is
+ * the only depth cue here; the accent never leaves the card, so the border stays
+ * a single clean line instead of picking up a ring or a cast shadow.
  * Set --glow to re-tint per metric (profit green, loss red, accent blue).
  * Reserved for primary bentos — supporting panels stay on card-surface.
  */
@@ -238,21 +273,16 @@
   position: relative;
   background:
     radial-gradient(
-      86% 58% at 50% 100%,
-      color-mix(in oklab, var(--glow) 26%, transparent) 0%,
-      color-mix(in oklab, var(--glow) 7%, transparent) 46%,
+      86% 54% at 50% 100%,
+      color-mix(in oklab, var(--glow) 17%, transparent) 0%,
+      color-mix(in oklab, var(--glow) 5%, transparent) 46%,
       transparent 76%
     ),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 32%),
-    linear-gradient(180deg, var(--surface-2) 0%, var(--surface-1) 100%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.016) 0%, transparent 32%),
+    var(--surface-2);
   border: 1px solid var(--border-strong);
   border-radius: var(--r-card);
-  /* Depth only — the accent never leaves the card, so the border stays a
-     single clean line instead of picking up a second coloured ring. */
-  box-shadow:
-    inset 0 1px 0 0 var(--border-top-hl),
-    0 1px 2px rgba(0, 0, 0, 0.45),
-    0 18px 38px -26px rgba(0, 0, 0, 0.9);
+  box-shadow: inset 0 1px 0 0 var(--border-top-hl);
 }
 
 /*
@@ -264,7 +294,6 @@
   background: rgba(0, 0, 0, 0.24);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--r-inner);
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* Page shell: the ambient wash lives on body, the shell stays transparent. */
@@ -312,16 +341,12 @@
   100% {
     box-shadow:
       inset 0 1px 0 0 var(--border-top-hl),
-      inset 0 -30px 58px -34px color-mix(in oklab, var(--glow) 40%, transparent),
-      0 1px 2px rgba(0, 0, 0, 0.45),
-      0 18px 38px -26px rgba(0, 0, 0, 0.9);
+      inset 0 -30px 58px -36px color-mix(in oklab, var(--glow) 26%, transparent);
   }
   50% {
     box-shadow:
       inset 0 1px 0 0 var(--border-top-hl),
-      inset 0 -30px 58px -34px color-mix(in oklab, var(--glow) 80%, transparent),
-      0 1px 2px rgba(0, 0, 0, 0.45),
-      0 18px 38px -26px rgba(0, 0, 0, 0.9);
+      inset 0 -30px 58px -36px color-mix(in oklab, var(--glow) 52%, transparent);
   }
 }
 

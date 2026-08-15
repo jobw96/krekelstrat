@@ -1,21 +1,15 @@
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
 import { performanceCurve } from "@/lib/journal-stats";
+import { Section } from "@/components/Section";
 
 /** Right-hand analytics stack: performance curves. */
 export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
   const data = performanceCurve(trades);
 
   return (
-    <div className="flex flex-col gap-3">
-      <section className="card-surface flex flex-col gap-3 p-4">
-        <header className="flex flex-col gap-0.5">
-          <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-            Win % · Avg Win · Avg Loss
-          </h3>
-          <span className="text-[11px] text-[#7A828D]">Cumulative curves over time</span>
-        </header>
-
+    <Section title="Win % · Avg Win · Avg Loss" subtitle="Cumulative curves over time">
+      <div className="card-surface p-5">
         {data.length === 0 ? (
           <p className="py-10 text-center text-[12px] text-[#7A828D]">No data in this range.</p>
         ) : (
@@ -78,7 +72,7 @@ export function AnalyticsPanel({ trades }: { trades: Trade[] }) {
             </ResponsiveContainer>
           </div>
         )}
-      </section>
-    </div>
+      </div>
+    </Section>
   );
 }

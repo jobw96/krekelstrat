@@ -238,7 +238,7 @@ function JournalPage() {
           }}
         />
 
-        <div className="flex min-w-0 flex-1 flex-col gap-3">
+        <div className="flex min-w-0 flex-1 flex-col gap-5">
           <header className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex min-w-0 flex-wrap items-center gap-2">
 
@@ -397,10 +397,10 @@ function JournalPage() {
             onToggleCurrency={() => setCurrency((c) => (c === "USD" ? "R" : "USD"))}
           />
 
-          <div key={view} className="view-enter flex flex-col gap-3">
+          <div key={view} className="view-enter flex flex-col gap-6">
             {view === "dashboard" && (
               <>
-                <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_360px]">
+                <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
                   <ZellaCalendar
                     month={month}
                     trades={filtered}
@@ -414,7 +414,7 @@ function JournalPage() {
                       setAdding(true);
                     }}
                   />
-                  <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-6">
                     <NetPnlChart trades={filtered} />
                     <AnalyticsPanel trades={trades} />
                   </div>

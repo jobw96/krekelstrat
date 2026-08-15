@@ -1,3 +1,4 @@
+import { Section } from "@/components/Section";
 import { useMemo } from "react";
 import { DateTime } from "luxon";
 import { LOSS_RED, WIN_GREEN, money, type Strategy, type Trade } from "@/lib/journal";
@@ -27,7 +28,9 @@ function sessionLabel(code: string) {
 
 function Kpi({ label, value, hint, color }: { label: string; value: string; hint?: string | undefined; color?: string | undefined }) {
   return (
-    <div className="glass-inset flex flex-col gap-1 p-3">
+    // card-surface, not glass-inset: these tiles sit on the page now, and a
+    // translucent-black well is invisible without a card behind it.
+    <div className="card-surface flex flex-col gap-1 p-4">
       <span className="text-[10.5px] uppercase tracking-[0.08em] text-[#7A828D]">{label}</span>
       <span
         className="font-mono text-[17px] tabular"
@@ -57,14 +60,8 @@ function BucketTable({
   const max = Math.max(1, ...list.map((r) => Math.abs(r.pnl)));
 
   return (
-    <section className="card-surface flex flex-col gap-2 p-4">
-      <header className="flex flex-col gap-0.5">
-        <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-          {title}
-        </h3>
-        {subtitle && <span className="text-[11px] text-[#7A828D]">{subtitle}</span>}
-      </header>
-
+    <Section title={title} {...(subtitle ? { subtitle } : {})}>
+      <div className="card-surface p-5">
       {list.length === 0 ? (
         <p className="py-5 text-center text-[12px] text-[#7A828D]">{empty}</p>
       ) : (
@@ -109,22 +106,18 @@ function BucketTable({
           ))}
         </div>
       )}
-    </section>
+      </div>
+    </Section>
   );
 }
 
 function TagTable({ title, subtitle, rows, accent }: { title: string; subtitle: string; rows: TagStat[]; accent: string }) {
   return (
-    <section className="card-surface flex flex-col gap-2 p-4">
-      <header className="flex flex-col gap-0.5">
-        <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-          {title}
-        </h3>
-        <span className="text-[11px] text-[#7A828D]">{subtitle}</span>
-      </header>
+    <Section title={title} subtitle={subtitle}>
+      <div className="card-surface flex flex-col gap-2 p-5">
       {rows.length === 0 ? (
         <p className="py-5 text-center text-[12px] text-[#7A828D]">
-          No review tags yet — tag your trades to build this report.
+          No review tags yet. Tag your trades to build this report.
         </p>
       ) : (
         rows.map((r) => (
@@ -148,7 +141,8 @@ function TagTable({ title, subtitle, rows, accent }: { title: string; subtitle: 
           </div>
         ))
       )}
-    </section>
+      </div>
+    </Section>
   );
 }
 
@@ -195,17 +189,11 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <section className="card-surface flex flex-col gap-3 p-4">
-        <header className="flex items-baseline justify-between">
-          <h2 className="text-[15px] text-white" style={{ fontWeight: 560 }}>
-            Performance report
-          </h2>
-          <span className="text-[11px] text-[#7A828D]">
-            {trades.length} trades · times in {tz === "AMS" ? "Amsterdam" : "New York"}
-          </span>
-        </header>
-
+    <div className="flex flex-col gap-6">
+      <Section
+        title="Performance report"
+        subtitle={`${trades.length} trades · times in ${tz === "AMS" ? "Amsterdam" : "New York"}`}
+      >
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-6">
           <Kpi label="Net P&L" value={money(total)} color={pnlColor(total)} />
           <Kpi label="Win rate" value={`${((wins / trades.length) * 100).toFixed(1)}%`} hint={`${wins}W / ${trades.length - wins}L·BE`} />
@@ -237,12 +225,10 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
             color={WIN_GREEN}
           />
         </div>
-      </section>
+      </Section>
 
-      <section className="card-surface flex flex-col gap-2 p-4">
-        <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-          Key takeaways
-        </h3>
+      <Section title="Key takeaways">
+        <div className="card-surface flex flex-col gap-2 p-5">
         {data.tips.map((t, i) => {
           const c = t.tone === "good" ? WIN_GREEN : t.tone === "bad" ? LOSS_RED : "#6E86F7";
           return (
@@ -255,9 +241,10 @@ export function ReportsView({ trades, strategies }: { trades: Trade[]; strategie
             </div>
           );
         })}
-      </section>
+        </div>
+      </Section>
 
-      <div className="grid gap-3 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         <BucketTable
           title="By session"
           subtitle="Which sessions actually pay you"

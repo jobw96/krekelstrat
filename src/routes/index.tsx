@@ -207,8 +207,7 @@ function Dashboard() {
                       style={{
                         borderColor: "rgba(255,255,255,0.07)",
                         background: "rgba(255,255,255,0.022)",
-                        boxShadow:
-                          "inset 0 1px 0 0 rgba(255,255,255,0.05), 0 18px 40px -30px rgba(0,0,0,0.9)",
+                        boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.05)",
                       }}
                     >
                       <span
@@ -266,7 +265,6 @@ function Dashboard() {
                     className="h-[3px] w-full overflow-hidden rounded-full"
                     style={{
                       background: "rgba(255,255,255,0.06)",
-                      boxShadow: "inset 0 1px 1px rgba(0,0,0,0.6)",
                     }}
                   >
                     <motion.div

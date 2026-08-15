@@ -38,7 +38,7 @@ export function AppRail() {
 
   return (
     <>
-    <aside className="card-surface fixed inset-y-0 left-0 z-40 hidden h-screen w-[76px] shrink-0 flex-col items-center gap-2 rounded-none border-y-0 border-l-0 py-6 lg:flex">
+    <aside className="chrome-surface fixed inset-y-0 left-0 z-40 hidden h-screen w-[76px] shrink-0 flex-col items-center gap-2 rounded-none border-y-0 border-l-0 py-6 lg:flex">
       <div className="group relative mb-4 flex flex-col items-center gap-1.5">
         <div className="relative flex size-11 items-center justify-center overflow-hidden rounded-full p-[2px]">
           <div
@@ -109,7 +109,7 @@ export function AppRail() {
     </aside>
 
     {/* Mobile bottom navigation */}
-    <nav className="card-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-around gap-1 rounded-none border-x-0 border-b-0 px-2 pb-[calc(env(safe-area-inset-bottom)+18px)] pt-2 lg:hidden">
+    <nav className="chrome-surface fixed inset-x-0 bottom-0 z-40 flex items-center justify-around gap-1 rounded-none border-x-0 border-b-0 px-2 pb-[calc(env(safe-area-inset-bottom)+18px)] pt-2 lg:hidden">
       {[...RAIL_ITEMS, { icon: UserRound, label: "Profile", to: "/profile" as const, search: undefined }].map(
         ({ icon: Icon, label, to, search }) => {
           const active = to === "/" ? pathname === "/" : pathname.startsWith(to);

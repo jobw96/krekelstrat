@@ -43,7 +43,7 @@ export function JournalNav({
 }) {
   return (
     <aside
-      className="card-surface sticky top-0 -my-4 -ml-4 hidden h-screen shrink-0 flex-col gap-2 rounded-none border-y-0 border-l-0 px-2.5 py-6 transition-all duration-200 md:flex"
+      className="chrome-surface sticky top-0 -my-4 -ml-4 hidden h-screen shrink-0 flex-col gap-2 rounded-none border-y-0 border-l-0 px-2.5 py-6 transition-all duration-200 md:flex"
       style={{ width: collapsed ? 62 : 208 }}
     >
       {!readOnly && (

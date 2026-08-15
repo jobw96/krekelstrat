@@ -6,6 +6,7 @@ import { ChevronRight, ExternalLink, Pencil, Plus, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { WIN_GREEN, LOSS_RED } from "@/lib/journal";
 import { PROP_FIRMS, STATUS_LABEL, propStats, type PropAccount, type PropStatus } from "@/lib/prop";
+import { Section } from "@/components/Section";
 import { PropFirmDialog } from "./PropFirmDialog";
 
 const usd = (n: number) => `$${Math.abs(n).toFixed(0)}`;
@@ -101,7 +102,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
   const netColor = s.net > 0 ? WIN_GREEN : s.net < 0 ? LOSS_RED : "#9AA1AC";
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-6">
       <section className="grid grid-cols-2 gap-2 lg:grid-cols-4">
         <HeroStat label="Total costs" value={`-${usd(s.totalCost)}`} sub={`${s.total} accounts · avg ${s.total ? usd(s.avgCost) : "—"}`} color={LOSS_RED} />
         <HeroStat label="Payouts" value={`+${usd(s.totalPayout)}`} sub={`${s.funded} funded accounts`} color={WIN_GREEN} />
@@ -109,16 +110,10 @@ export function PropFirmsView({ userId }: { userId: string }) {
         <HeroStat label="ROI" value={s.totalCost ? `${roi > 0 ? "+" : ""}${roi.toFixed(1)}%` : "—"} sub="return on spend" color={netColor} />
       </section>
 
-      <section className="card-surface flex flex-col gap-3 p-4">
-        <header className="flex items-center justify-between">
-          <div className="flex flex-col gap-0.5">
-            <h2 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-              Prop firms
-            </h2>
-            <span className="text-[11px] text-[#7A828D]">
-              Evaluations, costs and funded account performance
-            </span>
-          </div>
+      <Section
+        title="Prop firms"
+        subtitle="Evaluations, costs and funded account performance"
+        action={
           <button
             onClick={() => setDialog({ open: true, account: null })}
             className="hover-lift inline-flex items-center gap-1.5 rounded-control px-3.5 py-2 text-[13px]"
@@ -126,8 +121,9 @@ export function PropFirmsView({ userId }: { userId: string }) {
           >
             <Plus className="size-4" /> Add account
           </button>
-        </header>
-
+        }
+      >
+        <div className="card-surface flex flex-col gap-2 p-5">
         <div className="grid grid-cols-2 gap-2 md:grid-cols-4 xl:grid-cols-6">
           <Stat label="Total spend" value={usd(s.totalCost)} sub={`${s.total} accounts`} color={LOSS_RED} />
           <Stat label="Payouts" value={usd(s.totalPayout)} color={WIN_GREEN} />
@@ -151,12 +147,11 @@ export function PropFirmsView({ userId }: { userId: string }) {
           />
           <Stat label="Avg cost / account" value={s.total ? usd(s.avgCost) : "—"} />
         </div>
-      </section>
+        </div>
+      </Section>
 
-      <section className="card-surface flex flex-col gap-2 p-4">
-        <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-          Accounts
-        </h3>
+      <Section title="Accounts">
+        <div className="card-surface flex flex-col gap-2 p-5">
         {q.isLoading && <p className="py-6 text-center text-[12px] text-[#7A828D]">Loading…</p>}
         {/* One empty state for the whole section: rendering the group rows too
             would repeat "nothing here" four times over. */}
@@ -272,12 +267,10 @@ export function PropFirmsView({ userId }: { userId: string }) {
               </div>
             );
           })}
-      </section>
+        </div>
+      </Section>
 
-      <section className="card-surface flex flex-col gap-3 p-4">
-        <h3 className="text-[14px] text-white" style={{ fontWeight: 560 }}>
-          Firms · links & breakdown
-        </h3>
+      <Section title="Firms" subtitle="Links and per-firm breakdown">
         <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
           {byFirm.map((f) => (
             <a
@@ -285,7 +278,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
               href={f.url}
               target="_blank"
               rel="noreferrer"
-              className="hover-tint flex flex-col gap-1 rounded-control bg-white/5 p-3"
+              className="card-surface hover-tint flex flex-col gap-1 p-4"
             >
               <span className="flex items-center gap-1.5 text-[12.5px] text-white">
                 {f.name} <ExternalLink className="size-3 text-[#7A828D]" />
@@ -296,7 +289,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
             </a>
           ))}
         </div>
-      </section>
+      </Section>
 
       {dialog.open && (
         <PropFirmDialog

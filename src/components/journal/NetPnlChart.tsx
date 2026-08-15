@@ -3,6 +3,7 @@ import { DateTime } from "luxon";
 import { Bar, BarChart, CartesianGrid, Cell, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { LOCAL_ZONE } from "@/lib/sessions";
 import { money, WIN_GREEN, LOSS_RED, type Trade } from "@/lib/journal";
+import { Section } from "@/components/Section";
 
 type Bucket = "day" | "week" | "month";
 
@@ -69,19 +70,9 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
   const total = useMemo(() => data.reduce((a, d) => a + d.pnl, 0), [data]);
 
   return (
-    <section className="card-surface flex min-w-0 flex-col gap-3 p-3 sm:p-4">
-      <header className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-        <div className="flex min-w-0 flex-col gap-0.5">
-          <h3 className="truncate text-[14px] text-white" style={{ fontWeight: 560 }}>
-            Net P&amp;L
-          </h3>
-          <span
-            className="font-mono text-[11px] tabular"
-            style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#7A828D" }}
-          >
-            {money(total)} <span className="text-[#7A828D]">· per {bucket}</span>
-          </span>
-        </div>
+    <Section
+      title="Net P&L"
+      action={
         <div className="flex shrink-0 items-center gap-0.5 rounded-control bg-white/5 p-0.5">
           {BUCKETS.map((b) => (
             <button
@@ -100,8 +91,17 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
             </button>
           ))}
         </div>
-      </header>
-
+      }
+      subtitle={
+        <span
+          className="font-mono text-[11px] tabular"
+          style={{ color: total > 0 ? WIN_GREEN : total < 0 ? LOSS_RED : "#7A828D" }}
+        >
+          {money(total)} <span className="text-[#7A828D]">· per {bucket}</span>
+        </span>
+      }
+    >
+      <div className="card-surface min-w-0 p-4 sm:p-5">
       {data.length === 0 ? (
         <p className="py-10 text-center text-[12px] text-[#7A828D]">No data in this range.</p>
       ) : (
@@ -147,7 +147,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
           </ResponsiveContainer>
         </div>
       )}
-
-    </section>
+      </div>
+    </Section>
   );
 }

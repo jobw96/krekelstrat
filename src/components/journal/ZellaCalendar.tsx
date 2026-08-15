@@ -60,7 +60,7 @@ export function ZellaCalendar({
   if (mode === "yearly") {
     const months = Array.from({ length: 12 }, (_, i) => month.startOf("year").plus({ months: i }));
     return (
-      <section className="card-surface flex flex-col gap-4 p-5">
+      <section className="card-sunken flex flex-col gap-4 p-5">
         <Header
           month={month}
           monthPnl={monthPnl}
@@ -86,8 +86,8 @@ export function ZellaCalendar({
                 onClick={() => onMonthChange(m)}
                 className="hover-tint flex flex-col gap-1 rounded-control p-3 text-left"
                 style={{
-                  background: count ? `${color}1c` : "rgba(255,255,255,0.03)",
-                  border: `1px solid ${count ? `${color}4d` : "rgba(255,255,255,0.06)"}`,
+                  background: count ? `${color}1c` : "rgba(255,255,255,0.05)",
+                  border: `1px solid ${count ? `${color}4d` : "rgba(255,255,255,0.07)"}`,
                 }}
               >
                 <span className="text-[11px] uppercase tracking-[0.08em] text-[#9AA1AC]">
@@ -107,7 +107,7 @@ export function ZellaCalendar({
   }
 
   return (
-    <section className="card-surface flex flex-col gap-4 p-3 sm:p-5">
+    <section className="card-sunken flex flex-col gap-4 p-3 sm:p-5">
       <Header month={month} monthPnl={monthPnl} onMonthChange={onMonthChange} />
 
       <div className="flex flex-col gap-1.5">
@@ -149,7 +149,7 @@ export function ZellaCalendar({
                 key={w.index}
                 className="flex items-center justify-between gap-2 rounded-control px-2.5 py-2"
                 style={{
-                  background: "rgba(255,255,255,0.04)",
+                  background: "rgba(255,255,255,0.05)",
                   border: "1px solid rgba(255,255,255,0.07)",
                 }}
               >
@@ -260,8 +260,9 @@ function WeekRow({
               onClick={() => stat && onSelectDay(key)}
               className="hover-tint flex min-h-[62px] w-full flex-col justify-between gap-0.5 overflow-hidden rounded-control p-1 text-left transition-colors sm:min-h-[82px] sm:rounded-control sm:p-1.5"
               style={{
-                background: stat ? `${color}26` : "rgba(255,255,255,0.03)",
-                border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.06)"}`,
+                // Tiles read as raised against the sunken calendar field.
+                background: stat ? `${color}26` : "rgba(255,255,255,0.05)",
+                border: `1px solid ${stat ? `${color}66` : "rgba(255,255,255,0.07)"}`,
                 cursor: stat ? "pointer" : "default",
               }}
             >
