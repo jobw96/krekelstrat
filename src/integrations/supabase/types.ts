@@ -189,6 +189,7 @@ export type Database = {
       }
       trades: {
         Row: {
+          account_size: number
           created_at: string
           date: string
           id: string
@@ -204,9 +205,9 @@ export type Database = {
           user_id: string
           went_right: string | null
           went_wrong: string | null
-          account_size: number
         }
         Insert: {
+          account_size?: number
           created_at?: string
           date?: string
           id?: string
@@ -222,9 +223,9 @@ export type Database = {
           user_id: string
           went_right?: string | null
           went_wrong?: string | null
-          account_size?: number
         }
         Update: {
+          account_size?: number
           created_at?: string
           date?: string
           id?: string
@@ -240,7 +241,6 @@ export type Database = {
           user_id?: string
           went_right?: string | null
           went_wrong?: string | null
-          account_size?: number
         }
         Relationships: [
           {
