@@ -206,10 +206,10 @@ function Header({
         {/* Abbreviated on a phone: the full month name got truncated to
             "August 2...", which is worse than simply showing "Aug 2026". */}
         <h2 className="truncate text-[16px] text-white" style={{ fontWeight: 560 }}>
-          <span className="sm:hidden">
+          <span className="lg:hidden">
             {month.setLocale("en").toFormat(yearly ? "yyyy" : "LLL yyyy")}
           </span>
-          <span className="hidden sm:inline">
+          <span className="hidden lg:inline">
             {month.setLocale("en").toFormat(yearly ? "yyyy" : "LLLL yyyy")}
           </span>
         </h2>

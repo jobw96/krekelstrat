@@ -52,13 +52,9 @@ function Card({
 export function StatsBar({
   metrics,
   stats,
-  currency,
-  onToggleCurrency,
 }: {
   metrics: Metrics;
   stats: AvgStats;
-  currency: "USD" | "R";
-  onToggleCurrency: () => void;
 }) {
   const pnlColor = metrics.totalPnl > 0 ? WIN_GREEN : metrics.totalPnl < 0 ? LOSS_RED : "#9AA1AC";
   const ratioTotal = stats.avgWin + stats.avgLoss;
@@ -68,22 +64,12 @@ export function StatsBar({
   return (
     <section className="grid grid-cols-2 gap-2 sm:gap-3 xl:grid-cols-4">
       <Card label="Net P&L" glow={pnlColor}>
-        <div className="flex items-end justify-between gap-2">
-          <span
-            className="truncate font-mono text-[20px] leading-none tabular sm:text-[30px]"
-            style={{ color: pnlColor, fontWeight: 560 }}
-          >
-            {currency === "USD"
-              ? money(metrics.totalPnl)
-              : `${metrics.avgRr == null ? "0.00" : (metrics.avgRr * metrics.count).toFixed(2)}R`}
-          </span>
-          <button
-            onClick={onToggleCurrency}
-            className="hover-lift shrink-0 rounded-control bg-white/6 px-2 py-0.5 text-[11px] text-[#F0F2F5] hover:bg-white/12"
-          >
-            {currency === "USD" ? "$" : "R"}
-          </button>
-        </div>
+        <span
+          className="truncate font-mono text-[20px] leading-none tabular sm:text-[30px]"
+          style={{ color: pnlColor, fontWeight: 560 }}
+        >
+          {money(metrics.totalPnl)}
+        </span>
         <span className="truncate font-mono text-[10px] text-[#7A828D] sm:text-[11px]">{metrics.count} trades</span>
       </Card>
 

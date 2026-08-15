@@ -89,7 +89,6 @@ function JournalPage() {
     DateTime.now().setZone(LOCAL_ZONE).minus({ days: 30 }).toFormat("yyyy-LL-dd"),
   );
   const [to, setTo] = useState(() => DateTime.now().setZone(LOCAL_ZONE).toFormat("yyyy-LL-dd"));
-  const [currency, setCurrency] = useState<"USD" | "R">("USD");
   const [adding, setAdding] = useState(false);
   const [addDate, setAddDate] = useState<string | null>(null);
   const [day, setDay] = useState<string | null>(null);
@@ -403,12 +402,7 @@ function JournalPage() {
             strategies={strategies}
           />
 
-          <StatsBar
-            metrics={metrics}
-            stats={stats}
-            currency={currency}
-            onToggleCurrency={() => setCurrency((c) => (c === "USD" ? "R" : "USD"))}
-          />
+          <StatsBar metrics={metrics} stats={stats} />
 
           <div key={view} className="view-enter flex flex-col gap-6">
             {view === "dashboard" && (
