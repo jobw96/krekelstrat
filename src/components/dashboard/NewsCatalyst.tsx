@@ -60,7 +60,6 @@ export function CatalystBanner({ read }: { read: CatalystRead }) {
         // Bloom from the bottom like every other accented card, and no outer
         // ring or cast shadow: those doubled the border and added false depth.
         backgroundImage: `radial-gradient(86% 54% at 50% 100%, ${color}1f 0%, ${color}08 46%, transparent 76%)`,
-        boxShadow: "inset 0 1px 0 0 var(--border-top-hl)",
       }}
     >
       <span className="inline-flex items-center gap-2 text-[14px] text-white" style={{ fontWeight: 560 }}>

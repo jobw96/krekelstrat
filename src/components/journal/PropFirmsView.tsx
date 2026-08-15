@@ -11,6 +11,15 @@ import { PropFirmDialog } from "./PropFirmDialog";
 
 const usd = (n: number) => `$${Math.abs(n).toFixed(0)}`;
 
+/**
+ * Shared by the account rows and their column header so the two can never drift
+ * apart. Every column takes a proportional share rather than letting the name
+ * absorb the slack: with a 1fr name the values stayed pinned to the far edge on
+ * a wide screen, which is the dead gap this grid exists to close.
+ */
+const ROW_GRID =
+  "grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,2fr)_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)_54px]";
+
 const STATUS_COLOR: Record<PropStatus, string> = {
   in_progress: "#6E86F7",
   passed: "#8098FF",
@@ -197,73 +206,90 @@ export function PropFirmsView({ userId }: { userId: string }) {
                   </span>
                 </button>
 
-                {open && list.length === 0 && (
-                  <p className="px-3 pb-1 text-[11.5px] text-[#7A828D]">No accounts in this category.</p>
-                )}
+                {/* An empty group says so with its own 0 badge; a second line
+                    below it would just be the same fact twice. */}
+                {open && list.length > 0 && (
+                  <div className="flex flex-col gap-1">
+                    {/* Labelled once per group instead of repeating "cost" on
+                        every row, and it keeps the columns aligned. */}
+                    <div className={`${ROW_GRID} hidden px-3 text-[10px] uppercase tracking-[0.07em] text-[#454B55] sm:grid`}>
+                      <span>Account</span>
+                      <span>Size · started</span>
+                      <span className="text-right">Cost</span>
+                      <span className="text-right">Net</span>
+                      <span />
+                    </div>
 
-                {open &&
-                  list.map((r) => {
-                    const spend = Number(r.cost) + Number(r.activation_fee);
-                    const net = Number(r.payout_total) - spend;
-                    return (
-                      <div
-                        key={r.id}
-                        className="ml-3 flex flex-wrap items-center justify-between gap-3 rounded-control bg-white/4 px-3 py-2.5"
-                      >
-                        <span className="flex min-w-0 flex-col">
-                          <span className="flex items-center gap-2 text-[12.5px] text-white">
-                            {r.label?.trim() || r.firm}
+                    {list.map((r) => {
+                      const spend = Number(r.cost) + Number(r.activation_fee);
+                      const net = Number(r.payout_total) - spend;
+                      return (
+                        <div
+                          key={r.id}
+                          className={`${ROW_GRID} items-center rounded-control bg-white/4 px-3 py-2`}
+                        >
+                          <span className="col-start-1 row-start-1 flex min-w-0 items-center gap-2">
+                            <span className="truncate text-[12.5px] text-white">
+                              {r.label?.trim() || r.firm}
+                            </span>
                             {r.label?.trim() && (
-                              <span className="text-[11px] text-[#7A828D]">{r.firm}</span>
+                              <span className="shrink-0 text-[11px] text-[#7A828D]">{r.firm}</span>
                             )}
                             <span
-                              className="rounded-control px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
+                              className="shrink-0 rounded-control px-2 py-0.5 text-[10px] uppercase tracking-[0.06em]"
                               style={{ background: `${STATUS_COLOR[r.status]}1f`, color: STATUS_COLOR[r.status] }}
                             >
                               {STATUS_LABEL[r.status]}
                             </span>
-                            {r.status !== "breached" && (
-                              <span className="rounded-control bg-white/6 px-2 py-0.5 text-[10px] uppercase tracking-[0.06em] text-[#9AA1AC]">
-                                {groupOf(r)}
-                              </span>
-                            )}
                           </span>
-                          <span className="font-mono text-[11px] text-[#7A828D]">
+
+                          <span className="col-start-1 row-start-2 truncate font-mono text-[11px] text-[#7A828D] sm:col-start-2 sm:row-start-1">
                             {r.account_size ? `$${(r.account_size / 1000).toFixed(0)}K` : "—"} ·{" "}
                             {DateTime.fromISO(r.started_at).toFormat("dd LLL yyyy")}
                           </span>
-                          {r.notes && <span className="truncate text-[11.5px] text-[#9AA1AC]">{r.notes}</span>}
-                        </span>
-                        <span className="flex items-center gap-4">
-                          <span className="font-mono text-[11px] text-[#7A828D]">-{usd(spend)} cost</span>
+
+                          <span className="col-start-3 row-start-1 hidden text-right font-mono text-[11px] text-[#7A828D] sm:block">
+                            -{usd(spend)}
+                          </span>
+
                           <span
-                            className="font-mono text-[13px] tabular"
+                            className="col-start-2 row-start-1 text-right font-mono text-[13px] tabular sm:col-start-4"
                             style={{ color: net > 0 ? WIN_GREEN : net < 0 ? LOSS_RED : "#9AA1AC", fontWeight: 560 }}
                           >
                             {net < 0 ? "-" : "+"}
                             {usd(net)}
                           </span>
-                          <button
-                            onClick={() => setDialog({ open: true, account: r })}
-                            aria-label="Edit account"
-                            className="text-[#7A828D] transition-colors hover:text-white"
-                          >
-                            <Pencil className="size-3.5" />
-                          </button>
-                          <button
-                            onClick={async () => {
-                              await supabase.from("prop_accounts").delete().eq("id", r.id);
-                              refresh();
-                            }}
-                            aria-label="Delete account"
-                            className="text-[#7A828D] transition-colors hover:text-[#F5928F]"
-                          >
-                            <Trash2 className="size-3.5" />
-                          </button>
-                        </span>
-                      </div>
-                    );
-                  })}
+
+                          <span className="col-start-2 row-start-2 flex items-center justify-end gap-2 sm:col-start-5 sm:row-start-1">
+                            <button
+                              onClick={() => setDialog({ open: true, account: r })}
+                              aria-label="Edit account"
+                              className="text-[#7A828D] transition-colors hover:text-white"
+                            >
+                              <Pencil className="size-3.5" />
+                            </button>
+                            <button
+                              onClick={async () => {
+                                await supabase.from("prop_accounts").delete().eq("id", r.id);
+                                refresh();
+                              }}
+                              aria-label="Delete account"
+                              className="text-[#7A828D] transition-colors hover:text-[#F5928F]"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </button>
+                          </span>
+
+                          {r.notes && (
+                            <span className="col-span-2 row-start-3 truncate text-[11.5px] text-[#9AA1AC] sm:col-span-5 sm:row-start-2">
+                              {r.notes}
+                            </span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             );
           })}

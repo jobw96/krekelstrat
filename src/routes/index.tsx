@@ -132,7 +132,6 @@ function Dashboard() {
               style={{
                 borderColor: "rgba(255,77,94,0.28)",
                 background: "rgba(255,77,94,0.07)",
-                boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.05)",
                 color: "#F5928F",
               }}
             >
@@ -207,7 +206,6 @@ function Dashboard() {
                       style={{
                         borderColor: "rgba(255,255,255,0.07)",
                         background: "rgba(255,255,255,0.022)",
-                        boxShadow: "inset 0 1px 0 0 rgba(255,255,255,0.05)",
                       }}
                     >
                       <span
