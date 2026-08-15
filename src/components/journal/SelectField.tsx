@@ -56,7 +56,7 @@ export function SelectField({
       {open && (
         <div
           role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 max-h-64 overflow-y-auto rounded-control border border-white/10 p-1 shadow-2xl"
+          className="absolute left-0 right-0 top-[calc(100%+6px)] z-50 flex max-h-64 flex-col gap-0.5 overflow-y-auto rounded-control border border-white/10 p-1.5 shadow-2xl"
           style={{ background: "#121317", backdropFilter: "blur(18px)" }}
         >
           {options.map((o) => {
@@ -71,8 +71,8 @@ export function SelectField({
                   onChange(o.value);
                   setOpen(false);
                 }}
-                className={`flex w-full items-center justify-between gap-2 rounded-control px-2.5 py-2 text-left text-[13px] ${
-                  active ? "option-on" : "option-off border-transparent bg-transparent"
+                className={`flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-[13px] ${
+                  active ? "menu-item-on" : "menu-item"
                 }`}
               >
                 <span className="truncate">{o.label}</span>

@@ -22,6 +22,14 @@ function pnlColor(n: number) {
   return n > 0 ? WIN_GREEN : n < 0 ? LOSS_RED : "#9AA1AC";
 }
 
+/**
+ * Shared by the bucket rows and their header. On a phone only the name and the
+ * net figure survive: the five fixed columns together took ~250px, which left
+ * the name about 10px on a 375px screen.
+ */
+const BUCKET_GRID =
+  "grid grid-cols-[minmax(0,1fr)_76px] gap-2 sm:grid-cols-[minmax(0,1fr)_54px_58px_66px_74px]";
+
 function sessionLabel(code: string) {
   return SESSIONS.find((s) => s.short === code)?.name ?? code;
 }
@@ -66,11 +74,11 @@ function BucketTable({
         <p className="py-5 text-center text-[12px] text-[#7A828D]">{empty}</p>
       ) : (
         <div className="flex flex-col gap-1">
-          <div className="grid grid-cols-[minmax(0,1fr)_54px_58px_66px_74px] gap-2 px-2 text-[10px] uppercase tracking-[0.07em] text-[#454B55]">
+          <div className={`${BUCKET_GRID} px-2 text-[10px] uppercase tracking-[0.07em] text-[#454B55]`}>
             <span>Name</span>
-            <span className="text-right">Trades</span>
-            <span className="text-right">Win %</span>
-            <span className="text-right">Exp.</span>
+            <span className="hidden text-right sm:block">Trades</span>
+            <span className="hidden text-right sm:block">Win %</span>
+            <span className="hidden text-right sm:block">Exp.</span>
             <span className="text-right">Net P&L</span>
           </div>
           {list.map((r) => (
@@ -83,14 +91,14 @@ function BucketTable({
                   background: `${pnlColor(r.pnl)}1f`,
                 }}
               />
-              <div className="relative grid grid-cols-[minmax(0,1fr)_54px_58px_66px_74px] items-center gap-2 px-2 py-2">
+              <div className={`${BUCKET_GRID} relative items-center px-2 py-2`}>
                 <span className="truncate text-[12.5px] text-[#F0F2F5]">{r.key}</span>
-                <span className="text-right font-mono text-[11px] text-[#9AA1AC]">{r.count}</span>
-                <span className="text-right font-mono text-[11px] text-[#9AA1AC]">
+                <span className="hidden text-right font-mono text-[11px] text-[#9AA1AC] sm:block">{r.count}</span>
+                <span className="hidden text-right font-mono text-[11px] text-[#9AA1AC] sm:block">
                   {r.winRate.toFixed(0)}%
                 </span>
                 <span
-                  className="text-right font-mono text-[11px] tabular"
+                  className="hidden text-right font-mono text-[11px] tabular sm:block"
                   style={{ color: pnlColor(r.expectancy) }}
                 >
                   {money(r.expectancy)}

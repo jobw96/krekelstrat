@@ -81,7 +81,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      // viewport-fit=cover is what makes env(safe-area-inset-*) resolve to a
+      // real value on iOS; without it the insets below are all zero.
+      {
+        name: "viewport",
+        content: "width=device-width, initial-scale=1, viewport-fit=cover",
+      },
       { title: "Krekelstrat Terminal" },
       {
         name: "description",
@@ -194,7 +199,7 @@ function RootComponent() {
         </>
       ) : (
         <main className="app-shell min-h-screen">
-          <div className="flex w-full gap-4 px-3 pb-[calc(env(safe-area-inset-bottom)+104px)] pt-4 sm:px-5 lg:pb-4 lg:pl-[92px]">
+          <div className="flex w-full gap-4 px-3 pb-[calc(env(safe-area-inset-bottom)+104px)] pt-[calc(env(safe-area-inset-top)+16px)] sm:px-5 lg:pb-4 lg:pl-[92px]">
             {/* The rail is outside every route transition and loading layer. */}
             <AppRail />
             <div className="relative min-h-[calc(100vh-32px)] min-w-0 flex-1">

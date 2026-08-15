@@ -369,9 +369,10 @@
 }
 
 /*
- * Selection controls. option-on is the one place a glow is allowed to leave its
- * box: it marks a live choice, which needs to carry across the screen, where a
- * card only needs to describe its own surface. Set --glow-opt to re-tint.
+ * Selection controls where each option is its own box (tabs, chips, toggles).
+ * No halo: it reads fine on a spaced-out row, but in a list of stacked options
+ * several bordered, glowing boxes at once is just noise. Set --glow-opt to
+ * re-tint. For options in a menu, use menu-item below instead.
  */
 @utility option-on {
   --glow-opt: var(--accent-color);
@@ -384,7 +385,6 @@
     ),
     var(--surface-2);
   color: #ffffff;
-  box-shadow: 0 0 16px -5px color-mix(in oklab, var(--glow-opt) 70%, transparent);
 }
 
 @utility option-off {
@@ -400,6 +400,30 @@
     background: rgba(255, 255, 255, 0.06);
     color: var(--text-primary);
   }
+}
+
+/*
+ * A row in a menu or dropdown. Borderless and unfilled until hovered: giving
+ * every row its own outline turns a short list into a stack of boxes with no
+ * space to breathe. The panel around them already provides the frame.
+ */
+@utility menu-item {
+  border-radius: var(--r-inner);
+  color: var(--text-secondary);
+  transition:
+    background-color 140ms ease,
+    color 140ms ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+  }
+}
+
+@utility menu-item-on {
+  border-radius: var(--r-inner);
+  background: color-mix(in oklab, var(--accent-color) 18%, transparent);
+  color: #ffffff;
 }
 
 /* Lightbox control button. */

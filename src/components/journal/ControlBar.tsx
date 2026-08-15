@@ -29,7 +29,10 @@ function Dropdown({
 }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="relative shrink-0">
+    // static below sm, so the panel positions against the bar instead of this
+    // button: anchored to the trigger it ran off whichever edge the trigger
+    // happened to sit near, and no anchor side is right for every position.
+    <div className="static shrink-0 sm:relative">
       <button
         onClick={() => setOpen((o) => !o)}
         className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-1.5 text-[12px] text-[#F0F2F5] hover:bg-white/12"
@@ -43,7 +46,7 @@ function Dropdown({
             aria-label="Close menu"
             onClick={() => setOpen(false)}
           />
-          <div className="card-surface dialog-enter absolute left-0 top-[calc(100%+10px)] z-20 flex min-w-[210px] flex-col gap-0.5 p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)]">
+          <div className="card-surface dialog-enter absolute inset-x-0 top-[calc(100%+10px)] z-20 flex flex-col gap-0.5 p-1.5 shadow-[0_18px_40px_-16px_rgba(0,0,0,0.85)] sm:inset-x-auto sm:left-0 sm:min-w-[210px]">
             {children(() => setOpen(false))}
           </div>
         </>
@@ -64,8 +67,8 @@ function Item({
   return (
     <button
       onClick={onClick}
-      className="rounded-control px-2.5 py-1.5 text-left text-[12px] transition-colors hover:bg-white/8"
-      style={{ color: active ? "#ffffff" : "#9AA1AC", fontWeight: active ? 560 : 400 }}
+      className={`px-3 py-2.5 text-left text-[12px] ${active ? "menu-item-on" : "menu-item"}`}
+      style={active ? { fontWeight: 560 } : undefined}
     >
       {children}
     </button>
@@ -99,8 +102,11 @@ export function ControlBar({
     (filters.session !== "all" ? 1 : 0) +
     (filters.result !== "all" ? 1 : 0);
 
+  // Wraps rather than scrolling sideways: an overflow container clips the
+  // absolutely-positioned dropdown panels, which on a phone turned every
+  // filter menu into an unusable sliver.
   return (
-    <div className="card-surface flex flex-nowrap items-center gap-2 overflow-x-auto p-2.5 md:flex-wrap md:overflow-visible">
+    <div className="card-surface relative flex flex-wrap items-center gap-2 p-2.5">
       <Dropdown
         label={
           filters.strategy === "all"

@@ -62,8 +62,8 @@ function SelectField({
                   onChange(o.value);
                   setOpen(false);
                 }}
-                className={`rounded-control px-2.5 py-1.5 text-left text-[12.5px] ${
-                  o.value === value ? "option-on" : "option-off border-transparent bg-transparent"
+                className={`px-3 py-2.5 text-left text-[12.5px] ${
+                  o.value === value ? "menu-item-on" : "menu-item"
                 }`}
                 style={o.value === value ? { fontWeight: 560 } : undefined}
               >

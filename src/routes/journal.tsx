@@ -70,6 +70,9 @@ function JournalPage() {
   }, [search.view]);
   const [addingStrategy, setAddingStrategy] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  // Separate from `collapsed`: that one narrows the desktop rail, this one
+  // opens the drawer on a phone, where the rail is not rendered at all.
+  const [navOpen, setNavOpen] = useState(false);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
   const [mode, setMode] = useState<"live" | "practice">("live");
@@ -232,6 +235,8 @@ function JournalPage() {
           onView={setView}
           collapsed={collapsed}
           onToggle={() => setCollapsed((c) => !c)}
+          mobileOpen={navOpen}
+          onMobileClose={() => setNavOpen(false)}
           onAddTrade={() => {
             setAddDate(null);
             setAdding(true);
@@ -243,9 +248,10 @@ function JournalPage() {
             <div className="flex min-w-0 flex-wrap items-center gap-2">
 
               <button
-                onClick={() => setCollapsed((c) => !c)}
-                className="hover-lift rounded-full bg-white/6 p-2 text-[#F0F2F5] md:hidden"
-                aria-label="Toggle navigation"
+                onClick={() => setNavOpen(true)}
+                className="hover-lift rounded-control bg-white/6 p-2 text-[#F0F2F5] md:hidden"
+                aria-label="Open navigation"
+                aria-expanded={navOpen}
               >
                 <Menu className="size-4" />
               </button>
@@ -268,8 +274,9 @@ function JournalPage() {
                           setActiveOwner(null);
                           setSwitcherOpen(false);
                         }}
-                        className="hover-tint rounded-control px-2.5 py-2 text-left text-[12.5px]"
-                        style={{ color: activeShare ? "#9AA1AC" : "#ffffff" }}
+                        className={`px-3 py-2.5 text-left text-[12.5px] ${
+                          activeShare ? "menu-item" : "menu-item-on"
+                        }`}
                       >
                         My Journal
                       </button>
@@ -280,8 +287,9 @@ function JournalPage() {
                             setActiveOwner(s.owner_id);
                             setSwitcherOpen(false);
                           }}
-                          className="hover-tint truncate rounded-control px-2.5 py-2 text-left text-[12.5px]"
-                          style={{ color: activeShare?.id === s.id ? "#ffffff" : "#9AA1AC" }}
+                          className={`truncate px-3 py-2.5 text-left text-[12.5px] ${
+                            activeShare?.id === s.id ? "menu-item-on" : "menu-item"
+                          }`}
                         >
                           {buddyLabel(s)} (Read-Only)
                         </button>
@@ -295,8 +303,12 @@ function JournalPage() {
                   </>
                 )}
               </div>
+              {/* Grid + translate rather than hard-coded pixel offsets, so the
+                  thumb tracks whatever width the toggle has at this breakpoint.
+                  At 156px fixed it no longer fit beside the title on a phone
+                  and dropped the header into a third ragged row. */}
               <div
-                className="relative flex shrink-0 items-center rounded-control p-0.5"
+                className="relative grid w-[132px] shrink-0 grid-cols-2 rounded-control p-0.5 sm:w-[156px]"
                 style={{
                   background: "rgba(255,255,255,0.06)",
                   boxShadow: mode === "practice" ? `inset 0 0 0 1px ${PRACTICE_BLUE}55` : "none",
@@ -304,9 +316,9 @@ function JournalPage() {
               >
                 <span
                   aria-hidden
-                  className="absolute top-0.5 bottom-0.5 w-[76px] rounded-control transition-all duration-200"
+                  className="absolute inset-y-0.5 left-0.5 w-[calc(50%-2px)] rounded-control transition-transform duration-200"
                   style={{
-                    left: mode === "live" ? "2px" : "78px",
+                    transform: mode === "live" ? "translateX(0)" : "translateX(100%)",
                     background: mode === "live" ? "rgba(255,255,255,0.14)" : `${PRACTICE_BLUE}2e`,
                   }}
                 />
@@ -314,7 +326,8 @@ function JournalPage() {
                   <button
                     key={m}
                     onClick={() => setMode(m)}
-                    className="relative z-10 w-[76px] rounded-control py-1.5 text-[11.5px] uppercase tracking-[0.06em] transition-colors"
+                    aria-pressed={mode === m}
+                    className="relative z-10 rounded-control py-1.5 text-[11px] uppercase tracking-[0.06em] transition-colors sm:text-[11.5px]"
                     style={{
                       color:
                         mode === m ? (m === "practice" ? PRACTICE_BLUE : "#ffffff") : "#7A828D",

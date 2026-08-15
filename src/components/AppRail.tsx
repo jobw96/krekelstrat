@@ -38,7 +38,7 @@ export function AppRail() {
 
   return (
     <>
-    <aside className="chrome-surface fixed inset-y-0 left-0 z-40 hidden h-screen w-[76px] shrink-0 flex-col items-center gap-2 rounded-none border-y-0 border-l-0 py-6 lg:flex">
+    <aside className="chrome-surface fixed inset-y-0 left-0 z-40 hidden h-screen w-[76px] shrink-0 flex-col items-center gap-2 rounded-none border-y-0 border-l-0 pb-6 pt-[calc(env(safe-area-inset-top)+24px)] lg:flex">
       <div className="group relative mb-4 flex flex-col items-center gap-1.5">
         <div className="relative flex size-11 items-center justify-center overflow-hidden rounded-full p-[2px]">
           <div

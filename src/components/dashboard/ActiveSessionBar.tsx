@@ -48,7 +48,7 @@ export function ActiveSessionBar({
     : 0;
 
   return (
-    <div className="sticky top-0 z-30 sm:top-4">
+    <div className="relative z-30">
       {/* Mobile: single compact strip */}
       <div className="card-surface flex items-center gap-2.5 px-3 py-2 sm:hidden">
         <span

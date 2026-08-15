@@ -203,8 +203,15 @@ function Header({
         >
           <ChevronLeft className="size-4" />
         </button>
+        {/* Abbreviated on a phone: the full month name got truncated to
+            "August 2...", which is worse than simply showing "Aug 2026". */}
         <h2 className="truncate text-[16px] text-white" style={{ fontWeight: 560 }}>
-          {month.setLocale("en").toFormat(yearly ? "yyyy" : "LLLL yyyy")}
+          <span className="sm:hidden">
+            {month.setLocale("en").toFormat(yearly ? "yyyy" : "LLL yyyy")}
+          </span>
+          <span className="hidden sm:inline">
+            {month.setLocale("en").toFormat(yearly ? "yyyy" : "LLLL yyyy")}
+          </span>
         </h2>
         <button
           onClick={() => onMonthChange(month.plus(yearly ? { years: 1 } : { months: 1 }))}
@@ -215,7 +222,7 @@ function Header({
         </button>
         <button
           onClick={() => onMonthChange(DateTime.now().setZone(LOCAL_ZONE).startOf("month"))}
-          className="hover-lift rounded-control bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
+          className="hover-lift shrink-0 whitespace-nowrap rounded-control bg-white/6 px-3 py-1 text-[12px] text-[#F0F2F5] hover:bg-white/12"
         >
           This Month
         </button>

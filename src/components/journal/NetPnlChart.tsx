@@ -80,7 +80,7 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
               type="button"
               onClick={() => setBucket(b.id)}
               className={`rounded-control px-2 py-1 text-[11px] sm:px-2.5 ${
-                bucket === b.id ? "option-on" : "option-off border-transparent bg-transparent"
+                bucket === b.id ? "option-on" : "menu-item"
               }`}
               aria-pressed={bucket === b.id}
             >
