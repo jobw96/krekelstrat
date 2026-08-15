@@ -204,6 +204,7 @@ export type Database = {
           user_id: string
           went_right: string | null
           went_wrong: string | null
+          account_size: number
         }
         Insert: {
           created_at?: string
@@ -221,6 +222,7 @@ export type Database = {
           user_id: string
           went_right?: string | null
           went_wrong?: string | null
+          account_size?: number
         }
         Update: {
           created_at?: string
@@ -238,6 +240,7 @@ export type Database = {
           user_id?: string
           went_right?: string | null
           went_wrong?: string | null
+          account_size?: number
         }
         Relationships: [
           {

@@ -3,6 +3,9 @@ import { DateTime } from "luxon";
 import { ChevronDown, ClipboardPaste, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
+  ACCOUNT_SIZES,
+  DEFAULT_ACCOUNT_SIZE,
+  accountLabel,
   SESSION_OPTIONS,
   sessionLabel,
   uploadScreenshot,
@@ -100,6 +103,11 @@ export function AddTradeDialog({
   const [practice, setPractice] = useState<boolean>(
     trade ? !!trade.is_practice : !!defaultPractice,
   );
+  // New trades always start on the 25K book, whichever one is being viewed;
+  // editing keeps whatever the trade was logged under.
+  const [accountSize, setAccountSize] = useState<number>(
+    trade?.account_size ?? DEFAULT_ACCOUNT_SIZE,
+  );
   const [date, setDate] = useState(
     trade
       ? DateTime.fromISO(trade.date).toFormat("yyyy-LL-dd'T'HH:mm")
@@ -194,6 +202,7 @@ export function AddTradeDialog({
 
         improvement: improvement || null,
         is_practice: practice,
+        account_size: accountSize,
         screenshot_url: screenshot,
       };
       const { error: err } = editing
@@ -267,6 +276,15 @@ export function AddTradeDialog({
           </button>
         </div>
 
+
+        <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
+          Account
+          <SelectField
+            value={String(accountSize)}
+            onChange={(v) => setAccountSize(Number(v))}
+            options={ACCOUNT_SIZES.map((s) => ({ value: String(s), label: accountLabel(s) }))}
+          />
+        </div>
 
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">

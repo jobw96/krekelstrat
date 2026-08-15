@@ -9,6 +9,7 @@ import {
   computeMetrics,
   money,
   setMoneyMask,
+  DEFAULT_ACCOUNT_SIZE,
   WIN_GREEN,
   setPracticeAccent,
   LOSS_RED,
@@ -29,7 +30,12 @@ import { ZellaCalendar, type CalendarMode } from "@/components/journal/ZellaCale
 import { AnalyticsPanel } from "@/components/journal/AnalyticsPanel";
 import { NetPnlChart } from "@/components/journal/NetPnlChart";
 import { ReportsView } from "@/components/journal/ReportsView";
-import { ControlBar, type Filters, type RangeKey } from "@/components/journal/ControlBar";
+import {
+  ControlBar,
+  type AccountFilter,
+  type Filters,
+  type RangeKey,
+} from "@/components/journal/ControlBar";
 import { ShareJournalDialog } from "@/components/journal/ShareJournalDialog";
 import { buddyLabel, claimShares, fetchShares, type JournalShare } from "@/lib/shares";
 import { fetchCommentCounts } from "@/lib/comments";
@@ -73,6 +79,8 @@ function JournalPage() {
   // Separate from `collapsed`: that one narrows the desktop rail, this one
   // opens the drawer on a phone, where the rail is not rendered at all.
   const [navOpen, setNavOpen] = useState(false);
+  // Which account journal is in view; "all" combines them.
+  const [account, setAccount] = useState<AccountFilter>(DEFAULT_ACCOUNT_SIZE);
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
   const [mode, setMode] = useState<"live" | "practice">("live");
@@ -163,8 +171,15 @@ function JournalPage() {
   const strategies = strategiesQ.data ?? [];
   const allTradesRaw = tradesQ.data ?? [];
   const allTrades = useMemo(
-    () => allTradesRaw.filter((t) => !!t.is_practice === (mode === "practice")),
-    [allTradesRaw, mode],
+    () =>
+      allTradesRaw.filter(
+        (t) =>
+          !!t.is_practice === (mode === "practice") &&
+          // Trades written before the per-account split have no size stored;
+          // they belong to the 25K book, same as the migration's backfill.
+          (account === "all" || (t.account_size ?? DEFAULT_ACCOUNT_SIZE) === account),
+      ),
+    [allTradesRaw, mode, account],
   );
   const syncedAt = tradesQ.dataUpdatedAt ? new Date(tradesQ.dataUpdatedAt) : null;
 
@@ -391,6 +406,8 @@ function JournalPage() {
           )}
 
           <ControlBar
+            account={account}
+            onAccount={setAccount}
             range={range}
             onRange={setRange}
             from={from}

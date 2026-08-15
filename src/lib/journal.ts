@@ -25,8 +25,24 @@ export type Trade = {
   went_wrong: string | null;
   improvement: string | null;
   is_practice?: boolean | null;
+  /** Which prop account size this trade belongs to; see ACCOUNT_SIZES. */
+  account_size: number;
   created_at: string;
 };
+
+/**
+ * The journal is kept per prop account size. Trades logged before the split
+ * were all on the 25K account, which the migration's default backfills.
+ */
+export const ACCOUNT_SIZES = [25000, 50000, 150000, 250000] as const;
+
+export type AccountSize = (typeof ACCOUNT_SIZES)[number];
+
+export const DEFAULT_ACCOUNT_SIZE: AccountSize = 25000;
+
+export function accountLabel(size: number) {
+  return `$${Math.round(size / 1000)}K`;
+}
 
 export const SESSION_OPTIONS = ["ASIA", "LO", "PRE", "MACRO", "NYMO", "LUNCH", "2PM"];
 

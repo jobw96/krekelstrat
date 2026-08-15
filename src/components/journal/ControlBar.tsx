@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { ChevronDown, Filter } from "lucide-react";
-import { SESSION_OPTIONS, type Strategy, type TradeResult } from "@/lib/journal";
+import {
+  ACCOUNT_SIZES,
+  accountLabel,
+  SESSION_OPTIONS,
+  type Strategy,
+  type TradeResult,
+} from "@/lib/journal";
+
+/** Either a single account journal, or all of them combined. */
+export type AccountFilter = "all" | number;
 import { DatePicker } from "@/components/journal/DateTimePicker";
 
 
@@ -86,6 +95,8 @@ export function ControlBar({
   filters,
   onFilters,
   strategies,
+  account,
+  onAccount,
 }: {
   range: RangeKey;
   onRange: (r: RangeKey) => void;
@@ -96,6 +107,9 @@ export function ControlBar({
   filters: Filters;
   onFilters: (f: Filters) => void;
   strategies: Strategy[];
+  /** Selected account journal, or "all" to combine them. */
+  account: AccountFilter;
+  onAccount: (a: AccountFilter) => void;
 }) {
   const activeFilters =
     (filters.strategy !== "all" ? 1 : 0) +
@@ -106,6 +120,25 @@ export function ControlBar({
   // absolutely-positioned dropdown panels, which on a phone turned every
   // filter menu into an unusable sliver.
   return (
+    <div className="flex flex-col gap-2">
+      {/* The account journals sit above the rest: picking one switches which
+          book you are looking at, where the controls below only narrow it. */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        {(["all", ...ACCOUNT_SIZES] as AccountFilter[]).map((a) => (
+          <button
+            key={a}
+            onClick={() => onAccount(a)}
+            aria-pressed={account === a}
+            className={`rounded-control px-3 py-1.5 text-[12px] ${
+              account === a ? "option-on" : "option-off"
+            }`}
+            style={account === a ? { fontWeight: 560 } : undefined}
+          >
+            {a === "all" ? "All accounts" : accountLabel(a)}
+          </button>
+        ))}
+      </div>
+
     <div className="card-surface relative flex flex-wrap items-center gap-2 p-2.5">
       <Dropdown
         label={
@@ -211,10 +244,7 @@ export function ControlBar({
           </div>
         )}
       </Dropdown>
-
-
-
-
+    </div>
     </div>
   );
 }
