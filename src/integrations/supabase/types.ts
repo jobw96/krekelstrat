@@ -189,6 +189,7 @@ export type Database = {
       }
       trades: {
         Row: {
+          account_size: number
           created_at: string
           date: string
           id: string
@@ -206,6 +207,7 @@ export type Database = {
           went_wrong: string | null
         }
         Insert: {
+          account_size?: number
           created_at?: string
           date?: string
           id?: string
@@ -223,6 +225,7 @@ export type Database = {
           went_wrong?: string | null
         }
         Update: {
+          account_size?: number
           created_at?: string
           date?: string
           id?: string
