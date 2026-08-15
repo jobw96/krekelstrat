@@ -62,11 +62,10 @@ function SelectField({
                   onChange(o.value);
                   setOpen(false);
                 }}
-                className="rounded-control px-2.5 py-1.5 text-left text-[12.5px] transition-colors hover:bg-white/8"
-                style={{
-                  color: o.value === value ? "#ffffff" : "#9AA1AC",
-                  fontWeight: o.value === value ? 560 : 400,
-                }}
+                className={`rounded-control px-2.5 py-1.5 text-left text-[12.5px] ${
+                  o.value === value ? "option-on" : "option-off border-transparent bg-transparent"
+                }`}
+                style={o.value === value ? { fontWeight: 560 } : undefined}
               >
                 {o.label}
               </button>

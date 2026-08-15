@@ -40,12 +40,11 @@ export function TagPicker({ label, color, presets, value, onChange }: Props) {
               key={tag}
               type="button"
               onClick={() => toggle(tag)}
-              className="rounded-control px-2.5 py-1 text-[11px] transition-colors duration-150"
-              style={{
-                background: on ? `${color}26` : "rgba(255,255,255,0.05)",
-                color: on ? color : "#9AA1AC",
-                boxShadow: `inset 0 0 0 1px ${on ? `${color}66` : "rgba(255,255,255,0.07)"}`,
-              }}
+              className={`rounded-control px-2.5 py-1 text-[11px] ${on ? "option-on" : "option-off"}`}
+              // Selected tags glow in their own hue rather than the interface
+              // accent, so "what went right" stays green and "wrong" stays red.
+              style={on ? ({ "--glow-opt": color, color } as React.CSSProperties) : undefined}
+              aria-pressed={on}
             >
               {tag}
             </button>

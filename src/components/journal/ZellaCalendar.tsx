@@ -36,8 +36,12 @@ export function ZellaCalendar({
   const byDay = groupByDay(trades);
   const start = month.startOf("month");
   const firstCell = start.startOf("week"); // Monday
-  // Weekday-only grid: Monday through Friday, 6 rows.
-  const rows = Array.from({ length: 6 }, (_, w) =>
+  // Weekday-only grid: Monday through Friday. Only the weeks the month actually
+  // spans — a fixed six left most months with a trailing row of next-month days
+  // and a matching row of empty weekly totals.
+  const weekCount =
+    Math.round(month.endOf("month").startOf("week").diff(firstCell, "weeks").weeks) + 1;
+  const rows = Array.from({ length: weekCount }, (_, w) =>
     Array.from({ length: 5 }, (_, d) => firstCell.plus({ weeks: w, days: d })),
   );
   const weeks = rows.map((row, i) => {
@@ -67,6 +71,7 @@ export function ZellaCalendar({
           onMonthChange={onMonthChange}
           yearly
         />
+        <Tabs mode={mode} onMode={onMode} />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {months.map((m) => {
             const pnl = [...byDay.values()]
@@ -101,7 +106,6 @@ export function ZellaCalendar({
             );
           })}
         </div>
-        <Tabs mode={mode} onMode={onMode} />
       </section>
     );
   }
@@ -109,6 +113,9 @@ export function ZellaCalendar({
   return (
     <section className="card-sunken flex flex-col gap-4 p-3 sm:p-5">
       <Header month={month} monthPnl={monthPnl} onMonthChange={onMonthChange} />
+      {/* Directly above the grid it controls. Below the weekly totals you had
+          to scroll past the whole calendar to change what it shows. */}
+      <Tabs mode={mode} onMode={onMode} />
 
       <div className="flex flex-col gap-1.5">
         <div className="grid grid-cols-5 gap-1.5">
@@ -170,9 +177,6 @@ export function ZellaCalendar({
           })}
         </div>
       </div>
-
-
-      <Tabs mode={mode} onMode={onMode} />
     </section>
   );
 }
@@ -336,22 +340,16 @@ function WeekRow({
 
 function Tabs({ mode, onMode }: { mode: CalendarMode; onMode: (m: CalendarMode) => void }) {
   return (
-    <div className="grid grid-cols-2 gap-1.5 border-t border-white/6 pt-3 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
       {MODES.map((m) => (
         <button
           key={m.id}
           onClick={() => onMode(m.id)}
-          className="hover-lift rounded-control px-3 py-1.5 text-[12px]"
-          style={
-            mode === m.id
-              ? {
-                  background: "#1C1F27",
-                  color: "#ffffff",
-                  fontWeight: 560,
-                  boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.12)",
-                }
-              : { background: "rgba(255,255,255,0.05)", color: "#9AA1AC" }
-          }
+          className={`rounded-control px-3 py-1.5 text-[12px] ${
+            mode === m.id ? "option-on" : "option-off"
+          }`}
+          style={mode === m.id ? { fontWeight: 560 } : undefined}
+          aria-pressed={mode === m.id}
         >
           {m.label}
         </button>

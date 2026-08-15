@@ -79,12 +79,10 @@ export function NetPnlChart({ trades }: { trades: Trade[] }) {
               key={b.id}
               type="button"
               onClick={() => setBucket(b.id)}
-              className="rounded-control px-2 py-1 text-[11px] transition-colors sm:px-2.5"
-              style={
-                bucket === b.id
-                  ? { background: "rgba(255,255,255,0.10)", color: "#ffffff" }
-                  : { color: "#7A828D" }
-              }
+              className={`rounded-control px-2 py-1 text-[11px] sm:px-2.5 ${
+                bucket === b.id ? "option-on" : "option-off border-transparent bg-transparent"
+              }`}
+              aria-pressed={bucket === b.id}
             >
               <span className="sm:hidden">{b.label.charAt(0)}</span>
               <span className="hidden sm:inline">{b.label}</span>

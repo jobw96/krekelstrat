@@ -71,11 +71,12 @@ export function SelectField({
                   onChange(o.value);
                   setOpen(false);
                 }}
-                className="flex w-full items-center justify-between gap-2 rounded-control px-2.5 py-2 text-left text-[13px] transition-colors hover:bg-white/8"
-                style={{ color: active ? "#ffffff" : "#9AA1AC" }}
+                className={`flex w-full items-center justify-between gap-2 rounded-control px-2.5 py-2 text-left text-[13px] ${
+                  active ? "option-on" : "option-off border-transparent bg-transparent"
+                }`}
               >
                 <span className="truncate">{o.label}</span>
-                {active && <Check className="size-3.5 text-[#F0736F]" />}
+                {active && <Check className="size-3.5" />}
               </button>
             );
           })}
