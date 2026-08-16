@@ -85,6 +85,7 @@ export type Database = {
           passed_at: string | null
           payout_total: number
           phase: string
+          profit_target: number
           started_at: string
           status: string
           updated_at: string
@@ -103,6 +104,7 @@ export type Database = {
           passed_at?: string | null
           payout_total?: number
           phase?: string
+          profit_target?: number
           started_at?: string
           status?: string
           updated_at?: string
@@ -121,6 +123,7 @@ export type Database = {
           passed_at?: string | null
           payout_total?: number
           phase?: string
+          profit_target?: number
           started_at?: string
           status?: string
           updated_at?: string
@@ -197,6 +200,7 @@ export type Database = {
           is_practice: boolean
           notes: string | null
           pnl: number
+          prop_account_id: string | null
           result: string
           rr: number | null
           screenshot_url: string | null
@@ -215,6 +219,7 @@ export type Database = {
           is_practice?: boolean
           notes?: string | null
           pnl?: number
+          prop_account_id?: string | null
           result?: string
           rr?: number | null
           screenshot_url?: string | null
@@ -233,6 +238,7 @@ export type Database = {
           is_practice?: boolean
           notes?: string | null
           pnl?: number
+          prop_account_id?: string | null
           result?: string
           rr?: number | null
           screenshot_url?: string | null
@@ -243,6 +249,13 @@ export type Database = {
           went_wrong?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "trades_prop_account_id_fkey"
+            columns: ["prop_account_id"]
+            isOneToOne: false
+            referencedRelation: "prop_accounts"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "trades_strategy_id_fkey"
             columns: ["strategy_id"]
