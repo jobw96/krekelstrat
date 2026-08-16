@@ -1,3 +1,4 @@
+import { useLockScroll } from "@/hooks/useLockScroll";
 import {
   CalendarDays,
   ChevronLeft,
@@ -102,6 +103,8 @@ export function JournalNav({
   mobileOpen?: boolean;
   onMobileClose?: () => void;
 }) {
+  // The drawer covers the page on a phone, so freeze what is behind it.
+  useLockScroll(mobileOpen);
   const pick = (v: JournalView) => {
     onView(v);
     onMobileClose?.();

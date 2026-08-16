@@ -21,6 +21,7 @@ import type { PropAccount } from "@/lib/prop";
 import { DateTimePicker } from "@/components/journal/DateTimePicker";
 import { TagPicker, RIGHT_TAGS, WRONG_TAGS } from "@/components/journal/TagPicker";
 import { sessionShortAt } from "@/lib/sessions";
+import { useLockScroll } from "@/hooks/useLockScroll";
 
 
 
@@ -101,6 +102,7 @@ export function AddTradeDialog({
   /** When provided, the dialog edits this trade instead of creating a new one. */
   trade?: Trade | null;
 }) {
+  useLockScroll();
   const editing = !!trade;
   const [practice, setPractice] = useState<boolean>(
     trade ? !!trade.is_practice : !!defaultPractice,

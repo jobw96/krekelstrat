@@ -10,6 +10,7 @@ import {
   setShareStatus,
   type JournalShare,
 } from "@/lib/shares";
+import { useLockScroll } from "@/hooks/useLockScroll";
 
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
 
@@ -32,6 +33,7 @@ export function ShareJournalDialog({
   userEmail: string | null;
   onClose: () => void;
 }) {
+  useLockScroll();
   const qc = useQueryClient();
   const [email, setEmail] = useState("");
   const [hide, setHide] = useState(false);

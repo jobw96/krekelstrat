@@ -14,6 +14,7 @@ import { LOCAL_ZONE } from "@/lib/sessions";
 import { TradeComments } from "@/components/journal/TradeComments";
 import { AddTradeDialog } from "@/components/journal/AddTradeDialog";
 import { ImageLightbox } from "@/components/journal/ImageLightbox";
+import { useLockScroll } from "@/hooks/useLockScroll";
 
 function resultColor(t: Trade) {
   return t.result === "WIN" ? WIN_GREEN : t.result === "LOSS" ? LOSS_RED : "#9AA1AC";
@@ -54,6 +55,7 @@ export function DayTradesDialog({
   onClose: () => void;
   onChanged: () => void;
 }) {
+  useLockScroll();
   const [shots, setShots] = useState<Record<string, string>>({});
   const [editing, setEditing] = useState<Trade | null>(null);
   const [zoomed, setZoomed] = useState<string | null>(null);
@@ -86,8 +88,10 @@ export function DayTradesDialog({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-sm">
-      <div className="card-surface flex max-h-[90vh] w-full max-w-[820px] flex-col gap-3 overflow-y-auto p-5">
-        <header className="flex items-center justify-between gap-3">
+      {/* The header sits outside the scroll area rather than scrolling with it,
+          so the close button stays reachable however long the day is. */}
+      <div className="card-surface flex max-h-[90vh] w-full max-w-[820px] flex-col overflow-hidden">
+        <header className="flex shrink-0 items-center justify-between gap-3 border-b border-white/6 p-5">
           <div className="flex flex-col">
             <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
               {DateTime.fromISO(day).setLocale("en").toFormat("cccc d LLLL yyyy")}
@@ -109,7 +113,7 @@ export function DayTradesDialog({
         {/* One trade per row, in time order. Three across with an uncapped
             screenshot meant each card ran taller than the viewport, so a
             seven-trade day could never be read at a glance. */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 overflow-y-auto p-5">
         {ordered.map((t) => (
           <article key={t.id} className="glass-inset flex min-w-0 flex-col gap-2.5 p-3">
             <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 sm:grid-cols-[auto_minmax(0,1fr)_84px_52px_auto]">

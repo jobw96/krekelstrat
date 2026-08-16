@@ -13,6 +13,7 @@ import {
   type PropPhase,
   type PropStatus,
 } from "@/lib/prop";
+import { useLockScroll } from "@/hooks/useLockScroll";
 
 const schema = z.object({
   firm: z.string().trim().nonempty({ message: "Choose a prop firm" }).max(60),
@@ -38,6 +39,7 @@ export function PropFirmDialog({
   onClose: () => void;
   onSaved: () => void;
 }) {
+  useLockScroll();
   const [firm, setFirm] = useState(account?.firm ?? PROP_FIRMS[0]!.name);
   const [customFirm, setCustomFirm] = useState(
     account && !PROP_FIRMS.some((f) => f.name === account.firm) ? account.firm : "",

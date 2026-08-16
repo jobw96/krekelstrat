@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Minus, Plus, RotateCcw, X } from "lucide-react";
+import { useLockScroll } from "@/hooks/useLockScroll";
 
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 8;
@@ -7,6 +8,7 @@ const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v));
 
 /** Full-screen zoom/pan viewer for a trade screenshot. */
 export function ImageLightbox({ src, onClose }: { src: string; onClose: () => void }) {
+  useLockScroll();
   const boxRef = useRef<HTMLDivElement | null>(null);
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });

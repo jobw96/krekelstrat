@@ -3,6 +3,7 @@ import { Loader2, X } from "lucide-react";
 import { z } from "zod";
 
 import { supabase } from "@/integrations/supabase/client";
+import { useLockScroll } from "@/hooks/useLockScroll";
 
 const schema = z.object({
   name: z
@@ -25,6 +26,7 @@ export function StrategyDialog({
   onClose: () => void;
   onSaved: () => void;
 }) {
+  useLockScroll();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState<string | null>(null);
