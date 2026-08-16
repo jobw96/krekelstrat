@@ -34,8 +34,10 @@ import {
   ControlBar,
   type AccountFilter,
   type Filters,
+  type PropAccountFilter,
   type RangeKey,
 } from "@/components/journal/ControlBar";
+import type { PropAccount } from "@/lib/prop";
 import { ShareJournalDialog } from "@/components/journal/ShareJournalDialog";
 import { buddyLabel, claimShares, fetchShares, type JournalShare } from "@/lib/shares";
 import { fetchCommentCounts } from "@/lib/comments";
@@ -81,6 +83,8 @@ function JournalPage() {
   const [navOpen, setNavOpen] = useState(false);
   // Which account journal is in view; "all" combines them.
   const [account, setAccount] = useState<AccountFilter>(DEFAULT_ACCOUNT_SIZE);
+  // Narrowing to one evaluation is off unless asked for.
+  const [propAccount, setPropAccount] = useState<PropAccountFilter>("all");
   const [month, setMonth] = useState(() => DateTime.now().setZone(LOCAL_ZONE).startOf("month"));
   const [calMode, setCalMode] = useState<CalendarMode>("pnl");
   const [mode, setMode] = useState<"live" | "practice">("live");
@@ -150,6 +154,21 @@ function JournalPage() {
     },
   });
 
+  // Shares its key with the prop firms view and the add-trade dialog.
+  const propAccountsQ = useQuery({
+    queryKey: ["prop_accounts", ownerId],
+    enabled: !!ownerId,
+    queryFn: async (): Promise<PropAccount[]> => {
+      const { data, error } = await supabase
+        .from("prop_accounts")
+        .select("*")
+        .order("started_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as PropAccount[];
+    },
+  });
+  const propAccounts = propAccountsQ.data ?? [];
+
   const commentCountsQ = useQuery({
     queryKey: ["comment-counts", ownerId, (tradesQ.data ?? []).length],
     enabled: (tradesQ.data ?? []).length > 0,
@@ -177,9 +196,10 @@ function JournalPage() {
           !!t.is_practice === (mode === "practice") &&
           // Trades written before the per-account split have no size stored;
           // they belong to the 25K book, same as the migration's backfill.
-          (account === "all" || (t.account_size ?? DEFAULT_ACCOUNT_SIZE) === account),
+          (account === "all" || (t.account_size ?? DEFAULT_ACCOUNT_SIZE) === account) &&
+          (propAccount === "all" || t.prop_account_id === propAccount),
       ),
-    [allTradesRaw, mode, account],
+    [allTradesRaw, mode, account, propAccount],
   );
   const syncedAt = tradesQ.dataUpdatedAt ? new Date(tradesQ.dataUpdatedAt) : null;
 
@@ -408,6 +428,9 @@ function JournalPage() {
           <ControlBar
             account={account}
             onAccount={setAccount}
+            propAccounts={propAccounts}
+            propAccount={propAccount}
+            onPropAccount={setPropAccount}
             range={range}
             onRange={setRange}
             from={from}

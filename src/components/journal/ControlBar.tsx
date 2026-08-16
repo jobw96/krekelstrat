@@ -10,6 +10,10 @@ import {
 
 /** Either a single account journal, or all of them combined. */
 export type AccountFilter = "all" | number;
+
+/** A specific prop account id, or "all" for no narrowing. */
+export type PropAccountFilter = "all" | string;
+import type { PropAccount } from "@/lib/prop";
 import { DatePicker } from "@/components/journal/DateTimePicker";
 
 
@@ -97,6 +101,9 @@ export function ControlBar({
   strategies,
   account,
   onAccount,
+  propAccounts,
+  propAccount,
+  onPropAccount,
 }: {
   range: RangeKey;
   onRange: (r: RangeKey) => void;
@@ -110,6 +117,10 @@ export function ControlBar({
   /** Selected account journal, or "all" to combine them. */
   account: AccountFilter;
   onAccount: (a: AccountFilter) => void;
+  propAccounts: PropAccount[];
+  /** A specific evaluation, or "all" for no narrowing. */
+  propAccount: PropAccountFilter;
+  onPropAccount: (id: PropAccountFilter) => void;
 }) {
   const activeFilters =
     (filters.strategy !== "all" ? 1 : 0) +
@@ -163,6 +174,50 @@ export function ControlBar({
         }
       </Dropdown>
 
+      {/* Off by default: most days you are reading the book as a whole, and
+          only narrow to one evaluation when you want to check that account. */}
+      <Dropdown
+        label={
+          propAccount === "all"
+            ? "All prop accounts"
+            : (() => {
+                const a = propAccounts.find((p) => p.id === propAccount);
+                return a ? a.label?.trim() || a.firm : "All prop accounts";
+              })()
+        }
+      >
+        {(close) => (
+          <>
+            <Item
+              active={propAccount === "all"}
+              onClick={() => {
+                onPropAccount("all");
+                close();
+              }}
+            >
+              All prop accounts
+            </Item>
+            {propAccounts.map((a) => (
+              <Item
+                key={a.id}
+                active={a.id === propAccount}
+                onClick={() => {
+                  onPropAccount(a.id);
+                  close();
+                }}
+              >
+                {a.label?.trim() || a.firm}
+                {a.account_size ? ` · ${accountLabel(a.account_size)}` : ""}
+              </Item>
+            ))}
+            {propAccounts.length === 0 && (
+              <span className="px-3 py-2.5 text-[11.5px] text-[#7A828D]">
+                No prop accounts yet.
+              </span>
+            )}
+          </>
+        )}
+      </Dropdown>
 
       <Dropdown label={RANGE_LABELS[range]}>
         {(close) =>
