@@ -27,6 +27,8 @@ export type Trade = {
   is_practice?: boolean | null;
   /** Which prop account size this trade belongs to; see ACCOUNT_SIZES. */
   account_size: number;
+  /** The specific prop account this trade was taken on, when linked. */
+  prop_account_id: string | null;
   created_at: string;
 };
 

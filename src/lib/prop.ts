@@ -12,6 +12,8 @@ export type PropAccount = {
   cost: number;
   activation_fee: number;
   payout_total: number;
+  /** Profit needed to pass this account; 0 when not set. */
+  profit_target: number;
   started_at: string;
   passed_at: string | null;
   breached_at: string | null;

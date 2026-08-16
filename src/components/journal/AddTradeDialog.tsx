@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { DateTime } from "luxon";
 import { ChevronDown, ClipboardPaste, Loader2, Upload, X } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -16,6 +17,7 @@ import {
   type TradeResult,
   type Trade,
 } from "@/lib/journal";
+import type { PropAccount } from "@/lib/prop";
 import { DateTimePicker } from "@/components/journal/DateTimePicker";
 import { TagPicker, RIGHT_TAGS, WRONG_TAGS } from "@/components/journal/TagPicker";
 import { sessionShortAt } from "@/lib/sessions";
@@ -108,6 +110,22 @@ export function AddTradeDialog({
   const [accountSize, setAccountSize] = useState<number>(
     trade?.account_size ?? DEFAULT_ACCOUNT_SIZE,
   );
+  const [propAccountId, setPropAccountId] = useState<string>(trade?.prop_account_id ?? "");
+
+  // Shares a cache key with the prop firms view, so opening this dialog does
+  // not refetch what that page already holds.
+  const accountsQ = useQuery({
+    queryKey: ["prop_accounts", userId],
+    queryFn: async (): Promise<PropAccount[]> => {
+      const { data, error } = await supabase
+        .from("prop_accounts")
+        .select("*")
+        .order("started_at", { ascending: false });
+      if (error) throw error;
+      return (data ?? []) as PropAccount[];
+    },
+  });
+  const propAccounts = accountsQ.data ?? [];
   const [date, setDate] = useState(
     trade
       ? DateTime.fromISO(trade.date).toFormat("yyyy-LL-dd'T'HH:mm")
@@ -203,6 +221,7 @@ export function AddTradeDialog({
         improvement: improvement || null,
         is_practice: practice,
         account_size: accountSize,
+        prop_account_id: propAccountId || null,
         screenshot_url: screenshot,
       };
       const { error: err } = editing
@@ -277,13 +296,37 @@ export function AddTradeDialog({
         </div>
 
 
-        <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
-          Account
-          <SelectField
-            value={String(accountSize)}
-            onChange={(v) => setAccountSize(Number(v))}
-            options={ACCOUNT_SIZES.map((s) => ({ value: String(s), label: accountLabel(s) }))}
-          />
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
+            Account
+            <SelectField
+              value={String(accountSize)}
+              onChange={(v) => setAccountSize(Number(v))}
+              options={ACCOUNT_SIZES.map((s) => ({ value: String(s), label: accountLabel(s) }))}
+            />
+          </div>
+          <div className="flex flex-col gap-1 text-[11px] text-[#9AA1AC]">
+            Prop account
+            <SelectField
+              value={propAccountId}
+              onChange={(v) => {
+                setPropAccountId(v);
+                // Keep the journal split in step with the linked account, so a
+                // trade cannot sit in the 25K book while tied to a 50K account.
+                const picked = propAccounts.find((a) => a.id === v);
+                if (picked?.account_size) setAccountSize(picked.account_size);
+              }}
+              options={[
+                { value: "", label: "Not linked" },
+                ...propAccounts.map((a) => ({
+                  value: a.id,
+                  label: `${a.label?.trim() || a.firm}${
+                    a.account_size ? ` · ${accountLabel(a.account_size)}` : ""
+                  }`,
+                })),
+              ]}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">

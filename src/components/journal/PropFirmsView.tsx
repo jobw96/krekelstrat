@@ -90,9 +90,32 @@ export function PropFirmsView({ userId }: { userId: string }) {
     },
   });
 
+  // Realised P&L per account, from the trades linked to it. Only live trades
+  // count: practice results say nothing about passing an evaluation.
+  const pnlQ = useQuery({
+    queryKey: ["trades-by-prop-account", userId],
+    queryFn: async (): Promise<Record<string, number>> => {
+      const { data, error } = await supabase
+        .from("trades")
+        .select("prop_account_id, pnl, is_practice")
+        .not("prop_account_id", "is", null);
+      if (error) throw error;
+      const totals: Record<string, number> = {};
+      for (const t of data ?? []) {
+        if (t.is_practice || !t.prop_account_id) continue;
+        totals[t.prop_account_id] = (totals[t.prop_account_id] ?? 0) + Number(t.pnl);
+      }
+      return totals;
+    },
+  });
+  const pnlByAccount = pnlQ.data ?? {};
+
   const rows = q.data ?? [];
   const s = propStats(rows);
-  const refresh = () => qc.invalidateQueries({ queryKey: ["prop_accounts", userId] });
+  const refresh = () => {
+    qc.invalidateQueries({ queryKey: ["prop_accounts", userId] });
+    qc.invalidateQueries({ queryKey: ["trades-by-prop-account", userId] });
+  };
 
   const byFirm = PROP_FIRMS.map((f) => {
     const list = rows.filter((r) => r.firm === f.name);
@@ -223,6 +246,7 @@ export function PropFirmsView({ userId }: { userId: string }) {
                     {list.map((r) => {
                       const spend = Number(r.cost) + Number(r.activation_fee);
                       const net = Number(r.payout_total) - spend;
+                      const linkedPnl = pnlByAccount[r.id] ?? 0;
                       return (
                         <div
                           key={r.id}
@@ -280,8 +304,25 @@ export function PropFirmsView({ userId }: { userId: string }) {
                             </button>
                           </span>
 
+                          {Number(r.profit_target) > 0 && (
+                            <span className="col-span-2 row-start-3 flex items-center gap-2.5 sm:col-span-5 sm:row-start-2">
+                              <span className="h-1 min-w-0 flex-1 overflow-hidden rounded-full bg-white/8">
+                                <span
+                                  className="block h-full rounded-full transition-[width] duration-300"
+                                  style={{
+                                    width: `${Math.min(100, Math.max(0, (linkedPnl / Number(r.profit_target)) * 100))}%`,
+                                    background: linkedPnl >= 0 ? WIN_GREEN : LOSS_RED,
+                                  }}
+                                />
+                              </span>
+                              <span className="shrink-0 font-mono text-[10.5px] text-[#7A828D]">
+                                {usd(linkedPnl)} / {usd(Number(r.profit_target))} target
+                              </span>
+                            </span>
+                          )}
+
                           {r.notes && (
-                            <span className="col-span-2 row-start-3 truncate text-[11.5px] text-[#9AA1AC] sm:col-span-5 sm:row-start-2">
+                            <span className="col-span-2 row-start-4 truncate text-[11.5px] text-[#9AA1AC] sm:col-span-5 sm:row-start-3">
                               {r.notes}
                             </span>
                           )}

@@ -19,6 +19,7 @@ const schema = z.object({
   cost: z.number().min(0, { message: "Cost cannot be negative" }),
   activation_fee: z.number().min(0),
   payout_total: z.number().min(0),
+  profit_target: z.number().min(0, { message: "Profit target cannot be negative" }),
 });
 
 const field =
@@ -47,6 +48,7 @@ export function PropFirmDialog({
   const [cost, setCost] = useState(String(account?.cost ?? ""));
   const [activation, setActivation] = useState(String(account?.activation_fee ?? ""));
   const [payout, setPayout] = useState(String(account?.payout_total ?? ""));
+  const [target, setTarget] = useState(String(account?.profit_target || ""));
   const [date, setDate] = useState(
     (account?.started_at ?? new Date().toISOString()).slice(0, 10),
   );
@@ -64,6 +66,7 @@ export function PropFirmDialog({
       cost: Number(cost || 0),
       activation_fee: Number(activation || 0),
       payout_total: Number(payout || 0),
+      profit_target: Number(target || 0),
     });
     if (!parsed.success) {
       setError(parsed.error.issues[0]?.message ?? "Invalid input");
@@ -82,6 +85,7 @@ export function PropFirmDialog({
       cost: parsed.data.cost,
       activation_fee: parsed.data.activation_fee,
       payout_total: parsed.data.payout_total,
+      profit_target: parsed.data.profit_target,
       started_at: new Date(`${date}T12:00:00`).toISOString(),
       passed_at:
         status === "passed" || status === "payout" ? (account?.passed_at ?? new Date().toISOString()) : null,
@@ -220,6 +224,16 @@ export function PropFirmDialog({
               onChange={(e) => setPayout(e.target.value)}
               inputMode="decimal"
               placeholder="0"
+              className={`${field} font-mono`}
+            />
+          </label>
+          <label className="flex flex-col gap-1.5">
+            <span className={label}>Profit target $</span>
+            <input
+              value={target}
+              onChange={(e) => setTarget(e.target.value)}
+              inputMode="decimal"
+              placeholder="1500"
               className={`${field} font-mono`}
             />
           </label>
