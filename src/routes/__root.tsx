@@ -214,7 +214,9 @@ function RootComponent() {
             className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[env(safe-area-inset-top)]"
             style={{ background: "var(--bg-base)" }}
           />
-          <div className="flex w-full gap-4 px-3 pb-[calc(env(safe-area-inset-bottom)+104px)] pt-[calc(env(safe-area-inset-top)+16px)] sm:px-5 lg:pb-4 lg:pl-[92px]">
+          {/* Roomier at the top on a phone, where the header sits right under
+              the status bar; the desktop rail already has its own spacing. */}
+          <div className="flex w-full gap-4 px-3 pb-[calc(env(safe-area-inset-bottom)+104px)] pt-[calc(env(safe-area-inset-top)+28px)] sm:px-5 sm:pt-[calc(env(safe-area-inset-top)+16px)] lg:pb-4 lg:pl-[92px]">
             {/* The rail is outside every route transition and loading layer. */}
             <AppRail />
             <div className="relative min-h-[calc(100vh-32px)] min-w-0 flex-1">

@@ -131,10 +131,10 @@ export function ControlBar({
   // absolutely-positioned dropdown panels, which on a phone turned every
   // filter menu into an unusable sliver.
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {/* The account journals sit above the rest: picking one switches which
           book you are looking at, where the controls below only narrow it. */}
-      <div className="flex flex-wrap items-center gap-1.5">
+      <div className="flex flex-wrap items-center gap-2">
         {(["all", ...ACCOUNT_SIZES] as AccountFilter[]).map((a) => (
           <button
             key={a}
@@ -145,12 +145,21 @@ export function ControlBar({
             }`}
             style={account === a ? { fontWeight: 560 } : undefined}
           >
-            {a === "all" ? "All accounts" : accountLabel(a)}
+            {a === "all" ? (
+              // "All accounts" alone eats 92px of a 351px row, leaving the five
+              // buttons filling 98% of it with nowhere to breathe.
+              <>
+                <span className="sm:hidden">All</span>
+                <span className="hidden sm:inline">All accounts</span>
+              </>
+            ) : (
+              accountLabel(a)
+            )}
           </button>
         ))}
       </div>
 
-    <div className="card-surface relative flex flex-wrap items-center gap-2 p-2.5">
+    <div className="card-surface relative flex flex-wrap items-center gap-2.5 p-3">
       <Dropdown
         label={
           filters.strategy === "all"
