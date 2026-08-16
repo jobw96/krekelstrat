@@ -87,11 +87,11 @@ export function DayTradesDialog({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-3 backdrop-blur-sm sm:p-4">
       {/* The header sits outside the scroll area rather than scrolling with it,
           so the close button stays reachable however long the day is. */}
       <div className="card-surface flex max-h-[90vh] w-full max-w-[820px] flex-col overflow-hidden">
-        <header className="flex shrink-0 items-center justify-between gap-3 border-b border-white/6 p-5">
+        <header className="flex shrink-0 items-center justify-between gap-3 border-b border-white/6 p-4 sm:p-5">
           <div className="flex flex-col">
             <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
               {DateTime.fromISO(day).setLocale("en").toFormat("cccc d LLLL yyyy")}
@@ -113,10 +113,13 @@ export function DayTradesDialog({
         {/* One trade per row, in time order. Three across with an uncapped
             screenshot meant each card ran taller than the viewport, so a
             seven-trade day could never be read at a glance. */}
-        <div className="flex flex-col gap-2 overflow-y-auto p-5">
+        <div className="flex flex-col gap-2 overflow-y-auto p-3 sm:p-5">
         {ordered.map((t) => (
           <article key={t.id} className="glass-inset flex min-w-0 flex-col gap-2.5 p-3">
-            <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1.5 sm:grid-cols-[auto_minmax(0,1fr)_84px_52px_auto]">
+            {/* On a phone the essentials go on line one and the context drops
+                to line two; squeezing all five onto one row left the amount
+                jammed against the strategy name. */}
+            <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-x-3 gap-y-1 sm:grid-cols-[auto_minmax(0,1fr)_84px_52px_auto]">
               <span
                 className="rounded-control px-2 py-0.5 text-[10px] uppercase tracking-[0.08em]"
                 style={{ background: `${resultColor(t)}22`, color: resultColor(t) }}
@@ -128,20 +131,26 @@ export function DayTradesDialog({
                 <span className="font-mono tabular">
                   {DateTime.fromISO(t.date).setZone(LOCAL_ZONE).toFormat("HH:mm")}
                 </span>
-                <span className="truncate text-[#7A828D]">
+                <span className="hidden truncate text-[#7A828D] sm:inline">
                   {t.session ?? "—"} ·{" "}
                   {strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy"}
                 </span>
               </span>
 
               <span
-                className="col-start-3 row-start-1 text-right font-mono text-[14px] tabular sm:col-start-3"
+                className="col-start-3 row-start-1 pl-2 text-right font-mono text-[14px] tabular sm:col-start-3 sm:pl-0"
                 style={{ color: resultColor(t), fontWeight: 560 }}
               >
                 {money(Number(t.pnl))}
               </span>
 
-              <span className="col-start-2 row-start-2 font-mono text-[11px] text-[#9AA1AC] sm:col-start-4 sm:row-start-1 sm:text-right">
+              <span className="col-span-2 row-start-2 truncate text-[11px] text-[#7A828D] sm:hidden">
+                {t.session ?? "—"} ·{" "}
+                {strategies.find((s) => s.id === t.strategy_id)?.name ?? "No strategy"}
+                {t.rr != null ? ` · ${Number(t.rr).toFixed(1)}R` : ""}
+              </span>
+
+              <span className="hidden font-mono text-[11px] text-[#9AA1AC] sm:col-start-4 sm:row-start-1 sm:block sm:text-right">
                 {t.rr != null ? `${Number(t.rr).toFixed(1)}R` : "—"}
               </span>
 

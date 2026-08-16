@@ -101,9 +101,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "theme-color", content: "#121317" },
+      // Matches --bg-base, so the browser chrome meets the page seamlessly.
+      { name: "theme-color", content: "#09090c" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      // "black", not "black-translucent": translucent lets the page scroll
+      // under the status bar, and iOS blurs whatever passes beneath it.
+      { name: "apple-mobile-web-app-status-bar-style", content: "black" },
       { name: "apple-mobile-web-app-title", content: "Krekelstrat" },
     ],
     links: [
@@ -199,6 +202,18 @@ function RootComponent() {
         </>
       ) : (
         <main className="app-shell min-h-screen">
+          {/*
+           * Opaque strip under the iOS status bar. viewport-fit=cover is what
+           * makes the safe-area insets resolve at all, but it also lets the page
+           * scroll beneath the bar, and iOS blurs whatever passes under it. A
+           * solid fill of the page colour gives that blur nothing to smear.
+           * Zero-height on anything without a notch.
+           */}
+          <div
+            aria-hidden
+            className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[env(safe-area-inset-top)]"
+            style={{ background: "var(--bg-base)" }}
+          />
           <div className="flex w-full gap-4 px-3 pb-[calc(env(safe-area-inset-bottom)+104px)] pt-[calc(env(safe-area-inset-top)+16px)] sm:px-5 lg:pb-4 lg:pl-[92px]">
             {/* The rail is outside every route transition and loading layer. */}
             <AppRail />

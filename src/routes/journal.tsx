@@ -544,19 +544,21 @@ function DayView({ trades, onSelectDay }: { trades: Trade[]; onSelectDay: (d: st
           <button
             key={d.key}
             onClick={() => onSelectDay(d.key)}
-            className="hover-tint flex items-center justify-between rounded-control bg-white/4 px-3 py-2.5 text-left"
+            // Date and amount on line one, the counts underneath. Side by side
+            // the date wrapped mid-word on a phone and the figures collided.
+            className="hover-tint grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-x-3 gap-y-0.5 rounded-control bg-white/4 px-3 py-2.5 text-left sm:flex sm:items-center sm:justify-between"
           >
-            <span className="font-mono text-[12px] text-[#F0F2F5]">
-              {DateTime.fromISO(d.key).toFormat("cccc dd LLL yyyy")}
+            <span className="truncate font-mono text-[12px] text-[#F0F2F5]">
+              {DateTime.fromISO(d.key).toFormat("ccc dd LLL yyyy")}
             </span>
-            <span className="flex items-center gap-4">
-              <span className="font-mono text-[11px] text-[#7A828D]">{d.count} trades</span>
-              <span className="font-mono text-[11px] text-[#9AA1AC]">
-                {d.winRate.toFixed(1)}%
+            <span className="col-start-2 row-start-1 font-mono text-[14px] tabular sm:order-2" style={{ color, fontWeight: 560 }}>
+              {money(d.pnl)}
+            </span>
+            <span className="col-span-2 row-start-2 flex items-center gap-3 font-mono text-[11px] text-[#7A828D] sm:order-1 sm:col-span-1 sm:row-start-1 sm:gap-4">
+              <span>
+                {d.count} {d.count === 1 ? "trade" : "trades"}
               </span>
-              <span className="font-mono text-[14px] tabular" style={{ color, fontWeight: 560 }}>
-                {money(d.pnl)}
-              </span>
+              <span className="text-[#9AA1AC]">{d.winRate.toFixed(1)}%</span>
             </span>
           </button>
         );
