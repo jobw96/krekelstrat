@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { DateTime } from "luxon";
-import { ChevronDown, Eye, LogOut, Menu, Plus, Share2 } from "lucide-react";
+import { ChevronDown, Eye, LogOut, Menu, Pencil, Plus, Share2, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -77,6 +77,8 @@ function JournalPage() {
     if (search.view) setView(search.view);
   }, [search.view]);
   const [addingStrategy, setAddingStrategy] = useState(false);
+  // Set to a strategy to rename/edit it; the dialog creates one when null.
+  const [editingStrategy, setEditingStrategy] = useState<Strategy | null>(null);
   const [collapsed, setCollapsed] = useState(false);
   // Separate from `collapsed`: that one narrows the desktop rail, this one
   // opens the drawer on a phone, where the rail is not rendered at all.
@@ -484,6 +486,7 @@ function JournalPage() {
                 strategies={strategies}
                 trades={allTrades}
                 onAdd={addStrategy}
+                onEdit={setEditingStrategy}
                 onChanged={refresh}
               />
             )}
@@ -508,10 +511,14 @@ function JournalPage() {
           onSaved={refresh}
         />
       )}
-      {addingStrategy && (
+      {(addingStrategy || editingStrategy) && (
         <StrategyDialog
           userId={user.id}
-          onClose={() => setAddingStrategy(false)}
+          strategy={editingStrategy}
+          onClose={() => {
+            setAddingStrategy(false);
+            setEditingStrategy(null);
+          }}
           onSaved={refresh}
         />
       )}
@@ -571,12 +578,14 @@ function StrategiesView({
   strategies,
   trades,
   onAdd,
+  onEdit,
   onChanged,
   readOnly = false,
 }: {
   strategies: Strategy[];
   trades: Trade[];
   onAdd: () => void;
+  onEdit: (s: Strategy) => void;
   onChanged: () => void;
   readOnly?: boolean;
 }) {
@@ -613,15 +622,25 @@ function StrategiesView({
                 {money(pnl)}
               </span>
               {!readOnly && (
-                <button
-                  onClick={async () => {
-                    await supabase.from("strategies").delete().eq("id", s.id);
-                    onChanged();
-                  }}
-                  className="text-[11px] text-[#7A828D] hover:text-[#F5928F]"
-                >
-                  Delete
-                </button>
+                <>
+                  <button
+                    onClick={() => onEdit(s)}
+                    aria-label={`Edit ${s.name}`}
+                    className="text-[#7A828D] transition-colors hover:text-white"
+                  >
+                    <Pencil className="size-3.5" />
+                  </button>
+                  <button
+                    onClick={async () => {
+                      await supabase.from("strategies").delete().eq("id", s.id);
+                      onChanged();
+                    }}
+                    aria-label={`Delete ${s.name}`}
+                    className="text-[#7A828D] transition-colors hover:text-[#F5928F]"
+                  >
+                    <Trash2 className="size-3.5" />
+                  </button>
+                </>
               )}
             </span>
           </div>

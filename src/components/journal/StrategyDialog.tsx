@@ -4,6 +4,7 @@ import { z } from "zod";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useLockScroll } from "@/hooks/useLockScroll";
+import type { Strategy } from "@/lib/journal";
 
 const schema = z.object({
   name: z
@@ -19,16 +20,20 @@ const schema = z.object({
 
 export function StrategyDialog({
   userId,
+  strategy,
   onClose,
   onSaved,
 }: {
   userId: string;
+  /** When provided, the dialog renames/edits this strategy instead of creating one. */
+  strategy?: Strategy | null;
   onClose: () => void;
   onSaved: () => void;
 }) {
   useLockScroll();
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const editing = !!strategy;
+  const [name, setName] = useState(strategy?.name ?? "");
+  const [description, setDescription] = useState(strategy?.description ?? "");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -41,11 +46,15 @@ export function StrategyDialog({
     }
     setBusy(true);
     setError(null);
-    const { error: dbError } = await supabase.from("strategies").insert({
-      user_id: userId,
+    const payload = {
       name: parsed.data.name,
       description: parsed.data.description || null,
-    });
+    };
+    // Renaming leaves trades alone: they reference the strategy by id, so the
+    // new name shows up everywhere the old one did.
+    const { error: dbError } = editing
+      ? await supabase.from("strategies").update(payload).eq("id", strategy!.id)
+      : await supabase.from("strategies").insert({ ...payload, user_id: userId });
     setBusy(false);
     if (dbError) {
       setError(dbError.message);
@@ -63,7 +72,7 @@ export function StrategyDialog({
       >
         <header className="flex items-center justify-between">
           <h2 className="text-[17px] text-white" style={{ fontWeight: 560 }}>
-            New strategy
+            {editing ? "Edit strategy" : "New strategy"}
           </h2>
           <button
             type="button"
@@ -118,7 +127,7 @@ export function StrategyDialog({
             className="hover-lift inline-flex items-center gap-1.5 rounded-control px-4 py-2 text-[13px]"
             style={{ background: "#6E86F7", color: "#ffffff", fontWeight: 560 }}
           >
-            {busy && <Loader2 className="size-4 animate-spin" />} Save strategy
+            {busy && <Loader2 className="size-4 animate-spin" />} {editing ? "Save changes" : "Save strategy"}
           </button>
         </div>
       </form>
