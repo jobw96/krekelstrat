@@ -41,6 +41,7 @@ import type { PropAccount } from "@/lib/prop";
 import { ShareJournalDialog } from "@/components/journal/ShareJournalDialog";
 import { buddyLabel, claimShares, fetchShares, type JournalShare } from "@/lib/shares";
 import { fetchCommentCounts } from "@/lib/comments";
+import { useLiveTrades } from "@/hooks/useLiveTrades";
 
 export const Route = createFileRoute("/journal")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -141,6 +142,9 @@ function JournalPage() {
       return (data ?? []) as Strategy[];
     },
   });
+
+  // Picks up writes from a buddy or a second device while this page is open.
+  useLiveTrades(ownerId);
 
   const tradesQ = useQuery({
     queryKey: ["trades", ownerId],
