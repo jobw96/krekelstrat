@@ -380,6 +380,13 @@ function JournalPage() {
               </div>
             </div>
             <div className="flex shrink-0 flex-wrap items-center gap-2">
+              <Link
+                to="/journal/review"
+                className="hover-lift inline-flex items-center gap-1.5 rounded-control bg-white/6 px-3 py-2 text-[13px] text-[#F0F2F5] hover:bg-white/12"
+              >
+                <Eye className="size-3.5" /> Review
+              </Link>
+
 
               <span className="hidden rounded-control bg-white/6 px-3 py-1.5 text-[12px] text-[#9AA1AC] sm:inline">
                 {isGuest ? "Guest mode · no login" : user.email}
