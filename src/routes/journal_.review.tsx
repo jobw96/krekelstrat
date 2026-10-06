@@ -144,7 +144,7 @@ function ReviewPage() {
       <header className="card-surface sticky top-0 z-10 flex flex-col gap-3 p-4">
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-3">
-            <Link to="/journal" className="text-[#9AA1AC] hover:text-white" aria-label="Back to journal">
+            <Link to="/journal" search={{ view: undefined }} className="text-[#9AA1AC] hover:text-white" aria-label="Back to journal">
               <ArrowLeft className="size-4" />
             </Link>
             <h1 className="text-[16px] text-white" style={{ fontWeight: 560 }}>Trade Review</h1>
