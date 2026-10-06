@@ -15,6 +15,7 @@ import { Route as JournalRouteImport } from './routes/journal'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PropFirmsRouteImport } from './routes/prop-firms'
+import { Route as JournalReviewRouteImport } from './routes/journal_.review'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +47,11 @@ const PropFirmsRoute = PropFirmsRouteImport.update({
   path: '/prop-firms',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JournalReviewRoute = JournalReviewRouteImport.update({
+  id: '/journal_/review',
+  path: '/journal/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/news': typeof NewsRoute
   '/profile': typeof ProfileRoute
   '/prop-firms': typeof PropFirmsRoute
+  '/journal/review': typeof JournalReviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/news': typeof NewsRoute
   '/profile': typeof ProfileRoute
   '/prop-firms': typeof PropFirmsRoute
+  '/journal/review': typeof JournalReviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,12 +79,27 @@ export interface FileRoutesById {
   '/news': typeof NewsRoute
   '/profile': typeof ProfileRoute
   '/prop-firms': typeof PropFirmsRoute
+  '/journal_/review': typeof JournalReviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/journal' | '/news' | '/profile' | '/prop-firms'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/journal'
+    | '/news'
+    | '/profile'
+    | '/prop-firms'
+    | '/journal/review'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/journal' | '/news' | '/profile' | '/prop-firms'
+  to:
+    | '/'
+    | '/auth'
+    | '/journal'
+    | '/news'
+    | '/profile'
+    | '/prop-firms'
+    | '/journal/review'
   id:
     | '__root__'
     | '/'
@@ -85,6 +108,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/profile'
     | '/prop-firms'
+    | '/journal_/review'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -94,6 +118,7 @@ export interface RootRouteChildren {
   NewsRoute: typeof NewsRoute
   ProfileRoute: typeof ProfileRoute
   PropFirmsRoute: typeof PropFirmsRoute
+  JournalReviewRoute: typeof JournalReviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -140,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropFirmsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/journal_/review': {
+      id: '/journal_/review'
+      path: '/journal/review'
+      fullPath: '/journal/review'
+      preLoaderRoute: typeof JournalReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -150,6 +182,7 @@ const rootRouteChildren: RootRouteChildren = {
   NewsRoute: NewsRoute,
   ProfileRoute: ProfileRoute,
   PropFirmsRoute: PropFirmsRoute,
+  JournalReviewRoute: JournalReviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

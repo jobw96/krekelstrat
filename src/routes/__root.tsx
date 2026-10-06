@@ -39,7 +39,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: Error; reset: () => void; info?: unknown }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -134,7 +134,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
+  errorComponent: ErrorComponent as never,
 });
 
 function RootShell({ children }: { children: ReactNode }) {
@@ -155,7 +155,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname ?? s.location.pathname });
   const transitioning = useRouterState(
-    { select: (s) => s.status === "pending" || s.isLoading || s.isTransitioning },
+    { select: (s) => s.status === "pending" || s.isLoading },
   );
   const [hydrated, setHydrated] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
