@@ -155,7 +155,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const pathname = useRouterState({ select: (s) => s.resolvedLocation?.pathname ?? s.location.pathname });
   const transitioning = useRouterState(
-    { select: (s) => s.status === "pending" || s.isLoading || s.isTransitioning },
+    { select: (s) => s.status === "pending" || s.isLoading },
   );
   const [hydrated, setHydrated] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
